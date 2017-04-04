@@ -1,3 +1,4 @@
+require("run")
 require("world")
 
 app = {}
@@ -9,3 +10,4 @@ end
 function love.draw()
     world:draw()
 end
+
