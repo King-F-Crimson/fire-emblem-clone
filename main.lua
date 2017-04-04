@@ -4,10 +4,14 @@ require("world")
 app = {}
 
 function love.load()
-    app.world = world
+    app.world = world.create()
+end
+
+function love.update()
+    app.world:update()
 end
 
 function love.draw()
-    world:draw()
+    app.world:draw()
 end
 
