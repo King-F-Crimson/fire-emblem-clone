@@ -1,3 +1,6 @@
+require("cursor")
+require("world")
+
 application = {
     tile_size = 16
 }

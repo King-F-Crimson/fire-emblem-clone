@@ -1,7 +1,6 @@
 require("run")
-require("app")
-require("cursor")
-require("world")
+require("application")
+
 
 tile_size = 16
 
