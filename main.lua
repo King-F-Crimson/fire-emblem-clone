@@ -1,46 +1,32 @@
 require("run")
+require("cursor")
 require("world")
 
-app = {}
+app = {
+    tile_size = 16
+}
 
 function love.load()
     love.window.setFullscreen(true, "desktop")
 
-    app.camera = { x = 0, y = 0 }
+    app.cursor = cursor.create(8, 8)
     app.world = world.create()
 end
 
 function love.update()
-    local move = { x = 0, y = 0 }
-    if love.keyboard.isDown("up") then
-        move.y =  1
-    end
-    if love.keyboard.isDown("down") then
-        move.y =  -1
-    end
-    if love.keyboard.isDown("left") then
-        move.x =  1
-    end
-    if love.keyboard.isDown("right") then
-        move.x =  -1
-    end
-    if love.keyboard.isDown("lshift") then
-        move.y = move.y * 5
-        move.x = move.x * 5
-    end
-
-    app.camera.x = app.camera.x + move.x
-    app.camera.y = app.camera.y + move.y
-
     app.world:update()
 end
 
 function love.draw()
     love.graphics.push()
-    love.graphics.scale(2)
-    love.graphics.translate(app.camera.x, app.camera.y)
+    local zoom = 2
+    love.graphics.scale(zoom)
+
+    local cursor_x, cursor_y = app.cursor:get_position()
+    love.graphics.translate(love.graphics.getWidth() / zoom / 2 - cursor_x - (app.tile_size / 2), love.graphics.getHeight() / zoom / 2 - cursor_y - (app.tile_size / 2))
 
     app.world:draw()
+    app.cursor:draw()
     love.graphics.pop()
 end
 
@@ -48,17 +34,17 @@ function love.keypressed(key)
     if key == "escape" then
         love.window.close()
     end
-    local unit = app.world.unit
+    
     if key == "w" then
-        app.world.unit.y = app.world.unit.y - 16
+        app.cursor.tile_y = app.cursor.tile_y - 1
     end
     if key == "r" then
-        app.world.unit.y = app.world.unit.y + 16
+        app.cursor.tile_y = app.cursor.tile_y + 1
     end
     if key == "a" then
-        app.world.unit.x = app.world.unit.x - 16
+        app.cursor.tile_x = app.cursor.tile_x - 1
     end
     if key == "s" then
-        app.world.unit.x = app.world.unit.x + 16
+        app.cursor.tile_x = app.cursor.tile_x + 1
     end
 end
