@@ -34,15 +34,15 @@ function application:keypressed(key)
     end
     
     if key == "w" then
-        app.cursor.tile_y = app.cursor.tile_y - 1
+        self.cursor.tile_y = self.cursor.tile_y - 1
     end
     if key == "r" then
-        app.cursor.tile_y = app.cursor.tile_y + 1
+        self.cursor.tile_y = self.cursor.tile_y + 1
     end
     if key == "a" then
-        app.cursor.tile_x = app.cursor.tile_x - 1
+        self.cursor.tile_x = self.cursor.tile_x - 1
     end
     if key == "s" then
-        app.cursor.tile_x = app.cursor.tile_x + 1
+        self.cursor.tile_x = self.cursor.tile_x + 1
     end
 end
