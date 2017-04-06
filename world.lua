@@ -12,7 +12,7 @@ function world.create()
 
     self.map = sti("maps/sample_map.lua")
 
-    unit_layer = self.map:addCustomLayer("unit_layer", 69)
+    unit_layer = self.map:addCustomLayer("unit_layer")
     unit_layer.units = {}
     unit_layer.units.player = unit.create(-16, 0)
 
@@ -35,5 +35,4 @@ end
 
 function world:draw()
     self.map:draw()
-    self.map.layers.unit_layer:draw()
 end
