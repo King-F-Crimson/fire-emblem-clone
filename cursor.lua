@@ -4,7 +4,7 @@ cursor = {
 cursor.sprite:setFilter("nearest")
 
 function cursor.create(tile_x, tile_y)
-    self = { tile_x = tile_x, tile_y = tile_y }
+    local self = { tile_x = tile_x, tile_y = tile_y }
     setmetatable(self, { __index = cursor })
 
     return self

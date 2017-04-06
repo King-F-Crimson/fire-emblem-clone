@@ -5,7 +5,7 @@ unit = {
 unit.sprite:setFilter("nearest")
 
 function unit.create(x, y)
-    self = { x = x, y = y }
+    local self = { x = x, y = y }
     setmetatable(self, { __index = unit })
 
     return self
