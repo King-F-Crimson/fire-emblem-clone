@@ -9,6 +9,8 @@ function application.create()
     local self = {}
     setmetatable(self, { __index = application })
 
+    love.window.setFullscreen(true, "desktop")
+
     self.cursor = cursor.create(8, 8)
     self.world = world.create()
     return self
@@ -33,7 +35,7 @@ end
 
 function application:keypressed(key)
     if key == "escape" then
-        love.window.close()
+        love.event.push("quit")
     end
     
     if key == "w" then

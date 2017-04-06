@@ -5,8 +5,6 @@ require("application")
 tile_size = 16
 
 function love.load()
-    love.window.setFullscreen(true, "desktop")
-
     app = application.create()
 end
 
