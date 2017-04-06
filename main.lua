@@ -4,7 +4,7 @@ require("world")
 app = {}
 
 function love.load()
-    love.window.setMode(0, 0, {fullscreen = true})
+    love.window.setFullscreen(true, "desktop")
 
     app.camera = { x = 0, y = 0 }
     app.world = world.create()
@@ -37,7 +37,7 @@ end
 
 function love.draw()
     love.graphics.push()
-    love.graphics.scale(2   )
+    love.graphics.scale(2)
     love.graphics.translate(app.camera.x, app.camera.y)
 
     app.world:draw()
@@ -47,5 +47,18 @@ end
 function love.keypressed(key)
     if key == "escape" then
         love.window.close()
+    end
+    local unit = app.world.unit
+    if key == "w" then
+        app.world.unit.y = app.world.unit.y - 16
+    end
+    if key == "r" then
+        app.world.unit.y = app.world.unit.y + 16
+    end
+    if key == "a" then
+        app.world.unit.x = app.world.unit.x - 16
+    end
+    if key == "s" then
+        app.world.unit.x = app.world.unit.x + 16
     end
 end

@@ -1,3 +1,5 @@
+require("unit")
+
 local sti = require "libs/Simple-Tiled-Implementation/sti"
 
 world = {
@@ -9,6 +11,7 @@ function world.create()
     setmetatable(self, {__index = world})
 
     self.map = sti("maps/sample_map.lua")
+    self.unit = unit.create(0, 0)
 
     return self
 end
@@ -19,4 +22,5 @@ end
 
 function world:draw()
     self.map:draw()
+    self.unit:draw()
 end
