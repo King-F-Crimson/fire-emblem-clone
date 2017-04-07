@@ -39,5 +39,9 @@ function application:keypressed(key)
         love.event.push("quit")
     end
 
-    self.cursor:process_input(key)
+    self.cursor:process_input(key, true)
+end
+
+function application:keyreleased(key)
+    self.cursor:process_input(key, false)
 end

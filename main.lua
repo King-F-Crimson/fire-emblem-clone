@@ -19,3 +19,7 @@ end
 function love.keypressed(key)
     app:keypressed(key)
 end
+
+function love.keyreleased(key)
+    app:keyreleased(key)
+end
