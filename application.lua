@@ -3,8 +3,14 @@ require("ui")
 require("world")
 
 application = {
-    tile_size = 16
+    tile_size = 16,
+    font = love.graphics.newImageFont("assets/font.png",
+    " abcdefghijklmnopqrstuvwxyz" ..
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ0" ..
+    "123456789.,!?-+/():;%&`'*#=[]\"")
 }
+application.font:setFilter( "nearest" )
+love.graphics.setFont(application.font)
 
 function application.create()
     local self = {}
