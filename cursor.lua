@@ -50,6 +50,10 @@ function cursor:process_input(key, pressed)
     if input ~= nil then
         if pressed then
             self.move_queue[input] = true
+            -- Reset rapid movement if a new directional key is pressed.
+            for direction, timer in pairs(self.move_timer) do
+                self.move_timer[direction] = self.rapid_time
+            end
         else
             self.move_timer[input] = self.rapid_time
         end
