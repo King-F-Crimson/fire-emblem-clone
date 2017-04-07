@@ -18,6 +18,7 @@ end
 
 function application:update()
     self.world:update()
+    self.cursor:update()
 end
 
 function application:draw()
@@ -37,17 +38,6 @@ function application:keypressed(key)
     if key == "escape" then
         love.event.push("quit")
     end
-    
-    if key == "w" then
-        self.cursor.tile_y = self.cursor.tile_y - 1
-    end
-    if key == "r" then
-        self.cursor.tile_y = self.cursor.tile_y + 1
-    end
-    if key == "a" then
-        self.cursor.tile_x = self.cursor.tile_x - 1
-    end
-    if key == "s" then
-        self.cursor.tile_x = self.cursor.tile_x + 1
-    end
+
+    self.cursor:process_input(key)
 end
