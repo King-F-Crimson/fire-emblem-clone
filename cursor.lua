@@ -3,8 +3,8 @@ cursor = {
 }
 cursor.sprite:setFilter("nearest")
 
-function cursor.create(tile_x, tile_y)
-    local self = { tile_x = tile_x, tile_y = tile_y }
+function cursor.create(application, tile_x, tile_y)
+    local self = { app = application, tile_x = tile_x, tile_y = tile_y }
     setmetatable(self, { __index = cursor })
 
     self.input_map = { w = "up", r = "down", a = "left", s = "right" }
@@ -62,4 +62,13 @@ end
 
 function cursor:get_position()
     return self.tile_x * app.tile_size, self.tile_y * app.tile_size
+end
+
+function cursor:get_info()
+    local unit = self.app.world:get_unit(self.tile_x, self.tile_y)
+    if unit then
+        return unit:get_info()
+    else
+        return ""
+    end
 end

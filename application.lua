@@ -1,4 +1,5 @@
 require("cursor")
+require("ui")
 require("world")
 
 application = {
@@ -11,7 +12,8 @@ function application.create()
 
     love.window.setFullscreen(true, "desktop")
 
-    self.cursor = cursor.create(8, 8)
+    self.cursor = cursor.create(self, 8, 8)
+    self.ui = ui.create(self)
     self.world = world.create()
     return self
 end
@@ -19,11 +21,14 @@ end
 function application:update()
     self.world:update()
     self.cursor:update()
+    self.ui:update()
 end
 
 function application:draw()
-    love.graphics.push()
     local zoom = 2
+
+    -- Draw the world and cursor, with cursor at the center of the screen.
+    love.graphics.push()
     love.graphics.scale(zoom)
 
     local cursor_x, cursor_y = self.cursor:get_position()
@@ -31,6 +36,14 @@ function application:draw()
 
     self.world:draw()
     self.cursor:draw()
+    love.graphics.pop()
+
+    -- Draw UI without translation.
+    love.graphics.push()
+    love.graphics.scale(zoom)
+    
+    self.ui:draw()
+
     love.graphics.pop()
 end
 

@@ -12,7 +12,7 @@ function world.create()
 
     self.map = sti("maps/sample_map.lua")
 
-    unit_layer = self.map:addCustomLayer("unit_layer")
+    local unit_layer = self.map:addCustomLayer("unit_layer")
     unit_layer.units = {}
     unit_layer.units.player = unit.create(-16, 0)
 
@@ -35,4 +35,13 @@ end
 
 function world:draw()
     self.map:draw()
+end
+
+function world:get_unit(tile_x, tile_y)
+    print(tile_x, tile_y)
+    local unit = self.map.layers.unit_layer.units.player
+    local unit_x, unit_y = self.map:convertPixelToTile(unit.x, unit.y)
+    if tile_x == unit_x and tile_y == unit_y then
+        return unit
+    end
 end

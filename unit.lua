@@ -14,3 +14,7 @@ end
 function unit:draw()
     love.graphics.draw(self.sprite, self.x, self.y)
 end
+
+function unit:get_info()
+    return "Generic unit"
+end
