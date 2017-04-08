@@ -9,7 +9,7 @@ application = {
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ0" ..
     "123456789.,!?-+/():;%&`'*#=[]\"")
 }
-application.font:setFilter( "nearest" )
+application.font:setFilter("nearest")
 love.graphics.setFont(application.font)
 
 function application.create()
