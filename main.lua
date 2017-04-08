@@ -17,6 +17,10 @@ function love.draw()
 end
 
 function love.keypressed(key)
+    if key == "rctrl" then
+        debug.debug()
+    end
+
     app:keypressed(key)
 end
 

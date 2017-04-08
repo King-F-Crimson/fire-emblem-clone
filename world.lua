@@ -1,4 +1,5 @@
 require("unit")
+require("unit_layer")
 
 local sti = require "libs/Simple-Tiled-Implementation/sti"
 
@@ -12,19 +13,10 @@ function world.create()
 
     self.map = sti("maps/sample_map.lua")
 
-    local unit_layer = self.map:addCustomLayer("unit_layer")
-    unit_layer.units = {}
-    unit_layer.units.player = unit.create(-16, 0)
-
-    function unit_layer:update(dt)
-
-    end
-
-    function unit_layer:draw()
-        for _, unit in pairs(self.units) do
-            unit:draw()
-        end
-    end
+    local unit_layer = unit_layer.create(self.map, 200, 200)
+    unit_layer:create_unit(unit, 0, 0)
+    unit_layer:create_unit(unit, 2, 20)
+    unit_layer:create_unit(unit, 8, 12)
 
     return self
 end
@@ -38,9 +30,5 @@ function world:draw()
 end
 
 function world:get_unit(tile_x, tile_y)
-    local unit = self.map.layers.unit_layer.units.player
-    local unit_x, unit_y = self.map:convertPixelToTile(unit.x, unit.y)
-    if tile_x == unit_x and tile_y == unit_y then
-        return unit
-    end
+    return self.map.layers.unit_layer:get_unit(tile_x, tile_y)
 end

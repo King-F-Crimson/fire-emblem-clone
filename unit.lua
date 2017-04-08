@@ -4,15 +4,15 @@ unit = {
 
 unit.sprite:setFilter("nearest")
 
-function unit.create(x, y)
-    local self = { x = x, y = y }
+function unit.create(tile_x, tile_y)
+    local self = { tile_x = tile_x, tile_y = tile_y }
     setmetatable(self, { __index = unit })
 
     return self
 end
 
 function unit:draw()
-    love.graphics.draw(self.sprite, self.x, self.y)
+    love.graphics.draw(self.sprite, self.tile_x * tile_size, self.tile_y * tile_size)
 end
 
 function unit:get_info()
