@@ -29,7 +29,7 @@ function cursor:draw()
     love.graphics.draw(self.sprite, self.tile_x * tile_size, self.tile_y * tile_size)
 
     if self.selected_unit then
-        love.graphics.print(self.selected_unit:get_info(), self.tile_x * tile_size + tile_size, self.tile_y * tile_size)
+        love.graphics.draw(self.selected_unit.sprite, self.tile_x * tile_size, self.tile_y * tile_size)
     end
 end
 
