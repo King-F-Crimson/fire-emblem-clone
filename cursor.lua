@@ -109,13 +109,3 @@ end
 function cursor:get_unit()
     return self.app.world:get_unit(self.tile_x, self.tile_y)
 end
-
--- TODO: remove this function and replace its occurences with cursor:get_unit()
-function cursor:get_info()
-    local unit = self.app.world:get_unit(self.tile_x, self.tile_y)
-    if unit then
-        return unit:get_info()
-    else
-        return ""
-    end
-end

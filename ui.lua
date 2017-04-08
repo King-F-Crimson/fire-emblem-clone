@@ -8,8 +8,11 @@ function ui.create(application)
 end
 
 function ui:draw()
-    local info = self.app.cursor:get_info()
-    love.graphics.print(info)
+    local unit = self.app.cursor:get_unit()
+    if unit then
+        local info = string.format("%s\nHealth: %i\nStrength: %i\nSpeed: %i", unit.name, unit.health, unit.strength, unit.speed)
+        love.graphics.print(info, tile_size, tile_size)
+    end
 end
 
 function ui:update()
