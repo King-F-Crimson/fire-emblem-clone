@@ -29,24 +29,21 @@ function unit_layer.create(map, width, height)
     function self:create_unit(unit_class, tile_x, tile_y)
         local unit = unit_class.create(tile_x, tile_y)
 
-        tile_x, tile_y = tile_x + 1, tile_y + 1
-        self.tiles[tile_y][tile_x] = unit
+        self.tiles[tile_y + 1][tile_x + 1] = unit
     end
 
     function self:set_unit(unit, tile_x, tile_y)
         -- Translation since lua index starts from 1.
-        tile_x, tile_y = tile_x + 1, tile_y + 1
-        self.tiles[tile_y][tile_x] = unit
+        self.tiles[tile_y + 1][tile_x + 1] = unit
     end
 
     function self:get_unit(tile_x, tile_y)
         -- Translation since lua index starts from 1.
-        tile_x, tile_y = tile_x + 1, tile_y + 1
         
         local unit
-        -- Prevent nil error when tile_y is 0 or lower.
-        if tile_x > 0 and tile_y > 0 then
-            unit = self.tiles[tile_y][tile_x]
+        -- Prevent nil error when tile_y is 1 or lower.
+        if tile_x > 1 and tile_y > 1 then
+            unit = self.tiles[tile_y + 1][tile_x + 1]
         end
 
         return unit
