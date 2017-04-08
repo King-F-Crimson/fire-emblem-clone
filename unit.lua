@@ -1,11 +1,18 @@
+require("utility")
+require("unit_class")
+
 unit = {
     sprite = love.graphics.newImage("assets/template_unit.png")
 }
 
 unit.sprite:setFilter("nearest")
 
-function unit.create(tile_x, tile_y)
-    local self = { tile_x = tile_x, tile_y = tile_y }
+function unit.create(class, tile_x, tile_y)
+    local self = deepcopy(class)
+
+    self.tile_x = tile_x
+    self.tile_y = tile_y
+    
     setmetatable(self, { __index = unit })
 
     return self
@@ -21,5 +28,5 @@ function unit:move(tile_x, tile_y)
 end
 
 function unit:get_info()
-    return "Generic unit"
+    return string.format("%s %i", self.name, self.health)
 end
