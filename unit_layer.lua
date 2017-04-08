@@ -3,6 +3,7 @@ unit_layer = {}
 function unit_layer.create(map, width, height)
     local self = map:addCustomLayer("unit_layer")
 
+    -- Operation that involves self.tiles should be translated 1 since Lua index starts from 1.
     self.tiles = {}
     for y = 1, height do
         self.tiles[y] = {}
@@ -49,6 +50,18 @@ function unit_layer.create(map, width, height)
         end
 
         return unit
+    end
+
+    function self:move_unit(unit, end_x, end_y)
+        local start_x, start_y = unit.tile_x, unit.tile_y
+        -- Move the actual unit in the unit's state.
+        local unit = self:get_unit(start_x, start_y)
+        unit:move(end_x, end_y)
+
+        -- Change the map tiles.
+        -- Translate 1 since it involves self.tiles
+        self.tiles[start_y + 1][start_x + 1] = nil
+        self.tiles[end_y + 1][end_x + 1] = unit
     end
 
     return self

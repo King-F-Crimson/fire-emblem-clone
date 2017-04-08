@@ -36,7 +36,7 @@ end
 function cursor:update()
     self:move()
     if self.select_queue then
-        self:select_unit()
+        self:handle_select()
         self.select_queue = false
     end
 end
@@ -59,6 +59,16 @@ function cursor:move()
             self.move_timer[d] = self.move_timer[d] - 1
             self.move_timer[opposite[d]] = self.rapid_time
         end
+    end
+end
+
+function cursor:handle_select()
+    if self.selected_unit == nil then
+        self:select_unit()
+    else
+        -- Move unit.
+        self.app.world.map.layers.unit_layer:move_unit(self.selected_unit, self.tile_x, self.tile_y)
+        self.selected_unit = nil
     end
 end
 
@@ -86,7 +96,7 @@ function cursor:process_input(key, pressed)
             end
         end
 
-        if input_type == "select" then
+        if input_type == "select" and pressed then
             self.select_queue = true
         end
     end

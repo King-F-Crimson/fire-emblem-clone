@@ -13,6 +13,11 @@ end
 
 function unit:draw()
     love.graphics.draw(self.sprite, self.tile_x * tile_size, self.tile_y * tile_size)
+    love.graphics.print(self:get_info(), self.tile_x * tile_size + tile_size, self.tile_y * tile_size)
+end
+
+function unit:move(tile_x, tile_y)
+    self.tile_x, self.tile_y = tile_x, tile_y
 end
 
 function unit:get_info()
