@@ -7,8 +7,14 @@ function cursor.create(application, tile_x, tile_y)
     local self = { app = application, tile_x = tile_x, tile_y = tile_y }
     setmetatable(self, { __index = cursor })
 
-    self.input_map = { w = "up", r = "down", a = "left", s = "right" }
+    self.input_map = { w = "up", r = "down", a = "left", s = "right", z = "select" }
+    
+    self.select_queue = false
+    self.selected_unit = nil
+
+    self.movement_map = { w = "up", r = "down", a = "left", s = "right" }
     self.move_queue = { up = false, down = false, left = false, right = false }
+
     -- Timer is countdown in tick (1/60 second).
     -- Timer for rapid input when button is held.
     self.rapid_time = 10
@@ -21,14 +27,26 @@ end
 
 function cursor:draw()
     love.graphics.draw(self.sprite, self.tile_x * app.tile_size, self.tile_y * app.tile_size)
+
+    if self.selected_unit then
+        love.graphics.print(self.selected_unit:get_info(), self.tile_x * app.tile_size + app.tile_size, self.tile_y * app.tile_size)
+    end
 end
 
 function cursor:update()
+    self:move()
+    if self.select_queue then
+        self:select()
+        self.select_queue = false
+    end
+end
+
+function cursor:move()
     local tile_axis = { up = "tile_y", down = "tile_y", left = "tile_x", right = "tile_x" }
     local origin_direction = { up = -1, down = 1, left = -1, right = 1 }
     local opposite = {up = "down", down = "up", left = "right", right = "left" }
 
-    for key, d in pairs(self.input_map) do  -- d = direction
+    for key, d in pairs(self.movement_map) do  -- d = direction
         if self.move_queue[d] or self.move_timer[d] == 0 then
             self[tile_axis[d]] = self[tile_axis[d]] + origin_direction[d]
             self.move_queue[d] = false
@@ -44,18 +62,32 @@ function cursor:update()
     end
 end
 
+function cursor:select()
+    self.selected_unit = self:get_unit()
+end
+
 function cursor:process_input(key, pressed)
+    local input_type = { up = "move", down = "move", left = "move", right = "move", select = "select" }
+
     -- If pressed is false the event is key_released.
     local input = self.input_map[key]
+    local input_type = input_type[input]
+
     if input ~= nil then
-        if pressed then
-            self.move_queue[input] = true
-            -- Reset rapid movement if a new directional key is pressed.
-            for direction, timer in pairs(self.move_timer) do
-                self.move_timer[direction] = self.rapid_time
+        if input_type == "move" then
+            if pressed then
+                self.move_queue[input] = true
+                -- Reset rapid movement if a new directional key is pressed.
+                for direction, timer in pairs(self.move_timer) do
+                    self.move_timer[direction] = self.rapid_time
+                end
+            else
+                self.move_timer[input] = self.rapid_time
             end
-        else
-            self.move_timer[input] = self.rapid_time
+        end
+
+        if input_type == "select" then
+            self.select_queue = true
         end
     end
 end
@@ -64,6 +96,11 @@ function cursor:get_position()
     return self.tile_x * app.tile_size, self.tile_y * app.tile_size
 end
 
+function cursor:get_unit()
+    return self.app.world:get_unit(self.tile_x, self.tile_y)
+end
+
+-- TODO: remove this function and replace its occurences with cursor:get_unit()
 function cursor:get_info()
     local unit = self.app.world:get_unit(self.tile_x, self.tile_y)
     if unit then
