@@ -36,7 +36,7 @@ end
 function cursor:update()
     self:move()
     if self.select_queue then
-        self:select()
+        self:select_unit()
         self.select_queue = false
     end
 end
@@ -62,7 +62,7 @@ function cursor:move()
     end
 end
 
-function cursor:select()
+function cursor:select_unit()
     self.selected_unit = self:get_unit()
 end
 
