@@ -38,7 +38,6 @@ function world:draw()
 end
 
 function world:get_unit(tile_x, tile_y)
-    print(tile_x, tile_y)
     local unit = self.map.layers.unit_layer.units.player
     local unit_x, unit_y = self.map:convertPixelToTile(unit.x, unit.y)
     if tile_x == unit_x and tile_y == unit_y then
