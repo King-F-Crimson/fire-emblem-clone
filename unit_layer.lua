@@ -42,7 +42,7 @@ function unit_layer.create(map, width, height)
         
         local unit
         -- Prevent nil error when tile_y is 1 or lower.
-        if tile_x > 1 and tile_y > 1 then
+        if tile_x >= 0 and tile_y >= 0 then
             unit = self.tiles[tile_y + 1][tile_x + 1]
         end
 

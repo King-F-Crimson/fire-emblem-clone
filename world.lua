@@ -15,6 +15,9 @@ function world.create()
 
     local unit_layer = unit_layer.create(self.map, 200, 200)
     unit_layer:create_unit(unit, 0, 0)
+    unit_layer:create_unit(unit, 0, 1)
+    unit_layer:create_unit(unit, 2, 10)
+    unit_layer:create_unit(unit, 8, 2)
     unit_layer:create_unit(unit, 2, 20)
     unit_layer:create_unit(unit, 8, 12)
 
