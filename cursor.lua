@@ -1,3 +1,5 @@
+require("action_menu")
+
 cursor = {
     sprite = love.graphics.newImage("assets/cursor.png")
 }
@@ -30,6 +32,10 @@ function cursor:draw()
 
     if self.selected_unit then
         love.graphics.draw(self.selected_unit.sprite, self.tile_x * tile_size, self.tile_y * tile_size)
+    end
+
+    if self.action_menu then
+        self.action_menu:draw()
     end
 end
 
@@ -67,6 +73,8 @@ function cursor:handle_select()
         self:select_unit()
     else
         -- Move unit.
+        self.action_menu = action_menu.create({wait = true}, self.tile_x * tile_size + tile_size, self.tile_y * tile_size)
+        
         self.app.world.map.layers.unit_layer:move_unit(self.selected_unit, self.tile_x, self.tile_y)
         self.selected_unit = nil
     end
