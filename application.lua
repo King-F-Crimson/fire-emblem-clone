@@ -3,7 +3,6 @@ require("ui")
 require("world")
 
 application = {
-    tile_size = 16,
     font = love.graphics.newImageFont("assets/font.png",
     " abcdefghijklmnopqrstuvwxyz" ..
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ0" ..
