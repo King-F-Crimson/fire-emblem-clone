@@ -24,8 +24,8 @@ function application.create()
 end
 
 function application:update()
-    self.world:update()
     self.ui:update()
+    self.world:update()
 end
 
 function application:draw()
