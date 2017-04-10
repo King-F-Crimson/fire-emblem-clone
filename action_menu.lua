@@ -52,6 +52,9 @@ function action_menu:control(input_queue)
             -- Push feedback to ui.
             self:push_action(self.actions[self.pointer])
         end
+        if input == "cancel" then
+            self:push_action("close_action_menu")
+        end
     end
 end
 

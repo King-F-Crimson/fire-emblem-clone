@@ -39,6 +39,10 @@ function ui:process_feedback_queue()
             self.state = "action_menu"
             self.action_menu = action_menu.create(self, feedback.action_menu_data, feedback.x + tile_size, feedback.y)
         end
+        if feedback.action == "close_action_menu" then
+            self.state = "cursor"
+            self.action_menu = nil
+        end
         if feedback.action == "wait" then
             self.state = "cursor"
             self.cursor.selected_unit = nil
