@@ -14,6 +14,8 @@ function world.create()
 
     self.map = sti("maps/sample_map.lua")
 
+    self.command_queue = {}
+
     local unit_layer = unit_layer.create(self.map, 200, 200)
     unit_layer:create_unit(unit_class.sword_fighter, 0, 0)
     unit_layer:create_unit(unit_class.axe_fighter, 3, 5)
@@ -23,7 +25,25 @@ function world.create()
     return self
 end
 
+function world:receive_command(command)
+    table.insert(self.command_queue, command)
+end
+
+function world:process_command_queue()
+    for k, command in pairs(self.command_queue) do
+        local data = command.data
+        if command.action == "move_unit" then
+            self:move_unit(data.unit, data.tile_x, data.tile_y)
+        end
+        if command.action == "attack" then
+
+        end
+    end
+end
+
 function world:update()
+    self:process_command_queue()
+
     self.map:update()
 end
 

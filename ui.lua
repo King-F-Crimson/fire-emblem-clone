@@ -46,9 +46,12 @@ function ui:process_feedback_queue()
         if feedback.action == "wait" then
             self.state = "cursor"
             self.cursor.selected_unit = nil
-            -- Move unit.
-            self.world:move_unit(feedback.unit, feedback.tile_x, feedback.tile_y)
             self.action_menu = nil
+
+            -- Push command to world to move unit.
+            local command = { action = "move_unit" }
+            command.data = { unit = feedback.unit, tile_x = feedback.tile_x, tile_y = feedback.tile_y }
+            self.world:receive_command(command)
         end
     end
 end
