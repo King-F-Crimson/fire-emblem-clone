@@ -79,5 +79,5 @@ function cursor:get_position()
 end
 
 function cursor:get_unit()
-    return self.ui.app.world:get_unit(self.tile_x, self.tile_y)
+    return self.ui.world:get_unit(self.tile_x, self.tile_y)
 end

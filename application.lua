@@ -18,8 +18,8 @@ function application.create()
     love.window.setFullscreen(true, "desktop")
     love.keyboard.setKeyRepeat(true)
 
-    self.ui = ui.create(self)
     self.world = world.create()
+    self.ui = ui.create(self.world)
     return self
 end
 

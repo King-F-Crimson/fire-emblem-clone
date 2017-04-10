@@ -3,8 +3,8 @@ require("action_menu")
 
 ui = {}
 
-function ui.create(application)
-    local self = { app = application }
+function ui.create(world)
+    local self = { world = world }
     setmetatable(self, {__index = ui})
 
     self.state = "cursor"
@@ -47,7 +47,7 @@ function ui:process_feedback_queue()
             self.state = "cursor"
             self.cursor.selected_unit = nil
             -- Move unit.
-            self.app.world.map.layers.unit_layer:move_unit(feedback.unit, feedback.tile_x, feedback.tile_y)
+            self.world:move_unit(feedback.unit, feedback.tile_x, feedback.tile_y)
             self.action_menu = nil
         end
     end

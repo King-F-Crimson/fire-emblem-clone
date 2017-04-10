@@ -34,3 +34,7 @@ end
 function world:get_unit(tile_x, tile_y)
     return self.map.layers.unit_layer:get_unit(tile_x, tile_y)
 end
+
+function world:move_unit(unit, tile_x, tile_y)
+    self.map.layers.unit_layer:move_unit(unit, tile_x, tile_y)
+end
