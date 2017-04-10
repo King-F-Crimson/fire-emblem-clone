@@ -7,9 +7,39 @@ function ui.create(application)
     local self = { app = application }
     setmetatable(self, {__index = ui})
 
-    self.cursor = cursor.create(self.app, 8, 8)
+    self.state = "cursor"
+
+    self.input_map = { w = "up", r = "down", a = "left", s = "right", z = "select", c = "cancel" }
+    self.input_queue = {}
+
+    self.cursor = cursor.create(self, 8, 8)
+    self.action_menu = nil
+
+    -- Feedback data from cursor or action_menu (e.g. cursor sending selected unit data to create action_menu).
+    self.feedback_queue = {}
 
     return self
+end
+
+function ui:process_input(key, pressed)
+    local input = self.input_map[key]
+
+    if input and pressed then
+        self.input_queue[input] = true
+    end
+end
+
+function ui:receive_feedback(feedback)
+    table.insert(self.feedback_queue, feedback)
+end
+
+function ui:process_feedback_queue()
+    for k, feedback in pairs(self.feedback_queue) do
+        if feedback.action == "create_action_menu" then
+            self.state = "action_menu"
+            self.action_menu = action_menu.create(feedback.content, feedback.x + tile_size, feedback.y)
+        end
+    end
 end
 
 function ui:draw()
@@ -20,12 +50,7 @@ function ui:draw()
         love.graphics.print(info, tile_size, tile_size)
     end
 
-    -- Draw action menu if there's any.
-    -- if self.action_menu then
-    --     self.action_menu:draw()
-    -- end
-
-    -- Draw cursor at the center of the screen.
+    -- Draw cursor and action_menu at the center of the screen.
     love.graphics.push()
 
     local cursor_x, cursor_y = self.cursor:get_position()
@@ -33,9 +58,25 @@ function ui:draw()
 
     self.cursor:draw()
 
+    -- Draw action menu if there's any.
+    if self.action_menu then
+        self.action_menu:draw()
+    end
+
     love.graphics.pop()
 end
 
 function ui:update()
-    self.cursor:update()
+    -- Transfer the control according to the active state.
+    if self.state == "cursor" then
+        self.cursor:control(self.input_queue)
+    elseif self.state == "action_menu" then
+        self.action_menu:control(self.input_queue)
+    end
+
+    self:process_feedback_queue()
+
+    -- Reset the input queue and feedback queue.
+    self.input_queue = {}
+    self.feedback_queue = {}
 end

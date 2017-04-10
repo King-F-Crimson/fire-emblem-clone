@@ -16,6 +16,7 @@ function application.create()
     setmetatable(self, { __index = application })
 
     love.window.setFullscreen(true, "desktop")
+    love.keyboard.setKeyRepeat(true)
 
     self.ui = ui.create(self)
     self.world = world.create()
@@ -52,9 +53,9 @@ function application:keypressed(key)
         love.event.push("quit")
     end
 
-    self.ui.cursor:process_input(key, true)
+    self.ui:process_input(key, true)
 end
 
 function application:keyreleased(key)
-    self.ui.cursor:process_input(key, false)
+    self.ui:process_input(key, false)
 end
