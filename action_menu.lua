@@ -1,27 +1,28 @@
+require("utility")
+
 action_menu = {}
 
-function action_menu.create(content, x, y)
-    local self = {}
+function action_menu.create(ui, data, x, y)
+    local self = { ui = ui, data = data, x = x, y = y }
     setmetatable(self, { __index = action_menu })
 
-    self.x, self.y = x, y
-    self:generate_content(content)
+    self:generate_content()
 
     return self
 end
 
-function action_menu:generate_content(content)
+function action_menu:generate_content()
     self.items = {}
     self.actions = {}
     self.pointer = 1
 
-    if content.wait then
-        table.insert(self.items, "Wait") 
-        table.insert(self.actions, function() print("Wait pressed") end) --TODO insert function for wait.
+    if self.data.content.wait then
+        table.insert(self.items, "Wait")
+        table.insert(self.actions, "wait")
     end
-    if content.items then
+    if self.data.content.items then
         table.insert(self.items, "Items")
-        table.insert(self.actions, function() print("Items pressed") end)
+        table.insert(self.actions, "items")
     end
 
     self.item_count = #self.items
@@ -48,9 +49,17 @@ function action_menu:control(input_queue)
         end
         if input == "select" then
             -- self.select_sound:play()
-            self.actions[self.pointer]()
+            -- Push feedback to ui.
+            self:push_action(self.actions[self.pointer])
         end
     end
+end
+
+function action_menu:push_action(action)
+    local feedback = { unit = self.data.unit, tile_x = self.data.tile_x, tile_y = self.data.tile_y }
+    feedback.action = action
+
+    self.ui:receive_feedback(feedback)
 end
 
 function action_menu:draw()

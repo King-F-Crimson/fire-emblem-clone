@@ -53,9 +53,13 @@ function cursor:select()
     else
         -- Create feedback data.
         local feedback = { action = "create_action_menu" }
-        feedback.unit = self.selected_unit
-        feedback.content = { wait = true, items = true }
         feedback.x, feedback.y = self:get_position()
+        -- Populate data for action menu
+        feedback.action_menu_data = {}
+        feedback.action_menu_data.unit = self.selected_unit
+        feedback.action_menu_data.tile_x = self.tile_x
+        feedback.action_menu_data.tile_y = self.tile_y
+        feedback.action_menu_data.content = { wait = true, items = true }
 
         -- Push feedback to ui class.
         self.ui:receive_feedback(feedback)

@@ -37,7 +37,14 @@ function ui:process_feedback_queue()
     for k, feedback in pairs(self.feedback_queue) do
         if feedback.action == "create_action_menu" then
             self.state = "action_menu"
-            self.action_menu = action_menu.create(feedback.content, feedback.x + tile_size, feedback.y)
+            self.action_menu = action_menu.create(self, feedback.action_menu_data, feedback.x + tile_size, feedback.y)
+        end
+        if feedback.action == "wait" then
+            self.state = "cursor"
+            self.cursor.selected_unit = nil
+            -- Move unit.
+            self.app.world.map.layers.unit_layer:move_unit(feedback.unit, feedback.tile_x, feedback.tile_y)
+            self.action_menu = nil
         end
     end
 end
