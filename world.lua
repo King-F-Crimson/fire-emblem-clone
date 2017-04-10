@@ -32,6 +32,7 @@ end
 function world:process_command_queue()
     for k, command in pairs(self.command_queue) do
         local data = command.data
+        print(command.action)
         if command.action == "move_unit" then
             self:move_unit(data.unit, data.tile_x, data.tile_y)
         end
@@ -39,6 +40,8 @@ function world:process_command_queue()
 
         end
     end
+
+    self.command_queue = {}
 end
 
 function world:update()
