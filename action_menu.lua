@@ -2,8 +2,8 @@ require("utility")
 
 action_menu = {}
 
-function action_menu.create(ui, data, x, y)
-    local self = { ui = ui, data = data, x = x, y = y }
+function action_menu.create(ui, x, y)
+    local self = { ui = ui, x = x, y = y }
     setmetatable(self, { __index = action_menu })
 
     self:generate_content()
@@ -16,18 +16,8 @@ function action_menu:generate_content()
     self.actions = {}
     self.pointer = 1
 
-    if self.data.content.attack then
-        table.insert(self.items, "Attack")
-        table.insert(self.actions, "attack_prompt")
-    end
-    if self.data.content.wait then
-        table.insert(self.items, "Wait")
-        table.insert(self.actions, "wait")
-    end
-    if self.data.content.items then
-        table.insert(self.items, "Items")
-        table.insert(self.actions, "items")
-    end
+    self.items  = { "Wait", "Attack", "Items" }
+    self.actions = { "wait", "attack_prompt", "items" }
 
     self.item_count = #self.items
 end
@@ -63,7 +53,7 @@ function action_menu:control(input_queue)
 end
 
 function action_menu:push_action(action)
-    local feedback = { unit = self.data.unit, tile_x = self.data.tile_x, tile_y = self.data.tile_y }
+    local feedback = {}
     feedback.action = action
 
     self.ui:receive_feedback(feedback)

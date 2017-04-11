@@ -32,12 +32,14 @@ end
 function world:process_command_queue()
     for k, command in pairs(self.command_queue) do
         local data = command.data
-        print(command.action)
         if command.action == "move_unit" then
             self:move_unit(data.unit, data.tile_x, data.tile_y)
         end
         if command.action == "attack" then
+            local attack_power = data.attacking_unit.strength
+            local target_unit = self:get_unit(data.target_tile_x, data.target_tile_y)
 
+            target_unit.health = target_unit.health - attack_power
         end
     end
 

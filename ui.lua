@@ -39,30 +39,30 @@ end
 
 function ui:process_feedback_queue()
     for k, feedback in pairs(self.feedback_queue) do
-        if feedback.action == "create_action_menu" then
+        local data = feedback.data
+        if feedback.action == "select_position" then
+            -- Store original and planned position data.
+            self.selected_unit = data.unit
+            self.orig_tile_x = data.unit.tile_x
+            self.orig_tile_y = data.unit.tile_y
+            self.plan_tile_x = data.tile_x
+            self.plan_tile_y = data.tile_y
+
+            -- Construct action_menu.
             self.state = "action_menu"
-            self.action_menu = action_menu.create(self, feedback.data, feedback.x + tile_size, feedback.y)
+            local x, y = (data.tile_x + 1) * tile_size, data.tile_y * tile_size
+            self.action_menu = action_menu.create(self, x, y)
         end
         if feedback.action == "close_action_menu" then
             self.state = "cursor"
+            self.selected_unit, self.orig_tile_x, self.orig_tile_y, self.plan_tile_x, self.plan_tile_y = nil
             self.action_menu = nil
         end
+
         if feedback.action == "attack_prompt" then
             self.state = "cursor"
             self.cursor.state = "attack"
             self.action_menu = nil
-
-            -- Provide the cursor temporary data about the unit selected position.
-            self.cursor.attack_data = { tile_x = feedback.tile_x, tile_y = feedback.tile_y }
-        end
-        if feedback.action == "attack" then
-            self.state = "cursor"
-            self.cursor.state = "move"
-
-            -- Push command to world to move then attack.
-            local command = { action = "attack" }
-            command.data = { unit = feedback.unit, tile_x = feedback.tile_x, tile_y = feedback.tile_y }
-            self.world:receive_command(command)
         end
         if feedback.action == "wait" then
             self.state = "cursor"
@@ -70,9 +70,24 @@ function ui:process_feedback_queue()
             self.action_menu = nil
 
             -- Push command to world to move unit.
-            local command = { action = "move_unit" }
-            command.data = { unit = feedback.unit, tile_x = feedback.tile_x, tile_y = feedback.tile_y }
-            self.world:receive_command(command)
+            local move_command = { action = "move_unit" }
+            move_command.data = { unit = self.selected_unit, tile_x = self.plan_tile_x, tile_y = self.plan_tile_y }
+            self.world:receive_command(move_command)
+        end
+
+        if feedback.action == "attack" then
+            self.state = "cursor"
+            self.cursor.state = "move"
+            self.cursor.selected_unit = nil
+
+            -- Push command to world to move then attack.
+            local move_command = { action = "move_unit" }
+            move_command.data = { unit = self.selected_unit, tile_x = self.plan_tile_x, tile_y = self.plan_tile_y }
+            self.world:receive_command(move_command)
+
+            local attack_command = { action = "attack" }
+            attack_command.data = { attacking_unit = self.selected_unit, target_tile_x = feedback.data.tile_x, target_tile_y = feedback.data.tile_y }
+            self.world:receive_command(attack_command)
         end
     end
 end

@@ -60,13 +60,9 @@ function cursor:select()
             self.selected_unit = self:get_unit()
         else
             -- Create feedback data.
-            local feedback = { action = "create_action_menu" }
-            feedback.x, feedback.y = self:get_position()
+            local feedback = { action = "select_position" }
             -- Populate data for action menu
-            feedback.data = {}
-            feedback.data.unit = self.selected_unit
-            feedback.data.tile_x = self.tile_x
-            feedback.data.tile_y = self.tile_y
+            feedback.data = { unit = self.selected_unit, tile_x = self.tile_x, tile_y = self.tile_y }
             feedback.data.content = { attack = true, wait = true, items = true }
 
             -- Push feedback to ui class.
@@ -76,8 +72,7 @@ function cursor:select()
     if self.state == "attack" then
         -- Create feedback for attacking that contains target position.
         local feedback = { action = "attack" }
-        feedback.data = { unit = self.selected_unit, tile_x = self.tile_x, tile_y = self.tile_y }
-        feedback.data.target = { tile_x = self.tile_x, tile_y = self.tile_y }
+        feedback.data = { tile_x = self.tile_x, tile_y = self.tile_y }
 
         self.ui:receive_feedback(feedback)
     end
