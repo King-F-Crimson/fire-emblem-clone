@@ -16,6 +16,10 @@ function action_menu:generate_content()
     self.actions = {}
     self.pointer = 1
 
+    if self.data.content.attack then
+        table.insert(self.items, "Attack")
+        table.insert(self.actions, "attack_prompt")
+    end
     if self.data.content.wait then
         table.insert(self.items, "Wait")
         table.insert(self.actions, "wait")

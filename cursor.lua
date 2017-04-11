@@ -1,17 +1,24 @@
 cursor = {
-    sprite = love.graphics.newImage("assets/cursor.png")
+    sprite = {
+        move = love.graphics.newImage("assets/cursor_move.png"),
+        attack = love.graphics.newImage("assets/cursor_attack.png"),
+    }
 }
-cursor.sprite:setFilter("nearest")
+cursor.sprite.move:setFilter("nearest")
+cursor.sprite.attack:setFilter("nearest")
 
 function cursor.create(ui, tile_x, tile_y)
     local self = { ui = ui, tile_x = tile_x, tile_y = tile_y }
     setmetatable(self, { __index = cursor })
 
+    self.state = "move"
+
     return self
 end
 
 function cursor:draw()
-    love.graphics.draw(self.sprite, self.tile_x * tile_size, self.tile_y * tile_size)
+    local sprite = self.sprite[self.state]
+    love.graphics.draw(sprite, self.tile_x * tile_size, self.tile_y * tile_size)
 
     if self.selected_unit then
         love.graphics.draw(self.selected_unit.sprite, self.tile_x * tile_size, self.tile_y * tile_size)
@@ -48,25 +55,31 @@ end
 
 function cursor:select()
     -- If not selecting any unit, select the unit on cursor.
-    if self.selected_unit == nil then
-        self.selected_unit = self:get_unit()
-    else
-        -- Create feedback data.
-        local feedback = { action = "create_action_menu" }
-        feedback.x, feedback.y = self:get_position()
-        -- Populate data for action menu
-        feedback.action_menu_data = {}
-        feedback.action_menu_data.unit = self.selected_unit
-        feedback.action_menu_data.tile_x = self.tile_x
-        feedback.action_menu_data.tile_y = self.tile_y
-        feedback.action_menu_data.content = { wait = true, items = true }
+    if self.state == "move" then
+        if self.selected_unit == nil then
+            self.selected_unit = self:get_unit()
+        else
+            -- Create feedback data.
+            local feedback = { action = "create_action_menu" }
+            feedback.x, feedback.y = self:get_position()
+            -- Populate data for action menu
+            feedback.data = {}
+            feedback.data.unit = self.selected_unit
+            feedback.data.tile_x = self.tile_x
+            feedback.data.tile_y = self.tile_y
+            feedback.data.content = { attack = true, wait = true, items = true }
 
-        -- Push feedback to ui class.
+            -- Push feedback to ui class.
+            self.ui:receive_feedback(feedback)
+        end
+    end
+    if self.state == "attack" then
+        -- Create feedback for attacking that contains target position.
+        local feedback = { action = "attack" }
+        feedback.data = { unit = self.selected_unit, tile_x = self.tile_x, tile_y = self.tile_y }
+        feedback.data.target = { tile_x = self.tile_x, tile_y = self.tile_y }
+
         self.ui:receive_feedback(feedback)
-
-        -- Move unit.
-        -- self.app.world.map.layers.unit_layer:move_unit(self.selected_unit, self.tile_x, self.tile_y)
-        -- self.selected_unit = nil
     end
 end
 

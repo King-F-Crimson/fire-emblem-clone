@@ -15,6 +15,10 @@ function ui.create(world)
     self.cursor = cursor.create(self, 8, 8)
     self.action_menu = nil
 
+    -- To store temporary movement data (e.g. before attacking to store the unit position).
+    self.plan_tile_x = nil
+    self.plan_tile_y = nil
+
     -- Feedback data from cursor or action_menu (e.g. cursor sending selected unit data to create action_menu).
     self.feedback_queue = {}
 
@@ -37,11 +41,28 @@ function ui:process_feedback_queue()
     for k, feedback in pairs(self.feedback_queue) do
         if feedback.action == "create_action_menu" then
             self.state = "action_menu"
-            self.action_menu = action_menu.create(self, feedback.action_menu_data, feedback.x + tile_size, feedback.y)
+            self.action_menu = action_menu.create(self, feedback.data, feedback.x + tile_size, feedback.y)
         end
         if feedback.action == "close_action_menu" then
             self.state = "cursor"
             self.action_menu = nil
+        end
+        if feedback.action == "attack_prompt" then
+            self.state = "cursor"
+            self.cursor.state = "attack"
+            self.action_menu = nil
+
+            -- Provide the cursor temporary data about the unit selected position.
+            self.cursor.attack_data = { tile_x = feedback.tile_x, tile_y = feedback.tile_y }
+        end
+        if feedback.action == "attack" then
+            self.state = "cursor"
+            self.cursor.state = "move"
+
+            -- Push command to world to move then attack.
+            local command = { action = "attack" }
+            command.data = { unit = feedback.unit, tile_x = feedback.tile_x, tile_y = feedback.tile_y }
+            self.world:receive_command(command)
         end
         if feedback.action == "wait" then
             self.state = "cursor"
