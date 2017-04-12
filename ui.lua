@@ -63,6 +63,8 @@ function ui:process_feedback_queue()
             self.state = "cursor"
             self.cursor.state = "attack"
             self.action_menu = nil
+
+            -- Set a temporary unit sprite in planned position.
         end
         if feedback.action == "wait" then
             self.state = "cursor"
@@ -99,6 +101,8 @@ function ui:draw()
         local info = string.format("%s\nHealth: %i\nStrength: %i\nSpeed: %i", unit.name, unit.health, unit.strength, unit.speed)
         love.graphics.print(info, tile_size, tile_size)
     end
+
+    -- Draw temporary unit sprite if there's any.
 
     -- Draw cursor and action_menu at the center of the screen.
     love.graphics.push()
