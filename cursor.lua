@@ -20,8 +20,7 @@ function cursor:draw()
     local sprite = self.sprite[self.state]
     love.graphics.draw(sprite, self.tile_x * tile_size, self.tile_y * tile_size)
 
-    -- Copy this method to draw the temporary unit on ui.lua.
-    if self.selected_unit then
+    if self.selected_unit and self.state == "move" then
         love.graphics.draw(self.selected_unit.sprite, self.tile_x * tile_size, self.tile_y * tile_size)
     end
 end

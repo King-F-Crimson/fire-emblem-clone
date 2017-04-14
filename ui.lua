@@ -45,6 +45,7 @@ function ui:process_feedback_queue()
             self.selected_unit = data.unit
             self.orig_tile_x = data.unit.tile_x
             self.orig_tile_y = data.unit.tile_y
+            self.plan_sprite = data.unit.sprite
             self.plan_tile_x = data.tile_x
             self.plan_tile_y = data.tile_y
 
@@ -63,8 +64,6 @@ function ui:process_feedback_queue()
             self.state = "cursor"
             self.cursor.state = "attack"
             self.action_menu = nil
-
-            -- Set a temporary unit sprite in planned position.
         end
         if feedback.action == "wait" then
             self.state = "cursor"
@@ -102,8 +101,6 @@ function ui:draw()
         love.graphics.print(info, tile_size, tile_size)
     end
 
-    -- Draw temporary unit sprite if there's any.
-
     -- Draw cursor and action_menu at the center of the screen.
     love.graphics.push()
 
@@ -111,6 +108,11 @@ function ui:draw()
     love.graphics.translate(love.graphics.getWidth() / zoom / 2 - cursor_x - (tile_size / 2), love.graphics.getHeight() / zoom / 2 - cursor_y - (tile_size / 2))
 
     self.cursor:draw()
+
+    -- Draw temporary unit sprite if there's any.
+    if self.plan_sprite then
+        love.graphics.draw(self.plan_sprite, self.plan_tile_x * tile_size, self.plan_tile_y * tile_size)
+    end
 
     -- Draw action menu if there's any.
     if self.action_menu then
