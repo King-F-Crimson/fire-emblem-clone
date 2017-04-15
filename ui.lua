@@ -56,8 +56,9 @@ function ui:process_feedback_queue()
         end
         if feedback.action == "close_action_menu" then
             self.state = "cursor"
-            self.selected_unit, self.orig_tile_x, self.orig_tile_y, self.plan_tile_x, self.plan_tile_y = nil
             self.action_menu = nil
+
+            self.plan_sprite = nil
         end
 
         if feedback.action == "attack_prompt" then

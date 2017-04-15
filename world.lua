@@ -39,7 +39,9 @@ function world:process_command_queue()
             local attack_power = data.attacking_unit.strength
             local target_unit = self:get_unit(data.target_tile_x, data.target_tile_y)
 
-            target_unit.health = target_unit.health - attack_power
+            if target_unit then
+                target_unit.health = target_unit.health - attack_power
+            end
         end
     end
 
