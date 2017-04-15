@@ -90,6 +90,17 @@ function ui:process_feedback_queue()
             attack_command.data = { attacking_unit = self.selected_unit, target_tile_x = feedback.data.tile_x, target_tile_y = feedback.data.tile_y }
             self.world:receive_command(attack_command)
         end
+        if feedback.action == "cancel_attack" then
+            self.cursor.state = "move"
+
+            -- Move cursor to original position.
+            self.cursor.tile_x, self.cursor.tile_y = self.plan_tile_x, self.plan_tile_y
+
+            -- Construct action_menu.
+            self.state = "action_menu"
+            local x, y = (self.plan_tile_x + 1) * tile_size, self.plan_tile_y * tile_size
+            self.action_menu = action_menu.create(self, x, y)
+        end
     end
 end
 

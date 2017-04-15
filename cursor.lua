@@ -63,7 +63,6 @@ function cursor:select()
             local feedback = { action = "select_position" }
             -- Populate data for action menu
             feedback.data = { unit = self.selected_unit, tile_x = self.tile_x, tile_y = self.tile_y }
-            feedback.data.content = { attack = true, wait = true, items = true }
 
             -- Push feedback to ui class.
             self.ui:receive_feedback(feedback)
@@ -79,7 +78,16 @@ function cursor:select()
 end
 
 function cursor:cancel()
-    self.selected_unit = nil
+    if self.state == "move" then
+        self.selected_unit = nil
+    end
+    
+    if self.state == "attack" then
+        local feedback = { action = "cancel_attack" }
+        feedback.data = { unit = self.selected_unit, tile_x = self.tile_x, tile_y = self.tile_y }
+
+        self.ui:receive_feedback( feedback )
+    end
 end
 
 function cursor:get_position()
