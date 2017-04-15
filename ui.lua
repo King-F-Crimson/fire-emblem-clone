@@ -1,7 +1,13 @@
 require("cursor")
 require("action_menu")
 
-ui = {}
+ui = {
+    sprite = {
+        move_area = love.graphics.newImage("assets/move_area.png")
+    }
+}
+
+ui.sprite.move_area:setFilter("nearest")
 
 function ui.create(world)
     local self = { world = world }
@@ -40,12 +46,15 @@ end
 function ui:process_feedback_queue()
     for k, feedback in pairs(self.feedback_queue) do
         local data = feedback.data
-        if feedback.action == "select_position" then
-            -- Store original and planned position data.
+        if feedback.action == "select_unit" then
+            -- Store original position data.
             self.selected_unit = data.unit
-            self.orig_tile_x = data.unit.tile_x
-            self.orig_tile_y = data.unit.tile_y
+            self.orig_tile_x = data.tile_x
+            self.orig_tile_y = data.tile_y
             self.plan_sprite = data.unit.sprite
+        end
+        if feedback.action == "select_position" then
+            -- Store planned position data.
             self.plan_tile_x = data.tile_x
             self.plan_tile_y = data.tile_y
 
@@ -105,6 +114,13 @@ function ui:process_feedback_queue()
     end
 end
 
+function ui:draw_movement_area()
+    local ad_tiles = self.world:get_adjacent_tiles(self.orig_tile_x, self.orig_tile_y)
+    for k, tile in pairs(ad_tiles) do
+        love.graphics.draw(self.sprite.move_area, tile.x * tile_size, tile.y * tile_size)
+    end
+end
+
 function ui:draw()
     -- Draw unit information.
     local unit = self.cursor:get_unit()
@@ -119,12 +135,17 @@ function ui:draw()
     local cursor_x, cursor_y = self.cursor:get_position()
     love.graphics.translate(love.graphics.getWidth() / zoom / 2 - cursor_x - (tile_size / 2), love.graphics.getHeight() / zoom / 2 - cursor_y - (tile_size / 2))
 
-    self.cursor:draw()
-
     -- Draw temporary unit sprite if there's any.
-    if self.plan_sprite then
+    if self.plan_sprite and self.cursor.state == "attack" then
         love.graphics.draw(self.plan_sprite, self.plan_tile_x * tile_size, self.plan_tile_y * tile_size)
     end
+
+    -- Draw movement area if a unit is selected.
+    if self.selected_unit then
+        self:draw_movement_area()
+    end
+
+    self.cursor:draw()
 
     -- Draw action menu if there's any.
     if self.action_menu then

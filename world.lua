@@ -66,6 +66,15 @@ function world:move_unit(unit, tile_x, tile_y)
     self.map.layers.unit_layer:move_unit(unit, tile_x, tile_y)
 end
 
-function world:get_adjacent_tiles(tile_x, tile_y, max_distance, min_distance)
+function world:get_adjacent_tiles(tile_x, tile_y)
+    return  {
+                { x = tile_x, y = tile_y + 1 },
+                { x = tile_x, y = tile_y - 1 },
+                { x = tile_x + 1, y = tile_y },
+                { x = tile_x - 1, y = tile_y }
+            }
+end
+
+function world:get_tiles_in_range(tile_x, tile_y, max, min)
 
 end

@@ -58,6 +58,13 @@ function cursor:select()
     if self.state == "move" then
         if self.selected_unit == nil then
             self.selected_unit = self:get_unit()
+
+            if self.selected_unit then
+                local feedback = { action = "select_unit" }
+                feedback.data = { unit = self.selected_unit, tile_x = self.tile_x, tile_y = self.tile_y }
+
+                self.ui:receive_feedback(feedback)
+            end
         else
             -- Create feedback data.
             local feedback = { action = "select_position" }
