@@ -87,6 +87,11 @@ end
 function cursor:cancel()
     if self.state == "move" then
         self.selected_unit = nil
+
+        local feedback = { action = "cancel_move" }
+        feedback.data = { unit = self.selected_unit, tile_x = self.tile_x, tile_y = self.tile_y }
+
+        self.ui:receive_feedback( feedback )
     end
     
     if self.state == "attack" then

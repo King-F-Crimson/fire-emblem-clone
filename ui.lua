@@ -56,6 +56,9 @@ function ui:process_feedback_queue()
             -- Create movement area.
             self:create_movement_area()
         end
+        if feedback.action == "cancel_move" then
+            self.move_area = nil
+        end
         if feedback.action == "select_position" then
             -- Store planned position data.
             self.plan_tile_x = data.tile_x
@@ -147,7 +150,7 @@ function ui:draw()
     end
 
     -- Draw movement area if a unit is selected.
-    if self.selected_unit then
+    if self.move_area then
         self:draw_movement_area()
     end
 
