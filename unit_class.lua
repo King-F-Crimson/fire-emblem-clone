@@ -7,6 +7,7 @@ unit_class = {
         health = 10,
         strength = 4,
         speed = 4,
+        movement = 5,
     },
 
     sword_fighter = {
@@ -17,6 +18,7 @@ unit_class = {
         health = 16,
         strength = 5,
         speed = 10,
+        movement = 5,
     },
 
     lance_fighter = {
@@ -27,6 +29,7 @@ unit_class = {
         health = 18,
         strength = 7,
         speed = 7,
+        movement = 5,
     },
 
     axe_fighter = {
@@ -37,6 +40,7 @@ unit_class = {
         health = 20,
         strength = 10,
         speed = 5,
+        movement = 5,
     },
 }
 

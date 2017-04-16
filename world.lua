@@ -1,6 +1,7 @@
 require("unit")
 require("unit_class")
 require("unit_layer")
+require("queue")
 
 local sti = require "libs/Simple-Tiled-Implementation/sti"
 
@@ -75,6 +76,34 @@ function world:get_adjacent_tiles(tile_x, tile_y)
             }
 end
 
-function world:get_tiles_in_range(tile_x, tile_y, max, min)
+function world:get_tiles_in_range(tile_x, tile_y, range)
+    local function key(x, y) return string.format("(%i, %i)", x, y) end
 
+    local output = {}
+    output[key(tile_x, tile_y)] = { x = tile_x, y = tile_y, distance = 0 }
+
+    -- Start the frontier from the first tile.
+    local frontier = queue.create()
+    frontier:push(output[key(tile_x, tile_y)])
+
+    -- Each for iteration increases the distance.
+    for i = 1, range do
+        local next_frontier = queue.create()
+
+        -- Expand each frontier in current distance.
+        while not frontier:empty() do
+            local current = frontier:pop()
+            for k, tile in pairs(self:get_adjacent_tiles(current.x, current.y)) do
+                -- If tile is not already in output, add it and put it in frontier.
+                if output[key(tile.x, tile.y)] == nil then
+                    output[key(tile.x, tile.y)] = { x = tile.x, y = tile.y, distance = i }
+                    next_frontier:push(output[key(tile.x, tile.y)])
+                end
+            end
+        end
+
+        frontier = next_frontier
+    end
+
+    return output
 end

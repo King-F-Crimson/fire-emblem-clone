@@ -52,6 +52,9 @@ function ui:process_feedback_queue()
             self.orig_tile_x = data.tile_x
             self.orig_tile_y = data.tile_y
             self.plan_sprite = data.unit.sprite
+
+            -- Create movement area.
+            self:create_movement_area()
         end
         if feedback.action == "select_position" then
             -- Store planned position data.
@@ -114,9 +117,12 @@ function ui:process_feedback_queue()
     end
 end
 
+function ui:create_movement_area()
+    self.move_area = self.world:get_tiles_in_range(self.orig_tile_x, self.orig_tile_y, self.selected_unit.movement)
+end
+
 function ui:draw_movement_area()
-    local ad_tiles = self.world:get_adjacent_tiles(self.orig_tile_x, self.orig_tile_y)
-    for k, tile in pairs(ad_tiles) do
+    for k, tile in pairs(self.move_area) do
         love.graphics.draw(self.sprite.move_area, tile.x * tile_size, tile.y * tile_size)
     end
 end
