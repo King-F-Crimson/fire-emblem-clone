@@ -57,7 +57,7 @@ function ui:process_feedback_queue()
             self:create_movement_area()
         end
         if feedback.action == "cancel_move" then
-            self.move_area = nil
+            self.selected_unit = nil
         end
         if feedback.action == "select_position" then
             -- Store planned position data.
@@ -90,12 +90,15 @@ function ui:process_feedback_queue()
             local move_command = { action = "move_unit" }
             move_command.data = { unit = self.selected_unit, tile_x = self.plan_tile_x, tile_y = self.plan_tile_y }
             self.world:receive_command(move_command)
+
+            self.selected_unit = nil
         end
 
         if feedback.action == "attack" then
             self.state = "cursor"
             self.cursor.state = "move"
             self.cursor.selected_unit = nil
+
 
             -- Push command to world to move then attack.
             local move_command = { action = "move_unit" }
@@ -105,6 +108,8 @@ function ui:process_feedback_queue()
             local attack_command = { action = "attack" }
             attack_command.data = { attacking_unit = self.selected_unit, target_tile_x = feedback.data.tile_x, target_tile_y = feedback.data.tile_y }
             self.world:receive_command(attack_command)
+
+            self.selected_unit = nil
         end
         if feedback.action == "cancel_attack" then
             self.cursor.state = "move"
@@ -150,7 +155,7 @@ function ui:draw()
     end
 
     -- Draw movement area if a unit is selected.
-    if self.move_area then
+    if self.selected_unit then
         self:draw_movement_area()
     end
 
