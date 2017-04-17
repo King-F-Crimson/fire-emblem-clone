@@ -60,6 +60,8 @@ function ui:process_feedback_queue()
             self.selected_unit = nil
         end
         if feedback.action == "select_position" then
+            -- Make this valid only if selected position is inside movement area.
+
             -- Store planned position data.
             self.plan_tile_x = data.tile_x
             self.plan_tile_y = data.tile_y

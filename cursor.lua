@@ -50,6 +50,8 @@ function cursor:move(direction)
     local tile_axis = { up = "tile_y", down = "tile_y", left = "tile_x", right = "tile_x" }
     local origin_direction = { up = -1, down = 1, left = -1, right = 1 }
 
+    -- Make cursor unmoveable to outside border.
+
     self[tile_axis[direction]] = self[tile_axis[direction]] + origin_direction[direction]
 end
 
