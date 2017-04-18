@@ -48,92 +48,11 @@ end
 function ui:process_feedback_queue()
     for k, feedback in pairs(self.feedback_queue) do
         self.state.process_feedback(self, feedback)
-
-        if false then -- Todo: remove this section when it is unused.
-            if feedback.action == "select_unit" then
-                -- Store original position data.
-                self.selected_unit = data.unit
-                self.orig_tile_x = data.tile_x
-                self.orig_tile_y = data.tile_y
-                self.plan_sprite = data.unit.sprite
-
-                -- Create movement area.
-                self:create_movement_area()
-            end
-            if feedback.action == "cancel_move" then
-                self.selected_unit = nil
-            end
-            if feedback.action == "select_position" then
-                -- Make this valid only if selected position is inside movement area.
-                if self:is_in_movement_area(data.tile_x, data.tile_y) then
-                    -- Store planned position data.
-                    self.plan_tile_x = data.tile_x
-                    self.plan_tile_y = data.tile_y
-
-                    -- Construct action_menu.
-                    self.active_input = "action_menu"
-                    local x, y = (data.tile_x + 1) * tile_size, data.tile_y * tile_size
-                    self.action_menu = action_menu.create(self, x, y)
-                end
-            end
-            if feedback.action == "close_action_menu" then
-                self.active_input = "cursor"
-                self.action_menu = nil
-
-                self.plan_sprite = nil
-            end
-
-            if feedback.action == "attack_prompt" then
-                self.active_input = "cursor"
-                self.cursor.state = "attack"
-                self.action_menu = nil
-            end
-            if feedback.action == "wait" then
-                self.active_input = "cursor"
-                self.cursor.selected_unit = nil
-                self.action_menu = nil
-
-                -- Push command to world to move unit.
-                local move_command = { action = "move_unit" }
-                move_command.data = { unit = self.selected_unit, tile_x = self.plan_tile_x, tile_y = self.plan_tile_y }
-                self.world:receive_command(move_command)
-
-                self.selected_unit = nil
-            end
-
-            if feedback.action == "attack" then
-                self.active_input = "cursor"
-                self.cursor.state = "move"
-                self.cursor.selected_unit = nil
-
-                -- Push command to world to move then attack.
-                local move_command = { action = "move_unit" }
-                move_command.data = { unit = self.selected_unit, tile_x = self.plan_tile_x, tile_y = self.plan_tile_y }
-                self.world:receive_command(move_command)
-
-                local attack_command = { action = "attack" }
-                attack_command.data = { attacking_unit = self.selected_unit, target_tile_x = feedback.data.tile_x, target_tile_y = feedback.data.tile_y }
-                self.world:receive_command(attack_command)
-
-                self.selected_unit = nil
-            end
-            if feedback.action == "cancel_attack" then
-                self.cursor.state = "move"
-
-                -- Move cursor to original position.
-                self.cursor.tile_x, self.cursor.tile_y = self.plan_tile_x, self.plan_tile_y
-
-                -- Construct action_menu.
-                self.active_input = "action_menu"
-                local x, y = (self.plan_tile_x + 1) * tile_size, self.plan_tile_y * tile_size
-                self.action_menu = action_menu.create(self, x, y)
-            end
-        end
     end
 end
 
-function ui:create_action_menu(tile_x, tile_y)
-    self.action_menu = action_menu.create(self, tile_x + 1, tile_y)
+function ui:create_action_menu()
+    self.action_menu = action_menu.create(self, self.cursor.tile_x + 1, self.cursor.tile_y)
 end
 
 function ui:create_movement_area()
@@ -160,15 +79,19 @@ function ui:draw()
         love.graphics.print(info, tile_size, tile_size)
     end
 
-    -- Draw cursor and action_menu at the center of the screen.
+    -- Translate screen.
     love.graphics.push()
 
     local cursor_x, cursor_y = self.cursor:get_position()
     love.graphics.translate(love.graphics.getWidth() / zoom / 2 - cursor_x - (tile_size / 2), love.graphics.getHeight() / zoom / 2 - cursor_y - (tile_size / 2))
 
     -- Draw temporary unit sprite if there's any.
-    if self.plan_sprite and self.cursor.state == "attack" then
-        love.graphics.draw(self.plan_sprite, self.plan_tile_x * tile_size, self.plan_tile_y * tile_size)
+    if self.plan_sprite then
+        if self.state == moving or self.state == action_menu_control then
+            love.graphics.draw(self.plan_sprite, self.cursor.tile_x * tile_size, self.cursor.tile_y * tile_size)
+        elseif self.state == attacking then
+            love.graphics.draw(self.plan_sprite, self.plan_tile_x * tile_size, self.plan_tile_y * tile_size)
+        end
     end
 
     -- Draw movement area if a unit is selected.

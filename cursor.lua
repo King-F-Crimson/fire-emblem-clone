@@ -11,13 +11,15 @@ function cursor.create(ui, tile_x, tile_y)
     local self = { ui = ui, tile_x = tile_x, tile_y = tile_y }
     setmetatable(self, { __index = cursor })
 
-    self.state = "move"
-
     return self
 end
 
 function cursor:draw()
-    local sprite = self.sprite[self.state]
+    local sprite = self.sprite.move
+    if self.ui.state == attacking then
+        sprite = self.sprite.attack
+    end
+
     love.graphics.draw(sprite, self.tile_x * tile_size, self.tile_y * tile_size)
 end
 

@@ -11,12 +11,27 @@ function browsing.process_feedback(ui, feedback)
         -- Check if unit is not nil.
         if unit then
             ui.selected_unit = unit
-            ui:create_movement_area()
 
-            -- Change to moving unit state.
-            ui.state = moving
+            -- Set planned unit sprite.
+            ui.plan_sprite = unit.sprite
+
+            moving.enter(ui)
         end
     end
+end
+
+function browsing.enter(ui)
+    ui.selected_unit = nil
+    ui.move_area = nil
+
+    ui.plan_sprite = nil
+
+    ui.plan_tile_x, ui.plan_tile_y = nil
+
+    ui.action_menu = nil
+    ui.active_input = "cursor"
+
+    ui.state = browsing
 end
 
 function moving.process_feedback(ui, feedback)
@@ -27,15 +42,7 @@ function moving.process_feedback(ui, feedback)
             -- Set planned position.
             ui.plan_tile_x, ui.plan_tile_y = feedback.data.tile_x, feedback.data.tile_y
 
-            -- Delete movement area.
-            ui.move_area = nil
-
-            -- Construct action menu and set it into active input.
-            ui:create_action_menu(feedback.data.tile_x, feedback.data.tile_y)
-            ui.active_input = "action_menu"
-
-            -- Set state to action menu control.
-            ui.state = action_menu_control
+            action_menu_control.enter(ui)
         end
     end
 
@@ -43,14 +50,19 @@ function moving.process_feedback(ui, feedback)
         -- Revert cursor position to original unit position.
         ui.cursor.tile_x, ui.cursor.tile_y = ui.selected_unit.tile_x, ui.selected_unit.tile_y
 
-        -- Deselect unit.
-        ui.selected_unit = nil
-
-        -- Delete movement area.
-        ui.move_area = nil
-
-        ui.state = browsing
+        browsing.enter(ui)
     end
+end
+
+function moving.enter(ui)
+    ui.plan_tile_x, ui.plan_tile_y = nil
+
+    ui.action_menu = nil
+    ui.active_input = "cursor"
+
+    ui:create_movement_area()
+
+    ui.state = moving
 end
 
 function action_menu_control.process_feedback(ui, feedback)
@@ -60,38 +72,25 @@ function action_menu_control.process_feedback(ui, feedback)
         command.data = { unit = ui.selected_unit, tile_x = ui.plan_tile_x, tile_y = ui.plan_tile_y }
         ui.world:receive_command(command)
 
-        -- Cleanup.
-        ui.action_menu = nil
-        ui.selected_unit = nil
-
-        -- Setup for browsing.
-        ui.active_input = "cursor"
-        ui.state = browsing
+        browsing.enter(ui)
     end
 
     if feedback.action == "attack" then
-        -- Cleanup.
-        ui.active_input = "cursor"
-        ui.action_menu = nil
-
-        -- Setup for attacking.
-        ui.state = attacking
+        attacking.enter(ui)
     end
 
     if feedback.action == "cancel" then
-        -- Unset planned position.
-        ui.plan_tile_x, ui.plan_tile_y = nil
-
-        -- Delete action menu.
-        ui.action_menu = nil
-
-        -- Create movement area.
-        ui:create_movement_area()
-
-        -- Set cursor to the active input
-        ui.active_input = "cursor"
-        ui.state = moving
+        moving.enter(ui)
     end
+end
+
+function action_menu_control.enter(ui)
+    ui.move_area = nil
+
+    ui:create_action_menu()
+    ui.active_input = "action_menu"
+
+    ui.state = action_menu_control
 end
 
 function attacking.process_feedback(ui, feedback)
@@ -106,8 +105,11 @@ function attacking.process_feedback(ui, feedback)
         attack_command.data = { attacking_unit = ui.selected_unit, target_tile_x = feedback.data.tile_x, target_tile_y = feedback.data.tile_y }
         ui.world:receive_command(attack_command)
 
-        -- Revert to moving state.
-        ui.state = moving
+        -- Put cursor in the attacking unit position.
+        ui.cursor.tile_x, ui.cursor.tile_y = ui.plan_tile_x, ui.plan_tile_y
+
+        -- Revert to browsing state.
+        browsing.enter(ui)
     end
 
     if feedback.action == "cancel" then
@@ -116,6 +118,13 @@ function attacking.process_feedback(ui, feedback)
         ui.active_input = "action_menu"
 
         -- Set state to action menu control.
-        ui.state = action_menu_control
+        action_menu_control.enter(ui)
     end
+end
+
+function attacking.enter(ui)
+    ui.action_menu = nil
+    ui.active_input = "cursor"
+
+    ui.state = attacking
 end
