@@ -2,8 +2,8 @@ require("utility")
 
 action_menu = {}
 
-function action_menu.create(ui, x, y)
-    local self = { ui = ui, x = x, y = y }
+function action_menu.create(ui, tile_x, tile_y)
+    local self = { ui = ui, tile_x = tile_x, tile_y = tile_y }
     setmetatable(self, { __index = action_menu })
 
     self:generate_content()
@@ -17,7 +17,7 @@ function action_menu:generate_content()
     self.pointer = 1
 
     self.items  = { "Wait", "Attack", "Items" }
-    self.actions = { "wait", "attack_prompt", "items" }
+    self.actions = { "wait", "attack", "items" }
 
     self.item_count = #self.items
 end
@@ -47,7 +47,7 @@ function action_menu:control(input_queue)
             self:push_action(self.actions[self.pointer])
         end
         if input == "cancel" then
-            self:push_action("close_action_menu")
+            self:push_action("cancel")
         end
     end
 end
@@ -72,5 +72,5 @@ function action_menu:draw()
         output = output .. self.items[i] .. "\n"
     end
 
-    love.graphics.print(output, self.x, self.y)
+    love.graphics.print(output, self.tile_x * tile_size, self.tile_y * tile_size)
 end

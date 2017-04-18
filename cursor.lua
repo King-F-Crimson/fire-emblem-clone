@@ -19,10 +19,6 @@ end
 function cursor:draw()
     local sprite = self.sprite[self.state]
     love.graphics.draw(sprite, self.tile_x * tile_size, self.tile_y * tile_size)
-
-    if self.selected_unit and self.state == "move" then
-        love.graphics.draw(self.selected_unit.sprite, self.tile_x * tile_size, self.tile_y * tile_size)
-    end
 end
 
 function cursor:update()
@@ -57,52 +53,17 @@ function cursor:move(direction)
 end
 
 function cursor:select()
-    -- If not selecting any unit, select the unit on cursor.
-    if self.state == "move" then
-        if self.selected_unit == nil then
-            self.selected_unit = self:get_unit()
+    local feedback = { action = "select" }
+    feedback.data = { tile_x = self.tile_x, tile_y = self.tile_y }
 
-            if self.selected_unit then
-                local feedback = { action = "select_unit" }
-                feedback.data = { unit = self.selected_unit, tile_x = self.tile_x, tile_y = self.tile_y }
-
-                self.ui:receive_feedback(feedback)
-            end
-        else
-            -- Create feedback data.
-            local feedback = { action = "select_position" }
-            -- Populate data for action menu
-            feedback.data = { unit = self.selected_unit, tile_x = self.tile_x, tile_y = self.tile_y }
-
-            -- Push feedback to ui class.
-            self.ui:receive_feedback(feedback)
-        end
-    end
-    if self.state == "attack" then
-        -- Create feedback for attacking that contains target position.
-        local feedback = { action = "attack" }
-        feedback.data = { tile_x = self.tile_x, tile_y = self.tile_y }
-
-        self.ui:receive_feedback(feedback)
-    end
+    self.ui:receive_feedback(feedback)
 end
 
 function cursor:cancel()
-    if self.state == "move" then
-        self.selected_unit = nil
+    local feedback = { action = "cancel" }
+    feedback.data = { tile_x = self.tile_x, tile_y = self.tile_y }
 
-        local feedback = { action = "cancel_move" }
-        feedback.data = { unit = self.selected_unit, tile_x = self.tile_x, tile_y = self.tile_y }
-
-        self.ui:receive_feedback( feedback )
-    end
-    
-    if self.state == "attack" then
-        local feedback = { action = "cancel_attack" }
-        feedback.data = { unit = self.selected_unit, tile_x = self.tile_x, tile_y = self.tile_y }
-
-        self.ui:receive_feedback( feedback )
-    end
+    self.ui:receive_feedback(feedback)
 end
 
 function cursor:get_position()
