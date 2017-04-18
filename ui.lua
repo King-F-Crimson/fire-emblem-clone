@@ -85,6 +85,11 @@ function ui:draw()
     local cursor_x, cursor_y = self.cursor:get_position()
     love.graphics.translate(love.graphics.getWidth() / zoom / 2 - cursor_x - (tile_size / 2), love.graphics.getHeight() / zoom / 2 - cursor_y - (tile_size / 2))
 
+    -- Draw movement area if exist (during movement state).
+    if self.move_area then
+        self:draw_movement_area()
+    end
+
     -- Draw temporary unit sprite if there's any.
     if self.plan_sprite then
         if self.state == moving or self.state == action_menu_control then
@@ -92,11 +97,6 @@ function ui:draw()
         elseif self.state == attacking then
             love.graphics.draw(self.plan_sprite, self.plan_tile_x * tile_size, self.plan_tile_y * tile_size)
         end
-    end
-
-    -- Draw movement area if a unit is selected.
-    if self.move_area then
-        self:draw_movement_area()
     end
 
     self.cursor:draw()

@@ -113,6 +113,9 @@ function attacking.process_feedback(ui, feedback)
     end
 
     if feedback.action == "cancel" then
+        -- Move cursor position to planned movement position.
+        ui.cursor.tile_x, ui.cursor.tile_y = ui.plan_tile_x, ui.plan_tile_y
+
         -- Construct action menu and set it into active input.
         ui:create_action_menu(feedback.data.tile_x, feedback.data.tile_y)
         ui.active_input = "action_menu"
