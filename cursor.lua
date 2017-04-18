@@ -51,8 +51,9 @@ function cursor:move(direction)
     local origin_direction = { up = -1, down = 1, left = -1, right = 1 }
 
     -- Make cursor unmoveable to outside border.
-
-    self[tile_axis[direction]] = self[tile_axis[direction]] + origin_direction[direction]
+    if self[tile_axis[direction]] + origin_direction[direction] >= 0 then
+        self[tile_axis[direction]] = self[tile_axis[direction]] + origin_direction[direction]
+    end
 end
 
 function cursor:select()
