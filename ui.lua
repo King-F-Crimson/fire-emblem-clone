@@ -61,15 +61,17 @@ function ui:process_feedback_queue()
         end
         if feedback.action == "select_position" then
             -- Make this valid only if selected position is inside movement area.
+            local function key(x, y) return string.format("(%i, %i)", x, y) end
+            if self.move_area[key(data.tile_x, data.tile_y)] then
+                -- Store planned position data.
+                self.plan_tile_x = data.tile_x
+                self.plan_tile_y = data.tile_y
 
-            -- Store planned position data.
-            self.plan_tile_x = data.tile_x
-            self.plan_tile_y = data.tile_y
-
-            -- Construct action_menu.
-            self.state = "action_menu"
-            local x, y = (data.tile_x + 1) * tile_size, data.tile_y * tile_size
-            self.action_menu = action_menu.create(self, x, y)
+                -- Construct action_menu.
+                self.state = "action_menu"
+                local x, y = (data.tile_x + 1) * tile_size, data.tile_y * tile_size
+                self.action_menu = action_menu.create(self, x, y)
+            end
         end
         if feedback.action == "close_action_menu" then
             self.state = "cursor"
