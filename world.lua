@@ -18,6 +18,7 @@ function world.create()
     self.command_queue = {}
 
     local unit_layer = unit_layer.create(self.map, 200, 200)
+
     unit_layer:create_unit(unit_class.sword_fighter, 0, 0)
     unit_layer:create_unit(unit_class.axe_fighter, 3, 5)
     unit_layer:create_unit(unit_class.lance_fighter, 2, 10)

@@ -29,7 +29,7 @@ function unit_layer.create(map, width, height)
     function self:create_unit(class, tile_x, tile_y)
         local unit = unit.create(class, tile_x, tile_y)
 
-        self.tiles[tile_y + 1][tile_x + 1] = unit
+        self:set_unit(unit, tile_x, tile_y)
     end
 
     function self:set_unit(unit, tile_x, tile_y)

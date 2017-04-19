@@ -19,6 +19,8 @@ unit_class = {
         strength = 5,
         speed = 10,
         movement = 5,
+
+        weapon_type = "sword"
     },
 
     lance_fighter = {
@@ -30,6 +32,8 @@ unit_class = {
         strength = 7,
         speed = 7,
         movement = 5,
+
+        weapon_type = "lance"
     },
 
     axe_fighter = {
@@ -41,6 +45,8 @@ unit_class = {
         strength = 10,
         speed = 5,
         movement = 5,
+
+        weapon_type = "axe"
     },
 }
 
