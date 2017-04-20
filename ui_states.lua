@@ -104,7 +104,7 @@ function attacking.process_feedback(ui, feedback)
             ui.world:receive_command(move_command)
 
             local attack_command = { action = "attack" }
-            attack_command.data = { attacking_unit = ui.selected_unit, target_tile_x = feedback.data.tile_x, target_tile_y = feedback.data.tile_y }
+            attack_command.data = { unit = ui.selected_unit, tile_x = feedback.data.tile_x, tile_y = feedback.data.tile_y }
             ui.world:receive_command(attack_command)
 
             -- Put cursor in the attacking unit position.

@@ -40,17 +40,21 @@ function world:process_command_queue()
             self:move_unit(data.unit, data.tile_x, data.tile_y)
         end
         if command.action == "attack" then
-            local attack_power = data.attacking_unit.strength
-
-            local target_unit = self:get_unit(data.target_tile_x, data.target_tile_y)
-
-            if target_unit then
-                target_unit.data.health = target_unit.data.health - attack_power
-            end
+            self:combat(data.unit, data.tile_x, data.tile_y)
         end
     end
 
     self.command_queue = {}
+end
+
+function world:combat(attacker, tile_x, tile_y)
+    local attack_power = attacker.strength + attacker.data.weapon.power
+
+    local target_unit = self:get_unit(tile_x, tile_y)
+
+    if target_unit then
+        target_unit.data.health = target_unit.data.health - attack_power
+    end
 end
 
 function world:update()
