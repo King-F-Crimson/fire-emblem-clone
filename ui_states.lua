@@ -22,7 +22,6 @@ end
 
 function browsing.enter(ui)
     ui.selected_unit = nil
-    ui.move_area = nil
 
     ui.plan_sprite = nil
 
@@ -38,7 +37,7 @@ function moving.process_feedback(ui, feedback)
     -- Select a tile where the selected unit would be moved to.
     if feedback.action == "select" then
         -- Check if cursor is in movement area.
-        if ui:is_in_movement_area(feedback.data.tile_x, feedback.data.tile_y) then
+        if ui:is_in_area("move", feedback.data.tile_x, feedback.data.tile_y) then
             -- Set planned position.
             ui.plan_tile_x, ui.plan_tile_y = feedback.data.tile_x, feedback.data.tile_y
 
@@ -60,7 +59,7 @@ function moving.enter(ui)
     ui.action_menu = nil
     ui.active_input = "cursor"
 
-    ui:create_movement_area()
+    ui:create_area("move")
 
     ui.state = moving
 end
@@ -85,7 +84,7 @@ function action_menu_control.process_feedback(ui, feedback)
 end
 
 function action_menu_control.enter(ui)
-    ui.move_area = nil
+    ui.areas.move = nil
 
     ui:create_action_menu()
     ui.active_input = "action_menu"
@@ -96,20 +95,22 @@ end
 function attacking.process_feedback(ui, feedback)
     -- Attack position.
     if feedback.action == "select" then
-        -- Push command to world to move then attack.
-        local move_command = { action = "move_unit" }
-        move_command.data = { unit = ui.selected_unit, tile_x = ui.plan_tile_x, tile_y = ui.plan_tile_y }
-        ui.world:receive_command(move_command)
+        if ui:is_in_area("attack", feedback.data.tile_x, feedback.data.tile_y) then
+            -- Push command to world to move then attack.
+            local move_command = { action = "move_unit" }
+            move_command.data = { unit = ui.selected_unit, tile_x = ui.plan_tile_x, tile_y = ui.plan_tile_y }
+            ui.world:receive_command(move_command)
 
-        local attack_command = { action = "attack" }
-        attack_command.data = { attacking_unit = ui.selected_unit, target_tile_x = feedback.data.tile_x, target_tile_y = feedback.data.tile_y }
-        ui.world:receive_command(attack_command)
+            local attack_command = { action = "attack" }
+            attack_command.data = { attacking_unit = ui.selected_unit, target_tile_x = feedback.data.tile_x, target_tile_y = feedback.data.tile_y }
+            ui.world:receive_command(attack_command)
 
-        -- Put cursor in the attacking unit position.
-        ui.cursor.tile_x, ui.cursor.tile_y = ui.plan_tile_x, ui.plan_tile_y
+            -- Put cursor in the attacking unit position.
+            ui.cursor.tile_x, ui.cursor.tile_y = ui.plan_tile_x, ui.plan_tile_y
 
-        -- Revert to browsing state.
-        browsing.enter(ui)
+            -- Revert to browsing state.
+            browsing.enter(ui)
+        end
     end
 
     if feedback.action == "cancel" then
@@ -128,6 +129,8 @@ end
 function attacking.enter(ui)
     ui.action_menu = nil
     ui.active_input = "cursor"
+
+    ui:create_area("attack")
 
     ui.state = attacking
 end

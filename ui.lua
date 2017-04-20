@@ -4,11 +4,13 @@ require("ui_states")
 
 ui = {
     sprite = {
-        move_area = love.graphics.newImage("assets/move_area.png")
+        move_area = love.graphics.newImage("assets/move_area.png"),
+        attack_area = love.graphics.newImage("assets/attack_area.png"),
     }
 }
 
 ui.sprite.move_area:setFilter("nearest")
+ui.sprite.attack_area:setFilter("nearest")
 
 function ui.create(world)
     local self = { world = world }
@@ -16,6 +18,8 @@ function ui.create(world)
 
     self.active_input = "cursor"
     self.state = browsing
+
+    self.areas = {}
 
     self.input_map = { w = "up", r = "down", a = "left", s = "right", z = "select", c = "cancel" }
     self.input_queue = {}
@@ -55,27 +59,36 @@ function ui:create_action_menu()
     self.action_menu = action_menu.create(self, self.cursor.tile_x + 1, self.cursor.tile_y)
 end
 
-function ui:create_movement_area()
+function ui:create_area(area)
     local unit = self.selected_unit
-    self.move_area = self.world:get_tiles_in_range(unit.tile_x, unit.tile_y, unit.movement)
-end
-
-function ui:draw_movement_area()
-    for k, tile in pairs(self.move_area) do
-        love.graphics.draw(self.sprite.move_area, tile.x * tile_size, tile.y * tile_size)
+    if area == "move" then
+        self.areas[area] = self.world:get_tiles_in_range(unit.tile_x, unit.tile_y, unit.movement)
+    elseif area == "attack" then
+        self.areas[area] = self.world:get_tiles_in_range(self.plan_tile_x, self.plan_tile_y, unit.data.weapon.range)
     end
 end
 
-function ui:is_in_movement_area(tile_x, tile_y)
+function ui:draw_area(area)
+    local sprite = self.sprite[area .. "_area"]
+
+    for k, tile in pairs(self.areas[area]) do
+        love.graphics.draw(sprite, tile.x * tile_size, tile.y * tile_size)
+    end
+end
+
+function ui:is_in_area(area, tile_x, tile_y)
     local function key(x, y) return string.format("(%i, %i)", x, y) end
-    return self.move_area[key(tile_x, tile_y)] ~= nil
+    return self.areas[area][key(tile_x, tile_y)] ~= nil
 end
 
 function ui:draw()
     -- Draw unit information.
     local unit = self.cursor:get_unit()
     if unit then
-        local info = string.format("%s\nHealth: %i\nStrength: %i\nSpeed: %i", unit.name, unit.health, unit.strength, unit.speed)
+        local info = string.format("%s\nHealth: %i\nStrength: %i\nSpeed: %i", unit.name, unit.data.health, unit.strength, unit.speed)
+        if unit.data.weapon then
+            info = string.format("%s\nWeapon: %s", info, unit.data.weapon.name)
+        end
         love.graphics.print(info, tile_size, tile_size)
     end
 
@@ -86,8 +99,13 @@ function ui:draw()
     love.graphics.translate(love.graphics.getWidth() / zoom / 2 - cursor_x - (tile_size / 2), love.graphics.getHeight() / zoom / 2 - cursor_y - (tile_size / 2))
 
     -- Draw movement area if exist (during movement state).
-    if self.move_area then
-        self:draw_movement_area()
+    if self.state == moving then
+        self:draw_area("move")
+    end
+
+    -- Draw attack area if exist (during attack state).
+    if self.state == attacking then
+        self:draw_area("attack")
     end
 
     -- Draw temporary unit sprite if there's any.

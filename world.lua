@@ -1,6 +1,7 @@
 require("unit")
 require("unit_class")
 require("unit_layer")
+require("weapon_class")
 require("queue")
 
 local sti = require "libs/Simple-Tiled-Implementation/sti"
@@ -19,9 +20,10 @@ function world.create()
 
     local unit_layer = unit_layer.create(self.map, 200, 200)
 
-    unit_layer:create_unit(unit_class.sword_fighter, 0, 0)
-    unit_layer:create_unit(unit_class.axe_fighter, 3, 5)
-    unit_layer:create_unit(unit_class.lance_fighter, 2, 10)
+    unit_layer:create_unit(unit_class.sword_fighter, 0, 0, { weapon = weapon_class.iron_sword })
+    unit_layer:create_unit(unit_class.axe_fighter, 3, 5, { weapon = weapon_class.iron_axe })
+    unit_layer:create_unit(unit_class.lance_fighter, 2, 10, { weapon = weapon_class.iron_lance })
+    unit_layer:create_unit(unit_class.bow_fighter, 4, 8, { weapon = weapon_class.iron_bow })
     unit_layer:create_unit(unit_class.generic_unit, 8, 2)
 
     return self
@@ -39,10 +41,11 @@ function world:process_command_queue()
         end
         if command.action == "attack" then
             local attack_power = data.attacking_unit.strength
+
             local target_unit = self:get_unit(data.target_tile_x, data.target_tile_y)
 
             if target_unit then
-                target_unit.health = target_unit.health - attack_power
+                target_unit.data.health = target_unit.data.health - attack_power
             end
         end
     end

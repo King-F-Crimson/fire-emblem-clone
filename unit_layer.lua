@@ -26,8 +26,8 @@ function unit_layer.create(map, width, height)
 
     end
 
-    function self:create_unit(class, tile_x, tile_y)
-        local unit = unit.create(class, tile_x, tile_y)
+    function self:create_unit(class, tile_x, tile_y, data)
+        local unit = unit.create(class, tile_x, tile_y, data)
 
         self:set_unit(unit, tile_x, tile_y)
     end

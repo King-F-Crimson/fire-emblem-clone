@@ -4,7 +4,7 @@ unit_class = {
 
         name = "Generic Unit",
         
-        health = 10,
+        max_health = 10,
         strength = 4,
         speed = 4,
         movement = 5,
@@ -15,7 +15,7 @@ unit_class = {
 
         name = "Sword Fighter",
         
-        health = 16,
+        max_health = 16,
         strength = 5,
         speed = 10,
         movement = 5,
@@ -28,7 +28,7 @@ unit_class = {
 
         name = "Lance Fighter",
         
-        health = 18,
+        max_health = 18,
         strength = 7,
         speed = 7,
         movement = 5,
@@ -41,13 +41,26 @@ unit_class = {
 
         name = "Axe Fighter",
         
-        health = 20,
+        max_health = 20,
         strength = 10,
         speed = 5,
         movement = 5,
 
         weapon_type = "axe"
     },
+
+    bow_fighter = {
+        sprite = love.graphics.newImage("assets/bow_fighter.png"),
+
+        name = "Bow Fighter",
+        
+        max_health = 15,
+        strength = 8,
+        speed = 5,
+        movement = 5,
+
+        weapon_type = "bow"
+    }
 }
 
 -- Apply nearest filter to all

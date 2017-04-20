@@ -1,31 +1,41 @@
 weapon_class = {
     iron_sword = {
-        name = "Iron Sword"
+        name = "Iron Sword",
 
-        power = 7
-        accuracy = 100
-        range = 1
+        power = 7,
+        accuracy = 100,
+        range = 1,
 
-        weapon_type = "sword"
-    }
+        weapon_type = "sword",
+    },
 
     iron_lance = {
-        name = "Iron Lance"
+        name = "Iron Lance",
 
-        power = 9
-        accuracy = 85
-        range = 1
+        power = 9,
+        accuracy = 85,
+        range = 1,
 
-        weapon_type = "lance"
-    }
+        weapon_type = "lance",
+    },
 
     iron_axe = {
-        name = "Iron Axe"
+        name = "Iron Axe",
 
-        power = 12
-        accuracy = 70
-        range = 1
+        power = 12,
+        accuracy = 70,
+        range = 1,
 
-        weapon_type = "axe"
-    }
+        weapon_type = "axe",
+    },
+
+    iron_bow = {
+        name = "Iron Bow",
+
+        power = 10,
+        accuracy = 85,
+        range = 2,
+
+        weapon_type = "bow",
+    },
 }
