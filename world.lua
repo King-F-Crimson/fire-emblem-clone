@@ -1,3 +1,4 @@
+require("animation")
 require("unit")
 require("unit_class")
 require("unit_layer")
@@ -10,9 +11,11 @@ world = {
     
 }
 
-function world.create()
+function world.create(animation)
     local self = {}
     setmetatable(self, {__index = world})
+
+    self.animation = animation
 
     self.map = sti("maps/sample_map.lua")
 
@@ -55,6 +58,12 @@ function world:combat(attacker, tile_x, tile_y)
     if target_unit then
         target_unit.data.health = target_unit.data.health - attack_power
     end
+
+    -- Construct animation from combat.
+    local animation = { type = "attack" }
+    animation.data = { attacker = attacker, tile_x = tile_x, tile_y = tile_y }
+
+    self.animation:receive_animation(animation)
 end
 
 function world:update()

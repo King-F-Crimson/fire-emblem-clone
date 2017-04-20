@@ -1,6 +1,7 @@
 require("cursor")
 require("ui")
 require("world")
+require("animation")
 
 application = {
     font = love.graphics.newImageFont("assets/font.png",
@@ -18,18 +19,23 @@ function application.create()
     love.window.setFullscreen(true, "desktop")
     love.keyboard.setKeyRepeat(true)
 
-    self.world = world.create()
+    self.animation = animation.create()
+    self.world = world.create(self.animation)
     self.ui = ui.create(self.world)
     return self
 end
 
 function application:update()
-    self.ui:update()
-    self.world:update()
+    if self.animation.active then
+        self.animation:update()
+    else
+        self.ui:update()
+        self.world:update()
+    end
 end
 
 function application:draw()
-    -- Draw the world with cursor at the center of the screen.
+    -- Draw the world and animation with cursor at the center of the screen.
     love.graphics.push()
     love.graphics.scale(zoom)
 
@@ -37,6 +43,11 @@ function application:draw()
     love.graphics.translate(love.graphics.getWidth() / zoom / 2 - cursor_x - (tile_size / 2), love.graphics.getHeight() / zoom / 2 - cursor_y - (tile_size / 2))
 
     self.world:draw()
+    -- Draw animation if active.
+    if self.animation.active then
+        self.animation:draw()
+    end
+
     love.graphics.pop()
 
     -- Draw UI without translation.
