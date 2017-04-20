@@ -36,8 +36,10 @@ end
 function moving.process_feedback(ui, feedback)
     -- Select a tile where the selected unit would be moved to.
     if feedback.action == "select" then
-        -- Check if cursor is in movement area.
-        if ui:is_in_area("move", feedback.data.tile_x, feedback.data.tile_y) then
+        -- Check if cursor is in movement area and there's no other unit in the tile.
+        if ui:is_in_area("move", feedback.data.tile_x, feedback.data.tile_y) and
+            (ui.world:get_unit(feedback.data.tile_x, feedback.data.tile_y) == nil or
+            ui.world:get_unit(feedback.data.tile_x, feedback.data.tile_y) == ui.selected_unit) then
             -- Set planned position.
             ui.plan_tile_x, ui.plan_tile_y = feedback.data.tile_x, feedback.data.tile_y
 
