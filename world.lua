@@ -80,7 +80,7 @@ function world:get_adjacent_tiles(tile_x, tile_y)
             }
 end
 
-function world:get_tiles_in_range(tile_x, tile_y, range)
+function world:get_tiles_in_range(tile_x, tile_y, range, min_range)
     local function key(x, y) return string.format("(%i, %i)", x, y) end
 
     local output = {}
@@ -107,6 +107,14 @@ function world:get_tiles_in_range(tile_x, tile_y, range)
         end
 
         frontier = next_frontier
+    end
+
+    if min_range then
+        for k, tile in pairs(output) do
+            if tile.distance < min_range then
+                output[k] = nil
+            end
+        end
     end
 
     return output

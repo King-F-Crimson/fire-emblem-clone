@@ -64,7 +64,9 @@ function ui:create_area(area)
     if area == "move" then
         self.areas[area] = self.world:get_tiles_in_range(unit.tile_x, unit.tile_y, unit.movement)
     elseif area == "attack" then
-        self.areas[area] = self.world:get_tiles_in_range(self.plan_tile_x, self.plan_tile_y, unit.data.weapon.range)
+        -- Default min_range to 1.
+        local min_range = unit.data.weapon.min_range or 1
+        self.areas[area] = self.world:get_tiles_in_range(self.plan_tile_x, self.plan_tile_y, unit.data.weapon.range, min_range)
     end
 end
 

@@ -35,6 +35,7 @@ weapon_class = {
         power = 10,
         accuracy = 85,
         range = 2,
+        min_range = 2,
 
         weapon_type = "bow",
     },
