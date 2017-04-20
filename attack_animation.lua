@@ -9,6 +9,9 @@ function attack_animation.create(attacker, tile_x, tile_y)
     self.attacker = attacker
     self.tile_x, self.tile_y = self.attacker.tile_x, self.attacker.tile_y
 
+    -- Hide attacker so it's not drawn.
+    self.attacker.hidden = true
+
     self.distance_tile_x, self.distance_tile_y = tile_x - attacker.tile_x, tile_y - attacker.tile_y
 
     self.current_frame = 1
@@ -17,9 +20,16 @@ function attack_animation.create(attacker, tile_x, tile_y)
     return self
 end
 
+function attack_animation:exit()
+    self.complete = true
+
+    -- Unhide attacker.
+    self.attacker.hidden = false
+end
+
 function attack_animation:update()
     if self.current_frame == 20 then
-        self.complete = true
+        self:exit()
     end
 
     local displacement_x, displacement_y

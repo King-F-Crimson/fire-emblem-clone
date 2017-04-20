@@ -30,8 +30,11 @@ function unit.create(class, tile_x, tile_y, data)
 end
 
 function unit:draw()
-    love.graphics.draw(self.sprite, self.tile_x * tile_size, self.tile_y * tile_size)
-    love.graphics.print(self.data.health, self.tile_x * tile_size, (self.tile_y - 1) * tile_size)
+    -- Unit will be hidden during animation.
+    if not self.hidden then
+        love.graphics.draw(self.sprite, self.tile_x * tile_size, self.tile_y * tile_size)
+        love.graphics.print(self.data.health, self.tile_x * tile_size, (self.tile_y - 1) * tile_size)
+    end
 end
 
 function unit:move(tile_x, tile_y)
