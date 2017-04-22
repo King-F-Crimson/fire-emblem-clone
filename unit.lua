@@ -40,3 +40,14 @@ end
 function unit:move(tile_x, tile_y)
     self.tile_x, self.tile_y = tile_x, tile_y
 end
+
+function unit.filter(terrain)
+    local terrain_cost = {
+        plain = 1,
+        water = "impassable",
+        sand = 2,
+        wall = "impassable",
+    }
+
+    return terrain_cost[terrain] or "impassable"
+end

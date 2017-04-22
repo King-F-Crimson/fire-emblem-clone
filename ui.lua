@@ -62,11 +62,11 @@ end
 function ui:create_area(area)
     local unit = self.selected_unit
     if area == "move" then
-        self.areas[area] = self.world:get_tiles_in_range(unit.tile_x, unit.tile_y, unit.movement)
+        self.areas[area] = self.world:get_tiles_in_distance{tile_x = unit.tile_x, tile_y = unit.tile_y, distance = unit.movement, filter = unit.filter}
     elseif area == "attack" then
         -- Default min_range to 1.
         local min_range = unit.data.weapon.min_range or 1
-        self.areas[area] = self.world:get_tiles_in_range(self.plan_tile_x, self.plan_tile_y, unit.data.weapon.range, min_range)
+        self.areas[area] = self.world:get_tiles_in_distance{tile_x = self.plan_tile_x, tile_y = self.plan_tile_y, distance = unit.data.weapon.range, min_distance = min_range}
     end
 end
 

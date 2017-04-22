@@ -4,6 +4,7 @@ require("unit_class")
 require("unit_layer")
 require("weapon_class")
 require("queue")
+require("debug")
 
 local sti = require "libs/Simple-Tiled-Implementation/sti"
 
@@ -93,38 +94,52 @@ function world:get_adjacent_tiles(tile_x, tile_y)
             }
 end
 
-function world:get_tiles_in_range(tile_x, tile_y, range, min_range)
+function world:get_tiles_in_distance(arg)
     local function key(x, y) return string.format("(%i, %i)", x, y) end
 
+    local filter = arg.filter or function() return 1 end
+
     local output = {}
-    output[key(tile_x, tile_y)] = { x = tile_x, y = tile_y, distance = 0 }
+    output[key(arg.tile_x, arg.tile_y)] = { x = arg.tile_x, y = arg.tile_y, distance = 0 }
+
+    -- Initiate the frontier, with a queue for each unit of distance.
+    -- The frontier index is one less than the distance since Lua indexs start from 1.
+    local frontiers = {}
+    for i = 1, arg.distance + 1 do
+        frontiers[i] = queue.create()
+    end
 
     -- Start the frontier from the first tile.
-    local frontier = queue.create()
-    frontier:push(output[key(tile_x, tile_y)])
+    frontiers[1]:push(output[key(arg.tile_x, arg.tile_y)])
 
-    -- Each for iteration increases the distance.
-    for i = 1, range do
-        local next_frontier = queue.create()
-
+    -- Each iteration increases the distance.
+    for i = 1, arg.distance do
         -- Expand each frontier in current distance.
-        while not frontier:empty() do
-            local current = frontier:pop()
+        while not frontiers[i]:empty() do
+            local current = frontiers[i]:pop()
             for k, tile in pairs(self:get_adjacent_tiles(current.x, current.y)) do
+                -- Get the terrain, if the tile is out of bound then the terrain is nil.
+                local terrain
+                if tile.x >= 0 and tile.y >= 0 then
+                    terrain = self.map:getTileProperties("terrain", tile.x + 1, tile.y + 1).terrain
+                end
+
+                -- Get the cost to traverse the terrain using the unit filter, e.g. ground units need 2 movement
+                -- unit to traverse a forest terrain.
+                local cost = filter(terrain)
+
                 -- If tile is not already in output, add it and put it in frontier.
-                if output[key(tile.x, tile.y)] == nil then
-                    output[key(tile.x, tile.y)] = { x = tile.x, y = tile.y, distance = i }
-                    next_frontier:push(output[key(tile.x, tile.y)])
+                if output[key(tile.x, tile.y)] == nil and cost ~= "impassable" then
+                    output[key(tile.x, tile.y)] = { x = tile.x, y = tile.y, distance = i - 1 + cost }
+                    frontiers[i + 1]:push(output[key(tile.x, tile.y)])
                 end
             end
         end
-
-        frontier = next_frontier
     end
 
-    if min_range then
+    if arg.min_distance then
         for k, tile in pairs(output) do
-            if tile.distance < min_range then
+            if tile.distance < arg.min_distance then
                 output[k] = nil
             end
         end
