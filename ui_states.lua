@@ -78,7 +78,7 @@ function action_menu_control.process_feedback(ui, feedback)
 
     if feedback.action == "attack" then
         -- Make attack unselectable when selected unit has no weapon.
-        weapon then
+        if ui.selected_unit.data.weapon then
             attacking.enter(ui)
         end
     end
