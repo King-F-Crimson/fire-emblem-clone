@@ -128,10 +128,11 @@ function world:get_tiles_in_distance(arg)
                 -- unit to traverse a forest terrain.
                 local cost = filter(terrain)
 
-                -- If tile is not already in output, add it and put it in frontier.
-                if output[key(tile.x, tile.y)] == nil and cost ~= "impassable" then
+                -- If tile is not already in output, and is not impassable, and the distance to the tile is not larger than the max distance
+                -- add it to output and frontier.
+                if output[key(tile.x, tile.y)] == nil and cost ~= "impassable" and i - 1 + cost <= arg.distance then
                     output[key(tile.x, tile.y)] = { x = tile.x, y = tile.y, distance = i - 1 + cost }
-                    frontiers[i + 1]:push(output[key(tile.x, tile.y)])
+                    frontiers[i + cost]:push(output[key(tile.x, tile.y)])
                 end
             end
         end
