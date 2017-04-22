@@ -17,7 +17,7 @@ function world.create(animation)
 
     self.animation = animation
 
-    self.map = sti("maps/sample_map.lua")
+    self.map = sti("maps/test_map.lua")
 
     self.command_queue = {}
 
