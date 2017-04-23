@@ -24,11 +24,19 @@ function world.create(animation)
 
     local unit_layer = unit_layer.create(self.map, 200, 200)
 
-    unit_layer:create_unit(unit_class.sword_fighter, 0, 0, { weapon = weapon_class.iron_sword })
-    unit_layer:create_unit(unit_class.axe_fighter, 3, 5, { weapon = weapon_class.iron_axe })
-    unit_layer:create_unit(unit_class.lance_fighter, 2, 10, { weapon = weapon_class.iron_lance })
-    unit_layer:create_unit(unit_class.bow_fighter, 4, 8, { weapon = weapon_class.iron_bow })
     unit_layer:create_unit(unit_class.generic_unit, 8, 2)
+
+    -- Create player units.
+    unit_layer:create_unit(unit_class.sword_fighter, 0, 0, { weapon = weapon_class.iron_sword, group = "player" })
+    unit_layer:create_unit(unit_class.axe_fighter, 3, 5, { weapon = weapon_class.iron_axe, group = "player" })
+    unit_layer:create_unit(unit_class.lance_fighter, 2, 10, { weapon = weapon_class.iron_lance, group = "player" })
+    unit_layer:create_unit(unit_class.bow_fighter, 4, 8, { weapon = weapon_class.iron_bow, group = "player" })
+
+    -- Create enemy units.
+    unit_layer:create_unit(unit_class.sword_fighter, 29, 29, { weapon = weapon_class.iron_sword, group = "enemy" })
+    unit_layer:create_unit(unit_class.axe_fighter, 26, 24, { weapon = weapon_class.iron_axe, group = "enemy" })
+    unit_layer:create_unit(unit_class.lance_fighter, 27, 20, { weapon = weapon_class.iron_lance, group = "enemy" })
+    unit_layer:create_unit(unit_class.bow_fighter, 22, 26, { weapon = weapon_class.iron_bow, group = "enemy" })
 
     return self
 end
@@ -120,7 +128,8 @@ function world:get_tiles_in_distance(arg)
             for k, tile in pairs(self:get_adjacent_tiles(current.x, current.y)) do
                 -- Get the terrain, if the tile is out of bound then the terrain is nil.
                 local terrain
-                if tile.x >= 0 and tile.y >= 0 then
+                -- Check if tile is still in bound
+                if tile.x >= 0 and tile.y >= 0 and tile.x < self.map.width and tile.y < self.map.height then
                     terrain = self.map:getTileProperties("terrain", tile.x + 1, tile.y + 1).terrain
                 end
 
