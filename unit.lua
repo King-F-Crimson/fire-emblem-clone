@@ -29,7 +29,7 @@ function unit.create(class, tile_x, tile_y, data)
     
     setmetatable(self, { __index = unit })
 
-    self:generate_colored_sprite()
+    self:generate_sprite()
 
     return self
 end
@@ -37,18 +37,18 @@ end
 function unit:draw()
     -- Unit will be hidden during animation.
     if not self.hidden then
-        love.graphics.draw(self.colored_sprite, self.tile_x * tile_size, self.tile_y * tile_size)
+        love.graphics.draw(self.sprite, self.tile_x * tile_size, self.tile_y * tile_size)
         love.graphics.print(self.data.health, self.tile_x * tile_size, (self.tile_y - 1) * tile_size)
     end
 end
 
 -- Get team colorized sprite.
-function unit:generate_colored_sprite()
+function unit:generate_sprite()
     -- Draw to canvas to apply colorize shader.
-    self.colored_sprite = love.graphics.newCanvas()
-    self.colored_sprite:setFilter("nearest")
+    self.sprite = love.graphics.newCanvas()
+    self.sprite:setFilter("nearest")
 
-    love.graphics.setCanvas(self.colored_sprite)
+    love.graphics.setCanvas(self.sprite)
         -- Draw the normal sprite.
         love.graphics.draw(self.base_sprite)
 
