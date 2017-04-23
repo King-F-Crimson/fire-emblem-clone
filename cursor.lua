@@ -48,9 +48,28 @@ function cursor:move(direction)
     local tile_axis = { up = "tile_y", down = "tile_y", left = "tile_x", right = "tile_x" }
     local origin_direction = { up = -1, down = 1, left = -1, right = 1 }
 
-    -- Make cursor unmoveable to outside border.
-    if self[tile_axis[direction]] + origin_direction[direction] >= 0 then
-        self[tile_axis[direction]] = self[tile_axis[direction]] + origin_direction[direction]
+    tile_axis = tile_axis[direction]
+
+    self[tile_axis] = self[tile_axis] + origin_direction[direction]
+
+    -- Make cursor unmoveable to outside map.
+
+    -- Map left-side and up-side.
+    if self[tile_axis] < 0 then
+        self[tile_axis] = 0
+    end
+
+    -- Map right-side and down-side.
+    -- Determine the maximum value for the axis.
+    local max_value
+    if tile_axis == "tile_y" then
+        max_value = self.ui.world.map.width - 1
+    elseif tile_axis == "tile_x" then
+        max_value = self.ui.world.map.height - 1
+    end
+
+    if self[tile_axis] > max_value then
+        self[tile_axis] = max_value
     end
 end
 

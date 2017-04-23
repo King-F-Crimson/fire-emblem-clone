@@ -13,7 +13,7 @@ function browsing.process_feedback(ui, feedback)
             ui.selected_unit = unit
 
             -- Set planned unit sprite.
-            ui.plan_sprite = unit.sprite
+            ui.plan_sprite = unit.colored_sprite
 
             moving.enter(ui)
         end

@@ -1,6 +1,6 @@
 unit_class = {
     generic_unit = {
-        sprite = love.graphics.newImage("assets/template_unit.png"),
+        base_sprite = love.graphics.newImage("assets/template_unit.png"),
 
         name = "Generic Unit",
         
@@ -11,7 +11,7 @@ unit_class = {
     },
 
     sword_fighter = {
-        sprite = love.graphics.newImage("assets/sword_fighter.png"),
+        base_sprite = love.graphics.newImage("assets/sword_fighter.png"),
 
         name = "Sword Fighter",
         
@@ -24,7 +24,7 @@ unit_class = {
     },
 
     lance_fighter = {
-        sprite = love.graphics.newImage("assets/lance_fighter.png"),
+        base_sprite = love.graphics.newImage("assets/lance_fighter.png"),
 
         name = "Lance Fighter",
         
@@ -37,7 +37,7 @@ unit_class = {
     },
 
     axe_fighter = {
-        sprite = love.graphics.newImage("assets/axe_fighter.png"),
+        base_sprite = love.graphics.newImage("assets/axe_fighter.png"),
 
         name = "Axe Fighter",
         
@@ -50,7 +50,7 @@ unit_class = {
     },
 
     bow_fighter = {
-        sprite = love.graphics.newImage("assets/bow_fighter.png"),
+        base_sprite = love.graphics.newImage("assets/bow_fighter.png"),
 
         name = "Bow Fighter",
         
@@ -65,5 +65,5 @@ unit_class = {
 
 -- Apply nearest filter to all
 for k, class in pairs(unit_class) do
-    class.sprite:setFilter("nearest")
+    class.base_sprite:setFilter("nearest")
 end

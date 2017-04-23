@@ -24,19 +24,19 @@ function world.create(animation)
 
     local unit_layer = unit_layer.create(self.map, 200, 200)
 
-    unit_layer:create_unit(unit_class.generic_unit, 8, 2)
+    -- unit_layer:create_unit(unit_class.generic_unit, 8, 2)
 
     -- Create player units.
-    unit_layer:create_unit(unit_class.sword_fighter, 0, 0, { weapon = weapon_class.iron_sword, group = "player" })
-    unit_layer:create_unit(unit_class.axe_fighter, 3, 5, { weapon = weapon_class.iron_axe, group = "player" })
-    unit_layer:create_unit(unit_class.lance_fighter, 2, 10, { weapon = weapon_class.iron_lance, group = "player" })
-    unit_layer:create_unit(unit_class.bow_fighter, 4, 8, { weapon = weapon_class.iron_bow, group = "player" })
+    unit_layer:create_unit(unit_class.sword_fighter, 0, 0, { weapon = weapon_class.iron_sword, team = "player" })
+    unit_layer:create_unit(unit_class.axe_fighter, 3, 5, { weapon = weapon_class.iron_axe, team = "player" })
+    unit_layer:create_unit(unit_class.lance_fighter, 2, 10, { weapon = weapon_class.iron_lance, team = "player" })
+    unit_layer:create_unit(unit_class.bow_fighter, 4, 8, { weapon = weapon_class.iron_bow, team = "player" })
 
     -- Create enemy units.
-    unit_layer:create_unit(unit_class.sword_fighter, 29, 29, { weapon = weapon_class.iron_sword, group = "enemy" })
-    unit_layer:create_unit(unit_class.axe_fighter, 26, 24, { weapon = weapon_class.iron_axe, group = "enemy" })
-    unit_layer:create_unit(unit_class.lance_fighter, 27, 20, { weapon = weapon_class.iron_lance, group = "enemy" })
-    unit_layer:create_unit(unit_class.bow_fighter, 22, 26, { weapon = weapon_class.iron_bow, group = "enemy" })
+    unit_layer:create_unit(unit_class.sword_fighter, 29, 29, { weapon = weapon_class.iron_sword, team = "enemy" })
+    unit_layer:create_unit(unit_class.axe_fighter, 26, 24, { weapon = weapon_class.iron_axe, team = "enemy" })
+    unit_layer:create_unit(unit_class.lance_fighter, 27, 20, { weapon = weapon_class.iron_lance, team = "enemy" })
+    unit_layer:create_unit(unit_class.bow_fighter, 22, 26, { weapon = weapon_class.iron_bow, team = "enemy" })
 
     return self
 end
