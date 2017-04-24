@@ -47,8 +47,9 @@ function unit.create(class, tile_x, tile_y, data)
 
         -- Check unit on tile if exist.
         if unit then
+            print(unit.data.team)
             if unit.data.team ~= self.data.team then
-                local cost = "impassable"
+                cost = "impassable"
             end
         end
 
