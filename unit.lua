@@ -4,14 +4,16 @@ require("unit_class")
 unit = {
     base_sprite = love.graphics.newImage("assets/template_unit.png"),
     colored_part = love.graphics.newImage("assets/template_unit_color.png"),
-    colorize_shader = love.graphics.newShader("colorize_shader.fs"),
-    desaturate_shader = love.graphics.newShader("desaturate_shader.fs")
+    colorize_shader = love.graphics.newShader("shaders/colorize_shader.fs"),
+    desaturate_shader = love.graphics.newShader("shaders/desaturate_shader.fs"),
+    gradient_shader = love.graphics.newShader("shaders/gradient_shader.fs")
 }
 
 unit.base_sprite:setFilter("nearest")
 
 function unit.create(class, tile_x, tile_y, data)
     local self = deepcopy(class)
+    setmetatable(self, { __index = unit })
 
     self.tile_x = tile_x
     self.tile_y = tile_y
@@ -27,10 +29,9 @@ function unit.create(class, tile_x, tile_y, data)
     if not self.data.health then
         self.data.health = self.max_health
     end
-    
-    setmetatable(self, { __index = unit })
 
     self:generate_sprite()
+    self:generate_health_bar()
 
     -- Create movement filter functions.
     function self.movement_filter(terrain, unit)
@@ -82,10 +83,16 @@ function unit:draw()
         end
 
         love.graphics.draw(self.sprite, self.tile_x * tile_size, self.tile_y * tile_size)
-        love.graphics.print(self.data.health, self.tile_x * tile_size, (self.tile_y - 1) * tile_size)
 
         love.graphics.setShader()
+
+        self:draw_health_bar()
     end
+end
+
+function unit:draw_health_bar()
+    local x, y = self.tile_x * tile_size, (self.tile_y + 7/8) * tile_size
+    love.graphics.draw(self.health_bar, x, y)
 end
 
 -- Get team colorized sprite.
@@ -102,6 +109,35 @@ function unit:generate_sprite()
         self.colorize_shader:send("tint_color", self:get_team_color())
         love.graphics.setShader(self.colorize_shader)
         love.graphics.draw(self.colored_part, 0, 0)
+        love.graphics.setShader()
+
+    love.graphics.setCanvas()
+end
+
+function unit:generate_health_bar()
+    self.health_bar = love.graphics.newCanvas()
+    self.health_bar:setFilter("nearest")
+
+    local bar_length = self.data.health / self.max_health * tile_size
+
+    love.graphics.setCanvas(self.health_bar)
+        -- Draw black background.
+        love.graphics.setColor(0, 0, 0)
+            love.graphics.rectangle("fill", 0, 0, tile_size, tile_size / 16)
+        -- Reset color so canvas will be drawn properly.
+        love.graphics.setColor(255, 255, 255, 255)
+
+        -- Draw the health bar with gradient according to the max_health.
+        -- Create a canvas because rectangle is not textured.
+        local bar_rect = love.graphics.newCanvas()
+        love.graphics.setCanvas(bar_rect)
+            love.graphics.rectangle("fill", 0, 0, bar_length, tile_size / 16)
+        love.graphics.setCanvas()
+        self.gradient_shader:send("start_color", {0, 0, 1, 1})
+        self.gradient_shader:send("end_color", {0, 1, 0, 1})
+        self.gradient_shader:send("bar_width", tile_size)
+        love.graphics.setShader(self.gradient_shader)
+            love.graphics.draw(bar_rect)
         love.graphics.setShader()
 
     love.graphics.setCanvas()
