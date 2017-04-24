@@ -31,6 +31,24 @@ function unit.create(class, tile_x, tile_y, data)
 
     self:generate_sprite()
 
+    -- Create the filter functions.
+    function self.terrain_filter(terrain)
+        local terrain_cost = {
+            plain = 1,
+            water = "impassable",
+            sand = 2,
+            wall = "impassable",
+        }
+
+        return terrain_cost[terrain] or "impassable"
+    end
+
+    function self.unit_filter(unit)
+        if unit.data.team ~= self.data.team then
+            return "impassable"
+        end
+    end
+
     return self
 end
 
@@ -73,15 +91,4 @@ end
 
 function unit:move(tile_x, tile_y)
     self.tile_x, self.tile_y = tile_x, tile_y
-end
-
-function unit.filter(terrain)
-    local terrain_cost = {
-        plain = 1,
-        water = "impassable",
-        sand = 2,
-        wall = "impassable",
-    }
-
-    return terrain_cost[terrain] or "impassable"
 end
