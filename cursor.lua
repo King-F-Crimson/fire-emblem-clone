@@ -49,8 +49,12 @@ function cursor:move(direction)
     local origin_direction = { up = -1, down = 1, left = -1, right = 1 }
 
     tile_axis = tile_axis[direction]
+    origin_direction = origin_direction[direction]
+    if love.keyboard.isDown("lshift") then
+        origin_direction = origin_direction * 5
+    end
 
-    self[tile_axis] = self[tile_axis] + origin_direction[direction]
+    self[tile_axis] = self[tile_axis] + origin_direction
 
     -- Make cursor unmoveable to outside map.
 
