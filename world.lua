@@ -147,9 +147,10 @@ function world:get_tiles_in_distance(arg)
                 -- Check if tile is landable, e.g. if there's an allied unit the tile is unlandable.
                 local unlandable = unlandable_filter(terrain, unit_on_tile)
 
-                -- If tile is not already in output, and is not impassable, and the distance to the tile is not larger than the max distance
+                -- If tile is in bound, not already in output, and is not impassable, and the distance to the tile is not larger than the max distance
                 -- add it to output and frontier.
-                if output[key(tile.x, tile.y)] == nil and cost ~= "impassable" and i - 1 + cost <= arg.distance then
+                if  (tile.x >= 0 and tile.y >= 0 and tile.x < self.map.width and tile.y < self.map.height) and
+                    output[key(tile.x, tile.y)] == nil and cost ~= "impassable" and i - 1 + cost <= arg.distance then
                     output[key(tile.x, tile.y)] = { x = tile.x, y = tile.y, distance = i - 1 + cost, unlandable = unlandable }
                     frontiers[i + cost]:push(output[key(tile.x, tile.y)])
                 end
