@@ -10,12 +10,26 @@ function browsing.process_feedback(ui, feedback)
         local unit = ui.world:get_unit(feedback.data.tile_x, feedback.data.tile_y)
         -- Check if unit is not nil.
         if unit then
-            ui.selected_unit = unit
+            -- If unit is player unit select it.
+            if unit.data.team == "player" then
+                ui.selected_unit = unit
 
-            -- Set planned unit sprite.
-            ui.plan_sprite = unit.sprite
+                -- Set planned unit sprite.
+                ui.plan_sprite = unit.sprite
 
-            moving.enter(ui)
+                moving.enter(ui)
+            -- If it's an enemy unit then toggle it in marked_units
+            -- to mark it's possible attack position.
+            elseif unit.data.team == "enemy" then
+                if ui.marked_units[unit] then
+                    ui.marked_units[unit] = nil
+                else
+                    ui.marked_units[unit] = true
+                end
+
+                -- Regenerate danger area.
+                ui:generate_danger_area()
+            end
         end
     end
 end

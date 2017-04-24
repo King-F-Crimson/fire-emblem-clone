@@ -47,7 +47,6 @@ function unit.create(class, tile_x, tile_y, data)
 
         -- Check unit on tile if exist.
         if unit then
-            print(unit.data.team)
             if unit.data.team ~= self.data.team then
                 cost = "impassable"
             end
@@ -108,6 +107,37 @@ function unit:get_team_color()
     }
 
     return team_color[self.data.team]
+end
+
+function unit:get_movement_area(world)
+    return world:get_tiles_in_distance{tile_x = self.tile_x, tile_y = self.tile_y, distance = self.movement, movement_filter = self.movement_filter, unlandable_filter = self.unlandable_filter}
+end
+
+-- Find area the unit can attack from a location.
+function unit:get_attack_area(world, tile_x, tile_y)
+    -- Default min_range to 1.
+    local min_range = self.data.weapon.min_range or 1
+    return world:get_tiles_in_distance{tile_x = tile_x, tile_y = tile_y, distance = self.data.weapon.range, min_distance = min_range}
+end
+
+-- Get every posible area that the unit can attack by moving then attacking.
+function unit:get_danger_area(world)
+    local danger_area = {}
+    local movement_area = self:get_movement_area(world)
+
+    -- For every visitable tile, get the attack area.
+    for k, tile in pairs(movement_area) do
+        local attack_area = self:get_attack_area(world, tile.x, tile.y)
+
+        for k, tile in pairs(attack_area) do
+            -- Add it to danger area if it's not included yet.
+            if not danger_area[k] then
+                danger_area[k] = tile
+            end
+        end
+    end
+
+    return danger_area
 end
 
 function unit:move(tile_x, tile_y)

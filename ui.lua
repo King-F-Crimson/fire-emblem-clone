@@ -6,6 +6,7 @@ ui = {
     sprite = {
         move_area = love.graphics.newImage("assets/move_area.png"),
         attack_area = love.graphics.newImage("assets/attack_area.png"),
+        danger_area = love.graphics.newImage("assets/attack_area.png"),
     }
 }
 
@@ -20,6 +21,11 @@ function ui.create(world)
     self.state = browsing
 
     self.areas = {}
+
+    -- In marked_units the unit table is the key, with a truth value as the value.
+    self.marked_units = {}
+
+    self.areas.danger = {}
 
     self.input_map = { w = "up", r = "down", a = "left", s = "right", z = "select", c = "cancel" }
     self.input_queue = {}
@@ -62,11 +68,11 @@ end
 function ui:create_area(area)
     local unit = self.selected_unit
     if area == "move" then
-        self.areas[area] = self.world:get_tiles_in_distance{tile_x = unit.tile_x, tile_y = unit.tile_y, distance = unit.movement, movement_filter = unit.movement_filter, unlandable_filter = unit.unlandable_filter}
+        self.areas.move = unit:get_movement_area(self.world)
     elseif area == "attack" then
-        -- Default min_range to 1.
-        local min_range = unit.data.weapon.min_range or 1
-        self.areas[area] = self.world:get_tiles_in_distance{tile_x = self.plan_tile_x, tile_y = self.plan_tile_y, distance = unit.data.weapon.range, min_distance = min_range}
+        self.areas.attack = unit:get_attack_area(self.world, self.plan_tile_x, self.plan_tile_y)
+    elseif area == "danger" then
+        self:generate_danger_area()
     end
 end
 
@@ -75,6 +81,22 @@ function ui:draw_area(area)
 
     for k, tile in pairs(self.areas[area]) do
         love.graphics.draw(sprite, tile.x * tile_size, tile.y * tile_size)
+    end
+end
+
+function ui:generate_danger_area()
+    self.areas.danger = {}
+
+    -- Get the danger area for every marked unit.
+    for unit in pairs(self.marked_units) do
+        local unit_danger_area = unit:get_danger_area(self.world)
+
+        for k, tile in pairs(unit_danger_area) do
+            -- If the tile is not yet in danger area, add it.
+            if not self.areas.danger[k] then
+                self.areas.danger[k] = tile
+            end
+        end
     end
 end
 
@@ -109,6 +131,9 @@ function ui:draw()
     if self.state == attacking then
         self:draw_area("attack")
     end
+
+    -- Draw danger area if exist.
+    self:draw_area("danger")
 
     -- Draw temporary unit sprite if there's any.
     if self.plan_sprite then
