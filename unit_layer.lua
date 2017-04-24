@@ -49,6 +49,10 @@ function unit_layer.create(map, width, height)
         return unit
     end
 
+    function self:delete_unit(unit)
+        self:set_unit(nil, unit.tile_x, unit.tile_y)
+    end
+
     function self:move_unit(unit, end_x, end_y)
         local start_x, start_y = unit.tile_x, unit.tile_y
         -- Move the actual unit in the unit's state.

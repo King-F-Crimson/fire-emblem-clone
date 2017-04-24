@@ -24,8 +24,6 @@ function world.create(animation)
 
     local unit_layer = unit_layer.create(self.map, 200, 200)
 
-    -- unit_layer:create_unit(unit_class.generic_unit, 8, 2)
-
     -- Create player units.
     unit_layer:create_unit(unit_class.sword_fighter, 0, 0, { weapon = weapon_class.iron_sword, team = "player" })
     unit_layer:create_unit(unit_class.axe_fighter, 3, 5, { weapon = weapon_class.iron_axe, team = "player" })
@@ -33,6 +31,7 @@ function world.create(animation)
     unit_layer:create_unit(unit_class.bow_fighter, 4, 8, { weapon = weapon_class.iron_bow, team = "player" })
 
     -- Create enemy units.
+    unit_layer:create_unit(unit_class.sword_fighter, 1, 1, { weapon = weapon_class.iron_sword, team = "enemy" })
     unit_layer:create_unit(unit_class.sword_fighter, 29, 29, { weapon = weapon_class.iron_sword, team = "enemy" })
     unit_layer:create_unit(unit_class.axe_fighter, 26, 24, { weapon = weapon_class.iron_axe, team = "enemy" })
     unit_layer:create_unit(unit_class.lance_fighter, 27, 20, { weapon = weapon_class.iron_lance, team = "enemy" })
@@ -66,6 +65,11 @@ function world:combat(attacker, tile_x, tile_y)
 
     if target_unit then
         target_unit.data.health = target_unit.data.health - attack_power
+
+        if target_unit.data.health <= 0 then
+            local unit_layer = self.map.layers.unit_layer
+            unit_layer:delete_unit(target_unit)
+        end
     end
 
     -- Construct animation from combat.
