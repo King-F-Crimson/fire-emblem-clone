@@ -105,8 +105,10 @@ end
 function world:get_tiles_in_distance(arg)
     local function key(x, y) return string.format("(%i, %i)", x, y) end
 
-    local terrain_filter = arg.terrain_filter or function() return 1 end
-    local unit_filter = arg.unit_filter
+    -- Movement filter defaults to treat everything as 1 value for weapon.
+    local movement_filter = arg.movement_filter or function() return 1 end
+    -- Unlandable filter defaults to treat everything as landable.
+    local unlandable_filter = arg.unlandable_filter or function() return nil end
 
     local output = {}
     output[key(arg.tile_x, arg.tile_y)] = { x = arg.tile_x, y = arg.tile_y, distance = 0 }
@@ -130,6 +132,7 @@ function world:get_tiles_in_distance(arg)
                 -- Get the terrain and unit on tile.
                 local terrain
                 local unit_on_tile
+
                 -- Check if tile is still in bound, if it's out of bound then terrain and unit_on_tile will be nil.
                 if tile.x >= 0 and tile.y >= 0 and tile.x < self.map.width and tile.y < self.map.height then
                     terrain = self.map:getTileProperties("terrain", tile.x + 1, tile.y + 1).terrain
@@ -138,29 +141,32 @@ function world:get_tiles_in_distance(arg)
 
                 -- Get the cost to traverse the terrain using the unit's filter, e.g. ground units need 2 movement
                 -- unit to traverse a forest terrain.
-                local cost = terrain_filter(terrain)
+                -- Or to make it impassable if there's an enemy unit occupying it.
+                local cost = movement_filter(terrain, unit_on_tile)
 
-                -- Modify cost based on unit_filter and the unit_on_tile if both of them exist.
-                if unit_on_tile and unit_filter then
-                    -- If unit filter doesn't return anything then cost is unmodified.
-                    cost = unit_filter(unit_on_tile) or cost
-                end
+                -- Check if tile is landable, e.g. if there's an allied unit the tile is unlandable.
+                local unlandable = unlandable_filter(terrain, unit_on_tile)
 
                 -- If tile is not already in output, and is not impassable, and the distance to the tile is not larger than the max distance
                 -- add it to output and frontier.
                 if output[key(tile.x, tile.y)] == nil and cost ~= "impassable" and i - 1 + cost <= arg.distance then
-                    output[key(tile.x, tile.y)] = { x = tile.x, y = tile.y, distance = i - 1 + cost }
+                    output[key(tile.x, tile.y)] = { x = tile.x, y = tile.y, distance = i - 1 + cost, unlandable = unlandable }
                     frontiers[i + cost]:push(output[key(tile.x, tile.y)])
                 end
             end
         end
     end
 
-    if arg.min_distance then
-        for k, tile in pairs(output) do
+    -- Filter out tiles where it is less than minimum distance or unlandable (for example because there's an allied unit on the tile).
+
+    for k, tile in pairs(output) do
+        if arg.min_distance then
             if tile.distance < arg.min_distance then
                 output[k] = nil
             end
+        end
+        if tile.unlandable then
+            output[k] = nil
         end
     end
 

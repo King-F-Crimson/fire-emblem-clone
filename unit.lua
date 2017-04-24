@@ -31,8 +31,10 @@ function unit.create(class, tile_x, tile_y, data)
 
     self:generate_sprite()
 
-    -- Create the filter functions.
-    function self.terrain_filter(terrain)
+    -- Create movement filter functions.
+    function self.movement_filter(terrain, unit)
+        local cost
+
         local terrain_cost = {
             plain = 1,
             water = "impassable",
@@ -40,13 +42,31 @@ function unit.create(class, tile_x, tile_y, data)
             wall = "impassable",
         }
 
-        return terrain_cost[terrain] or "impassable"
+        -- Defaults to impassable.
+        cost = terrain_cost[terrain] or "impassable"
+
+        -- Check unit on tile if exist.
+        if unit then
+            if unit.data.team ~= self.data.team then
+                local cost = "impassable"
+            end
+        end
+
+        return cost
     end
 
-    function self.unit_filter(unit)
-        if unit.data.team ~= self.data.team then
-            return "impassable"
+    -- Create unlandable tile filter functions.
+    function self.unlandable_filter(terrain, unit)
+        local unlandable = false
+
+        -- Tile will be unlandable if there's an allied unit on it. 
+        if unit then
+            if unit.data.team == self.data.team then
+                unlandable = true
+            end
         end
+
+        return unlandable
     end
 
     return self
