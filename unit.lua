@@ -5,6 +5,7 @@ unit = {
     base_sprite = love.graphics.newImage("assets/template_unit.png"),
     colored_part = love.graphics.newImage("assets/template_unit_color.png"),
     colorize_shader = love.graphics.newShader("colorize_shader.fs"),
+    desaturate_shader = love.graphics.newShader("desaturate_shader.fs")
 }
 
 unit.base_sprite:setFilter("nearest")
@@ -75,8 +76,15 @@ end
 function unit:draw()
     -- Unit will be hidden during animation.
     if not self.hidden then
+        -- Gray out unit if it has moved.
+        if self.data.moved then
+            love.graphics.setShader(self.desaturate_shader)
+        end
+
         love.graphics.draw(self.sprite, self.tile_x * tile_size, self.tile_y * tile_size)
         love.graphics.print(self.data.health, self.tile_x * tile_size, (self.tile_y - 1) * tile_size)
+
+        love.graphics.setShader()
     end
 end
 

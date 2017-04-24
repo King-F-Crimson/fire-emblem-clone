@@ -95,6 +95,9 @@ end
 
 function world:move_unit(unit, tile_x, tile_y)
     self.map.layers.unit_layer:move_unit(unit, tile_x, tile_y)
+
+    -- Mark unit as moved.
+    unit.data.moved = true
 end
 
 function world:get_adjacent_tiles(tile_x, tile_y)

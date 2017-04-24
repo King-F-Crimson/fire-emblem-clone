@@ -10,8 +10,8 @@ function browsing.process_feedback(ui, feedback)
         local unit = ui.world:get_unit(feedback.data.tile_x, feedback.data.tile_y)
         -- Check if unit is not nil.
         if unit then
-            -- If unit is player unit select it.
-            if unit.data.team == "player" then
+            -- If unit is player unit and has not moved, select it.
+            if unit.data.team == "player" and not unit.data.moved then
                 ui.selected_unit = unit
 
                 -- Set planned unit sprite.

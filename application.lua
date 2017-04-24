@@ -46,6 +46,7 @@ function application:draw()
     love.graphics.translate(love.graphics.getWidth() / zoom / 2 - cursor_x - (tile_size / 2), love.graphics.getHeight() / zoom / 2 - cursor_y - (tile_size / 2))
 
     self.world:draw()
+    
     -- Draw animation if active.
     if self.animation.active then
         self.animation:draw()
