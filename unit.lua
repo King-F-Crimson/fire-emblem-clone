@@ -101,9 +101,9 @@ end
 
 function unit:get_team_color()
     local team_color = {
-        player = {0, 0, 255},
-        enemy = {255, 0, 0},
-        ally = {0, 255, 0},
+        player = {0.25, 0.25, 1},
+        enemy = {1, 0.25, 0.25},
+        ally = {0.25, 1, 0.25},
     }
 
     return team_color[self.data.team]
