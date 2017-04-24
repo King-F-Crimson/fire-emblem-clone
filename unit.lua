@@ -4,6 +4,9 @@ require("unit_class")
 unit = {
     base_sprite = love.graphics.newImage("assets/template_unit.png"),
     colored_part = love.graphics.newImage("assets/template_unit_color.png"),
+
+    health_bar_base = love.graphics.newImage("assets/health_bar.png"),
+
     colorize_shader = love.graphics.newShader("shaders/colorize_shader.fs"),
     desaturate_shader = love.graphics.newShader("shaders/desaturate_shader.fs"),
     gradient_shader = love.graphics.newShader("shaders/gradient_shader.fs")
@@ -128,16 +131,11 @@ function unit:generate_health_bar()
         love.graphics.setColor(255, 255, 255, 255)
 
         -- Draw the health bar with gradient according to the max_health.
-        -- Create a canvas because rectangle is not textured.
-        local bar_rect = love.graphics.newCanvas()
-        love.graphics.setCanvas(bar_rect)
-            love.graphics.rectangle("fill", 0, 0, bar_length, tile_size / 16)
-        love.graphics.setCanvas()
         self.gradient_shader:send("start_color", {0, 0, 1, 1})
         self.gradient_shader:send("end_color", {0, 1, 0, 1})
-        self.gradient_shader:send("bar_width", tile_size)
+        self.gradient_shader:send("width", tile_size)
         love.graphics.setShader(self.gradient_shader)
-            love.graphics.draw(bar_rect)
+            love.graphics.draw(self.health_bar_base)
         love.graphics.setShader()
 
     love.graphics.setCanvas()
