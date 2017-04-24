@@ -1,5 +1,5 @@
 require("cursor")
-require("action_menu")
+require("menu")
 require("ui_states")
 
 ui = {
@@ -31,13 +31,13 @@ function ui.create(observer, world)
     self.input_queue = {}
 
     self.cursor = cursor.create(self, 8, 8)
-    self.action_menu = nil
+    self.menu = nil
 
     -- To store temporary movement data (e.g. before attacking to store the unit position).
     self.plan_tile_x = nil
     self.plan_tile_y = nil
 
-    -- Feedback data from cursor or action_menu (e.g. cursor sending selected unit data to create action_menu).
+    -- Feedback data from cursor or menu (e.g. cursor sending selected unit data to create menu).
     self.feedback_queue = {}
 
     -- Create a listener for world_changed event.
@@ -65,8 +65,8 @@ function ui:process_feedback_queue()
     end
 end
 
-function ui:create_action_menu()
-    self.action_menu = action_menu.create(self, self.cursor.tile_x + 1, self.cursor.tile_y)
+function ui:create_menu(menu_type)
+    self.menu = menu.create(self, menu_type, self.cursor.tile_x + 1, self.cursor.tile_y)
 end
 
 function ui:create_area(area)
@@ -141,7 +141,7 @@ function ui:draw()
 
     -- Draw temporary unit sprite if there's any.
     if self.plan_sprite then
-        if self.state == moving or self.state == action_menu_control then
+        if self.state == moving or self.state == menu_control then
             love.graphics.draw(self.plan_sprite, self.cursor.tile_x * tile_size, self.cursor.tile_y * tile_size)
         elseif self.state == attacking then
             love.graphics.draw(self.plan_sprite, self.plan_tile_x * tile_size, self.plan_tile_y * tile_size)
@@ -151,8 +151,8 @@ function ui:draw()
     self.cursor:draw()
 
     -- Draw action menu if there's any.
-    if self.action_menu then
-        self.action_menu:draw()
+    if self.menu then
+        self.menu:draw()
     end
 
     love.graphics.pop()
@@ -162,8 +162,8 @@ function ui:update()
     -- Transfer the control according to the active state.
     if self.active_input == "cursor" then
         self.cursor:control(self.input_queue)
-    elseif self.active_input == "action_menu" then
-        self.action_menu:control(self.input_queue)
+    elseif self.active_input == "menu" then
+        self.menu:control(self.input_queue)
     end
 
     self:process_feedback_queue()

@@ -1,28 +1,33 @@
 require("utility")
 
-action_menu = {}
+menu = {}
 
-function action_menu.create(ui, tile_x, tile_y)
-    local self = { ui = ui, tile_x = tile_x, tile_y = tile_y }
-    setmetatable(self, { __index = action_menu })
+function menu.create(ui, menu_type, tile_x, tile_y)
+    local self = { ui = ui, menu_type = menu_type, tile_x = tile_x, tile_y = tile_y }
+    setmetatable(self, { __index = menu })
 
     self:generate_content()
 
     return self
 end
 
-function action_menu:generate_content()
+function menu:generate_content()
     self.items = {}
     self.actions = {}
     self.pointer = 1
 
-    self.items  = { "Wait", "Attack", "Items" }
-    self.actions = { "wait", "attack", "items" }
+    if self.menu_type == "action" then
+        self.items  = { "Wait", "Attack", "Items" }
+        self.actions = { "wait", "attack", "items" }
+    elseif self.menu_type == "turn" then
+        self.items = { "End turn" }
+        self.actions = { "end_turn" }
+    end
 
     self.item_count = #self.items
 end
 
-function action_menu:control(input_queue)
+function menu:control(input_queue)
     for input in pairs(input_queue) do
         -- Move the selected item with keys.
         if input == "up" then
@@ -52,14 +57,14 @@ function action_menu:control(input_queue)
     end
 end
 
-function action_menu:push_action(action)
+function menu:push_action(action)
     local feedback = {}
     feedback.action = action
 
     self.ui:receive_feedback(feedback)
 end
 
-function action_menu:draw()
+function menu:draw()
     local output = ""
 
     for i = 1, self.item_count do

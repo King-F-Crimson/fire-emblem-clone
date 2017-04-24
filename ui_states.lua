@@ -1,6 +1,6 @@
 browsing = {}
 moving = {}
-action_menu_control = {}
+menu_control = {}
 attacking = {}
 
 function browsing.process_feedback(ui, feedback)
@@ -30,6 +30,9 @@ function browsing.process_feedback(ui, feedback)
                 -- Regenerate danger area.
                 ui:generate_danger_area()
             end
+        -- If there's no unit, then open a menu to end the turn.
+        else
+            menu_control.enter(ui, "turn")
         end
     end
 end
@@ -41,7 +44,7 @@ function browsing.enter(ui)
 
     ui.plan_tile_x, ui.plan_tile_y = nil
 
-    ui.action_menu = nil
+    ui.menu = nil
     ui.active_input = "cursor"
 
     ui.state = browsing
@@ -57,7 +60,7 @@ function moving.process_feedback(ui, feedback)
             -- Set planned position.
             ui.plan_tile_x, ui.plan_tile_y = feedback.data.tile_x, feedback.data.tile_y
 
-            action_menu_control.enter(ui)
+            menu_control.enter(ui, "action")
         end
     end
 
@@ -72,7 +75,7 @@ end
 function moving.enter(ui)
     ui.plan_tile_x, ui.plan_tile_y = nil
 
-    ui.action_menu = nil
+    ui.menu = nil
     ui.active_input = "cursor"
 
     ui:create_area("move")
@@ -80,7 +83,7 @@ function moving.enter(ui)
     ui.state = moving
 end
 
-function action_menu_control.process_feedback(ui, feedback)
+function menu_control.process_feedback(ui, feedback)
     if feedback.action == "wait" then
         -- Construct command to move unit for world.
         local command = { action = "move_unit" }
@@ -98,17 +101,22 @@ function action_menu_control.process_feedback(ui, feedback)
     end
 
     if feedback.action == "cancel" then
-        moving.enter(ui)
+        -- Return to previous state based on the menu type.
+        if ui.menu.menu_type == "action" then
+            moving.enter(ui)
+        elseif ui.menu.menu_type == "turn" then
+            browsing.enter(ui)
+        end
     end
 end
 
-function action_menu_control.enter(ui)
+function menu_control.enter(ui, menu_type)
     ui.areas.move = nil
 
-    ui:create_action_menu()
-    ui.active_input = "action_menu"
+    ui:create_menu(menu_type)
+    ui.active_input = "menu"
 
-    ui.state = action_menu_control
+    ui.state = menu_control
 end
 
 function attacking.process_feedback(ui, feedback)
@@ -136,17 +144,13 @@ function attacking.process_feedback(ui, feedback)
         -- Move cursor position to planned movement position.
         ui.cursor.tile_x, ui.cursor.tile_y = ui.plan_tile_x, ui.plan_tile_y
 
-        -- Construct action menu and set it into active input.
-        ui:create_action_menu(feedback.data.tile_x, feedback.data.tile_y)
-        ui.active_input = "action_menu"
-
         -- Set state to action menu control.
-        action_menu_control.enter(ui)
+        menu_control.enter(ui, "action")
     end
 end
 
 function attacking.enter(ui)
-    ui.action_menu = nil
+    ui.menu = nil
     ui.active_input = "cursor"
 
     ui:create_area("attack")

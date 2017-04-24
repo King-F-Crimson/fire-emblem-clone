@@ -29,7 +29,7 @@ function world.create(observer, animation)
     unit_layer:create_unit(unit_class.bow_fighter, 4, 8, { weapon = weapon_class.iron_bow, team = "player" })
 
     -- Create enemy units.
-    unit_layer:create_unit(unit_class.sword_fighter, 1, 1, { weapon = weapon_class.iron_sword, team = "enemy" })
+    unit_layer:create_unit(unit_class.sword_fighter, 3, 14, { weapon = weapon_class.iron_sword, team = "enemy" })
     unit_layer:create_unit(unit_class.sword_fighter, 29, 29, { weapon = weapon_class.iron_sword, team = "enemy" })
     unit_layer:create_unit(unit_class.axe_fighter, 26, 24, { weapon = weapon_class.iron_axe, team = "enemy" })
     unit_layer:create_unit(unit_class.lance_fighter, 27, 20, { weapon = weapon_class.iron_lance, team = "enemy" })
