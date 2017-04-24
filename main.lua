@@ -2,7 +2,7 @@ require("run")
 require("application")
 
 tile_size = 16
-zoom = 6
+zoom = 2
 
 function love.load()
     app = application.create()

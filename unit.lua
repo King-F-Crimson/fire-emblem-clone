@@ -133,7 +133,6 @@ function unit:generate_health_bar()
         -- Draw the health bar with gradient according to the max_health.
         self.gradient_shader:send("start_color", {0, 0, 1, 1})
         self.gradient_shader:send("end_color", {0, 1, 0, 1})
-        self.gradient_shader:send("width", tile_size)
         love.graphics.setShader(self.gradient_shader)
             love.graphics.draw(self.health_bar_base)
         love.graphics.setShader()
