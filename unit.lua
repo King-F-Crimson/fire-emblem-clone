@@ -115,9 +115,17 @@ end
 
 -- Find area the unit can attack from a location.
 function unit:get_attack_area(world, tile_x, tile_y)
+    -- Create default filter for attack, which does not include wall tiles.
+    local function unlandable_filter(terrain, unit)
+        if terrain == "wall" then
+            return true
+        end
+    end
+
     -- Default min_range to 1.
     local min_range = self.data.weapon.min_range or 1
-    return world:get_tiles_in_distance{tile_x = tile_x, tile_y = tile_y, distance = self.data.weapon.range, min_distance = min_range}
+
+    return world:get_tiles_in_distance{tile_x = tile_x, tile_y = tile_y, distance = self.data.weapon.range, min_distance = min_range, unlandable_filter = unlandable_filter}
 end
 
 -- Get every posible area that the unit can attack by moving then attacking.
