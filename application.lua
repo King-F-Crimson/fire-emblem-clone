@@ -2,6 +2,7 @@ require("cursor")
 require("ui")
 require("world")
 require("animation")
+require("observer")
 
 application = {
     font = love.graphics.newImageFont("assets/font.png",
@@ -19,9 +20,11 @@ function application.create()
     love.window.setFullscreen(true, "desktop")
     love.keyboard.setKeyRepeat(true)
 
+    self.observer = observer.create()
+
     self.animation = animation.create()
-    self.world = world.create(self.animation)
-    self.ui = ui.create(self.world)
+    self.world = world.create(self.observer, self.animation)
+    self.ui = ui.create(self.observer, self.world)
     return self
 end
 

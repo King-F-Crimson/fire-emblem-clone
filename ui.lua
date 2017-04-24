@@ -13,8 +13,8 @@ ui = {
 ui.sprite.move_area:setFilter("nearest")
 ui.sprite.attack_area:setFilter("nearest")
 
-function ui.create(world)
-    local self = { world = world }
+function ui.create(observer, world)
+    local self = { observer = observer, world = world }
     setmetatable(self, {__index = ui})
 
     self.active_input = "cursor"
@@ -39,6 +39,10 @@ function ui.create(world)
 
     -- Feedback data from cursor or action_menu (e.g. cursor sending selected unit data to create action_menu).
     self.feedback_queue = {}
+
+    -- Create a listener for world_changed event.
+    -- Make it regenerate danger area.
+    self.observer:add_listener("world_changed", function() self:generate_danger_area() end)
 
     return self
 end

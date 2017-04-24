@@ -12,11 +12,9 @@ world = {
     
 }
 
-function world.create(animation)
-    local self = {}
+function world.create(observer, animation)
+    local self = {observer = observer, animation = animation}
     setmetatable(self, {__index = world})
-
-    self.animation = animation
 
     self.map = sti("maps/test_map.lua")
 
@@ -53,6 +51,8 @@ function world:process_command_queue()
         if command.action == "attack" then
             self:combat(data.unit, data.tile_x, data.tile_y)
         end
+
+        self.observer:notify("world_changed")
     end
 
     self.command_queue = {}
