@@ -1,7 +1,6 @@
 require("run")
 require("application")
 
-
 tile_size = 16
 zoom = 2
 
