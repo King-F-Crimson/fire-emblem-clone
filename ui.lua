@@ -93,6 +93,13 @@ end
 function ui:generate_danger_area()
     self.areas.danger = {}
 
+    -- Remove any units that have already been deleted.
+    for unit in pairs(self.marked_units) do
+        if unit.delete_flag then
+            self.marked_units[unit] = nil
+        end
+    end
+
     -- Get the danger area for every marked unit.
     for unit in pairs(self.marked_units) do
         local unit_danger_area = unit:get_danger_area(self.world)

@@ -66,6 +66,9 @@ function unit_layer.create(map)
     end
 
     function self:delete_unit(unit)
+        -- Flag unit for deletion
+        unit.delete_flag = true
+
         self:set_unit(nil, unit.tile_x, unit.tile_y)
     end
 
