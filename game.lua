@@ -27,14 +27,14 @@ function game.create(observer)
 end
 
 function game:new_turn()
-    self.world:new_turn()
+    self.observer:notify("new_turn")
 
     -- Change current turn, cycle if previous turn is the last team.
     self.current_turn_number = self.current_turn_number + 1
     if self.current_turn_number > #self.teams then
         self.current_turn_number = 1
     end
-    
+
     self.current_turn = self.teams[self.current_turn_number]
 end
 

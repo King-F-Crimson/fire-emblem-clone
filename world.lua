@@ -35,6 +35,8 @@ function world.create(observer, teams, animation)
     unit_layer:create_unit(unit_class.lance_fighter, 27, 20, { weapon = weapon_class.iron_lance, team = self.teams[2] })
     unit_layer:create_unit(unit_class.bow_fighter, 22, 26, { weapon = weapon_class.iron_bow, team = self.teams[2] })
 
+    self.observer:add_listener("new_turn", function() self:new_turn() end)
+
     return self
 end
 
