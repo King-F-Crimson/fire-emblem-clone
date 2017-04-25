@@ -1,10 +1,13 @@
 hud = {
-    minimap_unit = love.graphics.newImage("assets/minimap_unit.png")
+    colorize_shader = love.graphics.newShader("shaders/colorize_shader.fs"),
+    minimap_unit = love.graphics.newImage("assets/minimap_unit.png"),
 }
 
 function hud.create(ui)
     local self = { ui = ui, observer = ui.observer }
     setmetatable(self, {__index = hud})
+
+    self:generate_minimap()
 
     -- Add hook to observer.
     local function set_unit_on_cursor_as_displayed()
@@ -18,9 +21,8 @@ function hud.create(ui)
         end
     end
 
-    self:generate_minimap()
-
     self.observer:add_listener("cursor_moved", set_unit_on_cursor_as_displayed)
+    self.observer:add_listener("world_changed", function() self:generate_minimap() end)
 
     return self
 end
@@ -42,11 +44,18 @@ function hud:draw_unit_info()
 end
 
 function hud:generate_minimap()
+    -- Scaled 0-255 since these are used by Love directly.
     local terrain_color = {
         plain = {141, 196, 53},
         water = {99, 197, 207},
         sand  = {230, 218, 191},
         wall  = {168, 182, 183},
+    }
+    -- Scaled 0-1 since these are used via shader.
+    local team_color = {
+        player = {0, 0, 200},
+        enemy = {200, 0, 0},
+        ally = {0, 200, 0},
     }
 
     local minimap_tile_size = tile_size / 4
@@ -65,6 +74,14 @@ function hud:generate_minimap()
 
         -- Reset color.
         love.graphics.setColor(255, 255, 255, 255)
+
+        -- Draw units.
+        for k, unit in pairs(self.ui.world:get_all_units()) do
+            self.colorize_shader:send("tint_color", team_color[unit.data.team])
+            love.graphics.setShader(self.colorize_shader)
+                love.graphics.draw(self.minimap_unit, unit.tile_x * mts, unit.tile_y * mts)
+            love.graphics.setShader()
+        end
 
     love.graphics.setCanvas()
 end

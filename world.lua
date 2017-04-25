@@ -85,7 +85,7 @@ end
 function world:new_turn()
     -- Uncheck 'moved' flag on every unit.
 
-    for k, unit in pairs(self.map.layers.unit_layer:get_all_units()) do
+    for k, unit in pairs(self:get_all_units()) do
         unit.data.moved = false
     end
 end
@@ -102,6 +102,10 @@ end
 
 function world:get_unit(tile_x, tile_y)
     return self.map.layers.unit_layer:get_unit(tile_x, tile_y)
+end
+
+function world:get_all_units()
+    return self.map.layers.unit_layer:get_all_units()
 end
 
 function world:move_unit(unit, tile_x, tile_y)
