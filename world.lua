@@ -20,7 +20,7 @@ function world.create(observer, animation)
 
     self.command_queue = {}
 
-    local unit_layer = unit_layer.create(self.map)
+    local unit_layer = unit_layer.create(self.map, self.observer)
 
     -- Create player units.
     unit_layer:create_unit(unit_class.sword_fighter, 0, 0, { weapon = weapon_class.iron_sword, team = "player" })

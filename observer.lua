@@ -18,8 +18,8 @@ function observer:add_listener(event, callback)
     table.insert(self.listeners[event], callback)
 end
 
-function observer:notify(event)
+function observer:notify(event, data)
     for k, callback in pairs(self.listeners[event]) do
-        callback()
+        callback(data)
     end
 end

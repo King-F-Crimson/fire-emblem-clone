@@ -9,22 +9,31 @@ function hud.create(ui)
 
     self:generate_minimap()
 
-    -- Add hook to observer.
-    local function set_unit_on_cursor_as_displayed()
-        local unit_on_cursor = ui.world:get_unit(ui.cursor.tile_x, ui.cursor.tile_y)
-        local selected_unit = ui.selected_unit
-
-        if unit_on_cursor then
-            self:set_displayed_unit(unit_on_cursor)
-        elseif selected_unit then
-            self:set_displayed_unit(selected_unit)
-        end
-    end
-
-    self.observer:add_listener("cursor_moved", set_unit_on_cursor_as_displayed)
+    self.observer:add_listener("cursor_moved", function() self:set_displayed_unit_from_cursor() end)
     self.observer:add_listener("world_changed", function() self:generate_minimap() end)
+    self.observer:add_listener("unit_deleted", function(unit) self:handle_unit_deletion(unit) end)
 
     return self
+end
+
+function hud:set_displayed_unit_from_cursor()
+    local ui = self.ui
+
+    local unit_on_cursor = ui.world:get_unit(ui.cursor.tile_x, ui.cursor.tile_y)
+    local selected_unit = ui.selected_unit
+
+    if unit_on_cursor then
+        self:set_displayed_unit(unit_on_cursor)
+    elseif selected_unit then
+        self:set_displayed_unit(selected_unit)
+    end
+end
+
+-- If the deleted unit is the displayed_unit, remove it.
+function hud:handle_unit_deletion(unit)
+    if unit == self.displayed_unit then
+        self.displayed_unit = nil
+    end
 end
 
 function hud:set_displayed_unit(unit)

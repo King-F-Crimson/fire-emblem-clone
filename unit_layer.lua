@@ -1,7 +1,8 @@
 unit_layer = {}
 
-function unit_layer.create(map)
+function unit_layer.create(map, observer)
     local self = map:addCustomLayer("unit_layer")
+    self.observer = observer
     self.width, self.height = map.width, map.height
 
     -- Operation that involves self.tiles should be translated 1 since Lua index starts from 1.
@@ -66,8 +67,7 @@ function unit_layer.create(map)
     end
 
     function self:delete_unit(unit)
-        -- Flag unit for deletion
-        unit.delete_flag = true
+        self.observer:notify("unit_deleted", unit)
 
         self:set_unit(nil, unit.tile_x, unit.tile_y)
     end

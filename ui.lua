@@ -45,6 +45,7 @@ function ui.create(observer, world)
     -- Create a listener for world_changed event.
     -- Make it regenerate danger area.
     self.observer:add_listener("world_changed", function() self:generate_danger_area() end)
+    self.observer:add_listener("unit_deleted", function(unit) self:remove_unit_references(unit) end)
 
     return self
 end
@@ -90,15 +91,16 @@ function ui:draw_area(area)
     end
 end
 
+function ui:remove_unit_references(unit)
+    -- Remove unit from marked_units and selected_unit if selected.
+    self.marked_units[unit] = nil
+    if self.selected_unit == unit then
+        self.selected_unit = nil
+    end
+end
+
 function ui:generate_danger_area()
     self.areas.danger = {}
-
-    -- Remove any units that have already been deleted.
-    for unit in pairs(self.marked_units) do
-        if unit.delete_flag then
-            self.marked_units[unit] = nil
-        end
-    end
 
     -- Get the danger area for every marked unit.
     for unit in pairs(self.marked_units) do
