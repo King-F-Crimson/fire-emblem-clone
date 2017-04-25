@@ -53,9 +53,9 @@ function hud:generate_minimap()
     }
     -- Scaled 0-1 since these are used via shader.
     local team_color = {
-        player = {0, 0, 200},
-        enemy = {200, 0, 0},
-        ally = {0, 200, 0},
+        player = {0, 0, 1},
+        enemy = {1, 0, 0},
+        ally = {0, 1, 0},
     }
 
     local minimap_tile_size = tile_size / 4
