@@ -20,7 +20,7 @@ function world.create(observer, animation)
 
     self.command_queue = {}
 
-    local unit_layer = unit_layer.create(self.map, 200, 200)
+    local unit_layer = unit_layer.create(self.map)
 
     -- Create player units.
     unit_layer:create_unit(unit_class.sword_fighter, 0, 0, { weapon = weapon_class.iron_sword, team = "player" })
@@ -80,6 +80,14 @@ function world:combat(attacker, tile_x, tile_y)
     animation.data = { attacker = attacker, tile_x = tile_x, tile_y = tile_y }
 
     self.animation:receive_animation(animation)
+end
+
+function world:new_turn()
+    -- Uncheck 'moved' flag on every unit.
+
+    for k, unit in pairs(self.map.layers.unit_layer:get_all_units()) do
+        unit.data.moved = false
+    end
 end
 
 function world:update()

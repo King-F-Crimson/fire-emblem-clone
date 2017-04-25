@@ -1,13 +1,14 @@
 unit_layer = {}
 
-function unit_layer.create(map, width, height)
+function unit_layer.create(map)
     local self = map:addCustomLayer("unit_layer")
+    self.width, self.height = map.width, map.height
 
     -- Operation that involves self.tiles should be translated 1 since Lua index starts from 1.
     self.tiles = {}
-    for y = 1, height do
+    for y = 1, map.height do
         self.tiles[y] = {}
-        for x = 1, width do
+        for x = 1, map.width do
             self.tiles[y][x] = nil
         end
     end
@@ -38,15 +39,30 @@ function unit_layer.create(map, width, height)
     end
 
     function self:get_unit(tile_x, tile_y)
-        -- Translation since lua index starts from 1.
-        
         local unit
+
         -- Prevent nil error when tile_y is 1 or lower.
         if tile_x >= 0 and tile_y >= 0 then
+            -- Translation since lua index starts from 1.
             unit = self.tiles[tile_y + 1][tile_x + 1]
         end
 
         return unit
+    end
+
+    function self:get_all_units()
+        local units = {}
+
+        for y = 1, self.height do
+            for x = 1, self.width do
+                local unit = self:get_unit(x - 1, y - 1)
+                if unit then
+                    table.insert(units, unit)
+                end
+            end
+        end
+
+        return units
     end
 
     function self:delete_unit(unit)

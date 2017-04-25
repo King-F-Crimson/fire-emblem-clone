@@ -108,6 +108,12 @@ function menu_control.process_feedback(ui, feedback)
             browsing.enter(ui)
         end
     end
+
+    if feedback.action == "end_turn" then
+        ui.world:new_turn()
+
+        browsing.enter(ui)
+    end
 end
 
 function menu_control.enter(ui, menu_type)
