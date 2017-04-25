@@ -32,6 +32,9 @@ function application:draw()
 end
 
 function application:keypressed(key)
+    if key == "rctrl" then
+        debug.debug()
+    end
     if key == "escape" then
         love.event.push("quit")
     end
