@@ -64,13 +64,6 @@ function unit.create(class, tile_x, tile_y, data)
     function self.unlandable_filter(terrain, unit)
         local unlandable = false
 
-        -- Tile will be unlandable if there's an allied unit on it. 
-        if unit then
-            if unit.data.team == self.data.team then
-                unlandable = true
-            end
-        end
-
         return unlandable
     end
 
@@ -132,7 +125,7 @@ function unit:generate_health_bar()
         love.graphics.setShader()
 
         -- Draw black cover.
-        love.graphics.setColor(0, 0, 0)
+        love.graphics.setColor(10, 10, 10)
             love.graphics.rectangle("fill", bar_length, 0, tile_size - bar_length, tile_size / 16)
         -- Reset color so canvas will be drawn properly.
         love.graphics.setColor(255, 255, 255, 255)
