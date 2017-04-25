@@ -66,6 +66,9 @@ function world:combat(attacker, tile_x, tile_y)
     if target_unit then
         target_unit.data.health = target_unit.data.health - attack_power
 
+        -- Regenerate health_bar display since health is changed.
+        target_unit:generate_health_bar()
+
         if target_unit.data.health <= 0 then
             local unit_layer = self.map.layers.unit_layer
             unit_layer:delete_unit(target_unit)

@@ -124,18 +124,18 @@ function unit:generate_health_bar()
     local bar_length = self.data.health / self.max_health * tile_size
 
     love.graphics.setCanvas(self.health_bar)
-        -- Draw black background.
-        love.graphics.setColor(0, 0, 0)
-            love.graphics.rectangle("fill", 0, 0, tile_size, tile_size / 16)
-        -- Reset color so canvas will be drawn properly.
-        love.graphics.setColor(255, 255, 255, 255)
-
         -- Draw the health bar with gradient according to the max_health.
-        self.gradient_shader:send("start_color", {0, 0, 1, 1})
+        self.gradient_shader:send("start_color", {0, 0.5, 1, 1})
         self.gradient_shader:send("end_color", {0, 1, 0, 1})
         love.graphics.setShader(self.gradient_shader)
             love.graphics.draw(self.health_bar_base)
         love.graphics.setShader()
+
+        -- Draw black cover.
+        love.graphics.setColor(0, 0, 0)
+            love.graphics.rectangle("fill", bar_length, 0, tile_size - bar_length, tile_size / 16)
+        -- Reset color so canvas will be drawn properly.
+        love.graphics.setColor(255, 255, 255, 255)
 
     love.graphics.setCanvas()
 end
