@@ -12,19 +12,30 @@ function game.create(observer)
     setmetatable(self, {__index = game})
 
     self.teams = {
-        player_1 = team.create("Player 1 Army", color.create_from_rgb(25, 83, 255)),
-        player_2 = team.create("Player 2 Army", color.create_from_rgb(255, 25, 25)),
+        team.create("Player 1 Army", color.create_from_rgb(25, 83, 255)),
+        team.create("Player 2 Army", color.create_from_rgb(255, 25, 25)),
     }
 
-    self.current_turn = self.teams.player_1
+    self.current_turn = self.teams[1]
+    self.current_turn_number = 1
 
     self.animation = animation.create()
     self.world = world.create(self.observer, self.teams, self.animation)
-    self.ui = ui.create(self.observer, self.world)
-
-    self.ui.current_team = self.current_turn
+    self.ui = ui.create(self.observer, self, self.world)
 
     return self
+end
+
+function game:new_turn()
+    self.world:new_turn()
+
+    -- Change current turn, cycle if previous turn is the last team.
+    self.current_turn_number = self.current_turn_number + 1
+    if self.current_turn_number > #self.teams then
+        self.current_turn_number = 1
+    end
+    
+    self.current_turn = self.teams[self.current_turn_number]
 end
 
 function game:update()

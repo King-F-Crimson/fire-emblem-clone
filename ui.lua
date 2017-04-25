@@ -14,16 +14,13 @@ ui = {
 ui.sprite.move_area:setFilter("nearest")
 ui.sprite.attack_area:setFilter("nearest")
 
-function ui.create(observer, world)
-    local self = { observer = observer, world = world }
+function ui.create(observer, game, world)
+    local self = { observer = observer, game = game, world = world }
     setmetatable(self, {__index = ui})
 
     self.hud = hud.create(self)
     self.cursor = cursor.create(self, 8, 8)
     self.menu = nil
-
-    -- Current team playing via ui (i.e. player).
-    self.current_team = nil
 
     self.active_input = "cursor"
     self.state = browsing
