@@ -22,6 +22,9 @@ function ui.create(observer, world)
     self.cursor = cursor.create(self, 8, 8)
     self.menu = nil
 
+    -- Current team playing via ui (i.e. player).
+    self.current_team = nil
+
     self.active_input = "cursor"
     self.state = browsing
 

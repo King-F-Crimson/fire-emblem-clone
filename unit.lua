@@ -21,9 +21,8 @@ function unit.create(class, tile_x, tile_y, data)
     self.tile_x = tile_x
     self.tile_y = tile_y
 
-    -- Copy extra data (weapon, starting HP, etc) if exist.
     if data then
-        self.data = deepcopy(data)
+        self.data = data
     else
         self.data = {}
     end
@@ -102,7 +101,8 @@ function unit:generate_sprite()
         love.graphics.draw(self.base_sprite)
 
         -- Draw team-colorized part using shader.
-        self.colorize_shader:send("tint_color", self:get_team_color())
+        local team_color = self.data.team.color:get_color_as_table(1)
+        self.colorize_shader:send("tint_color", team_color)
         love.graphics.setShader(self.colorize_shader)
         love.graphics.draw(self.colored_part, 0, 0)
         love.graphics.setShader()
@@ -131,16 +131,6 @@ function unit:generate_health_bar()
         love.graphics.setColor(255, 255, 255, 255)
 
     love.graphics.setCanvas()
-end
-
-function unit:get_team_color()
-    local team_color = {
-        player = {0.25, 0.25, 1},
-        enemy = {1, 0.25, 0.25},
-        ally = {0.25, 1, 0.25},
-    }
-
-    return team_color[self.data.team]
 end
 
 function unit:get_movement_area(world)

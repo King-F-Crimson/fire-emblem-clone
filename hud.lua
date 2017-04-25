@@ -60,12 +60,6 @@ function hud:generate_minimap()
         sand  = {230, 218, 191},
         wall  = {168, 182, 183},
     }
-    -- Scaled 0-1 since these are used via shader.
-    local team_color = {
-        player = {0, 0, 1},
-        enemy = {1, 0, 0},
-        ally = {0, 1, 0},
-    }
 
     local minimap_tile_size = tile_size / 4
     local mts = minimap_tile_size
@@ -86,7 +80,8 @@ function hud:generate_minimap()
 
         -- Draw units.
         for k, unit in pairs(self.ui.world:get_all_units()) do
-            self.colorize_shader:send("tint_color", team_color[unit.data.team])
+            local team_color = unit.data.team.color:get_color_as_table(1)
+            self.colorize_shader:send("tint_color", team_color)
             love.graphics.setShader(self.colorize_shader)
                 love.graphics.draw(self.minimap_unit, unit.tile_x * mts, unit.tile_y * mts)
             love.graphics.setShader()

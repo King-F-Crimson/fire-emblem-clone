@@ -2,6 +2,8 @@ require("cursor")
 require("ui")
 require("world")
 require("animation")
+require("team")
+require("color")
 
 game = {}
 
@@ -9,9 +11,18 @@ function game.create(observer)
     local self = { observer = observer }
     setmetatable(self, {__index = game})
 
+    self.teams = {
+        player_1 = team.create("Player 1 Army", color.create_from_rgb(25, 83, 255)),
+        player_2 = team.create("Player 2 Army", color.create_from_rgb(255, 25, 25)),
+    }
+
+    self.current_turn = self.teams.player_1
+
     self.animation = animation.create()
-    self.world = world.create(self.observer, self.animation)
+    self.world = world.create(self.observer, self.teams, self.animation)
     self.ui = ui.create(self.observer, self.world)
+
+    self.ui.current_team = self.current_turn
 
     return self
 end
