@@ -8,7 +8,7 @@ cursor.sprite.move:setFilter("nearest")
 cursor.sprite.attack:setFilter("nearest")
 
 function cursor.create(ui, tile_x, tile_y)
-    local self = { ui = ui, tile_x = tile_x, tile_y = tile_y }
+    local self = { ui = ui, observer = ui.observer, tile_x = tile_x, tile_y = tile_y }
     setmetatable(self, { __index = cursor })
 
     return self
@@ -34,6 +34,7 @@ function cursor:control(input_queue)
         local input_type = input_type[input]
         if input_type == "move" then
             self:move(input)
+            self.observer:notify("cursor_moved")
         end
         if input_type == "select" then
             self:select()

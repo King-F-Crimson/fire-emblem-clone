@@ -1,3 +1,4 @@
+require("hud")
 require("cursor")
 require("menu")
 require("ui_states")
@@ -17,6 +18,10 @@ function ui.create(observer, world)
     local self = { observer = observer, world = world }
     setmetatable(self, {__index = ui})
 
+    self.hud = hud.create(self)
+    self.cursor = cursor.create(self, 8, 8)
+    self.menu = nil
+
     self.active_input = "cursor"
     self.state = browsing
 
@@ -29,9 +34,6 @@ function ui.create(observer, world)
 
     self.input_map = { w = "up", r = "down", a = "left", s = "right", z = "select", c = "cancel" }
     self.input_queue = {}
-
-    self.cursor = cursor.create(self, 8, 8)
-    self.menu = nil
 
     -- To store temporary movement data (e.g. before attacking to store the unit position).
     self.plan_tile_x = nil
@@ -110,50 +112,41 @@ function ui:is_in_area(area, tile_x, tile_y)
 end
 
 function ui:draw()
-    -- Draw unit information.
-    local unit = self.cursor:get_unit()
-    if unit then
-        local info = string.format("%s\nHealth: %i\nStrength: %i\nSpeed: %i", unit.name, unit.data.health, unit.strength, unit.speed)
-        if unit.data.weapon then
-            info = string.format("%s\nWeapon: %s", info, unit.data.weapon.name)
-        end
-        love.graphics.print(info, tile_size, tile_size)
-    end
+    self.hud:draw()
 
     -- Translate screen.
     love.graphics.push()
+        local cursor_x, cursor_y = self.cursor:get_position()
+        love.graphics.translate(love.graphics.getWidth() / zoom / 2 - cursor_x - (tile_size / 2), love.graphics.getHeight() / zoom / 2 - cursor_y - (tile_size / 2))
 
-    local cursor_x, cursor_y = self.cursor:get_position()
-    love.graphics.translate(love.graphics.getWidth() / zoom / 2 - cursor_x - (tile_size / 2), love.graphics.getHeight() / zoom / 2 - cursor_y - (tile_size / 2))
-
-    -- Draw movement area if exist (during movement state).
-    if self.state == moving then
-        self:draw_area("move")
-    end
-
-    -- Draw attack area if exist (during attack state).
-    if self.state == attacking then
-        self:draw_area("attack")
-    end
-
-    -- Draw danger area if exist.
-    self:draw_area("danger")
-
-    -- Draw temporary unit sprite if there's any.
-    if self.plan_sprite then
-        if self.state == moving or self.state == menu_control then
-            love.graphics.draw(self.plan_sprite, self.cursor.tile_x * tile_size, self.cursor.tile_y * tile_size)
-        elseif self.state == attacking then
-            love.graphics.draw(self.plan_sprite, self.plan_tile_x * tile_size, self.plan_tile_y * tile_size)
+        -- Draw movement area if exist (during movement state).
+        if self.state == moving then
+            self:draw_area("move")
         end
-    end
 
-    self.cursor:draw()
+        -- Draw attack area if exist (during attack state).
+        if self.state == attacking then
+            self:draw_area("attack")
+        end
 
-    -- Draw action menu if there's any.
-    if self.menu then
-        self.menu:draw()
-    end
+        -- Draw danger area if exist.
+        self:draw_area("danger")
+
+        -- Draw temporary unit sprite if there's any.
+        if self.plan_sprite then
+            if self.state == moving or self.state == menu_control then
+                love.graphics.draw(self.plan_sprite, self.cursor.tile_x * tile_size, self.cursor.tile_y * tile_size)
+            elseif self.state == attacking then
+                love.graphics.draw(self.plan_sprite, self.plan_tile_x * tile_size, self.plan_tile_y * tile_size)
+            end
+        end
+
+        self.cursor:draw()
+
+        -- Draw action menu if there's any.
+        if self.menu then
+            self.menu:draw()
+        end
 
     love.graphics.pop()
 end
