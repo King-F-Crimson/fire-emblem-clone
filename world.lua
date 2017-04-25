@@ -111,6 +111,20 @@ function world:move_unit(unit, tile_x, tile_y)
     unit.data.moved = true
 end
 
+function world:get_terrain_map()
+    local terrain_map = {}
+
+    for x = 0, self.map.width - 1 do
+        for y = 0, self.map.height - 1 do
+            local terrain = self.map:getTileProperties("terrain", x + 1, y + 1).terrain
+
+            table.insert(terrain_map, {x = x, y = y, terrain = terrain })
+        end
+    end
+
+    return terrain_map
+end
+
 function world:get_adjacent_tiles(tile_x, tile_y)
     return  {
                 { x = tile_x, y = tile_y + 1 },
