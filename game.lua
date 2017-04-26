@@ -73,6 +73,6 @@ function game:draw()
     love.graphics.pop()
 end
 
-function game:process_input(key, pressed)
-    self.ui:process_input(key, pressed)
+function game:process_event(event)
+    self.ui:process_event(event)
 end

@@ -1,5 +1,6 @@
 require("game")
 require("observer")
+require("queue")
 
 application = {
     font = love.graphics.newImageFont("assets/font.png",
@@ -20,15 +21,24 @@ function application.create()
     self.observer = observer.create()
     self.game = game.create(self.observer)
 
+    self.event_queue = queue.create()
+
     return self
 end
 
 function application:update()
+    while not self.event_queue:empty() do
+        self.game:process_event(self.event_queue:pop())
+    end    
     self.game:update()
 end
 
 function application:draw()
     self.game:draw()
+end
+
+function application:receieve_event(event)
+    self.event_queue:push(event)
 end
 
 function application:keypressed(key)
@@ -39,9 +49,11 @@ function application:keypressed(key)
         love.event.push("quit")
     end
 
-    self.game:process_input(key, true)
+    local event = { type = "key_pressed", data = { key = key } }
+    self:receieve_event(event)
 end
 
 function application:keyreleased(key)
-    self.game:process_input(key, false)
+    local event = { type = "key_released", data = { key = key } }
+    self:receieve_event(event)
 end

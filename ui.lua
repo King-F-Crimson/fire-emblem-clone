@@ -52,10 +52,10 @@ function ui.create(observer, game, world)
     return self
 end
 
-function ui:process_input(key, pressed)
-    local input = self.input_map[key]
+function ui:process_event(event)
+    local input = self.input_map[event.data.key]
 
-    if input and pressed then
+    if input and event.type == "key_pressed" then
         self.input_queue[input] = true
     end
 end
