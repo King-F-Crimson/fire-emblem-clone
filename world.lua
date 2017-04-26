@@ -97,8 +97,16 @@ function world:update()
     self.map:update()
 end
 
-function world:draw()
-    self.map:draw()
+function world:draw(component)
+    if component == "tiles" then
+        for i, layer in ipairs(self.map.layers) do
+            if layer.type == "tilelayer" and layer.visible and layer.opacity > 0 then
+                self.map:drawTileLayer(layer)
+            end
+        end
+    elseif component == "units" then
+        self.map.layers.unit_layer:draw()
+    end
 end
 
 function world:get_unit(tile_x, tile_y)

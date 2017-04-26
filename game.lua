@@ -58,12 +58,14 @@ function game:draw()
     -- Draw the world and animation with cursor at the center of the screen.
     love.graphics.push()
         love.graphics.scale(zoom)
+        self:center_cursor()
 
-        local cursor_x, cursor_y = self.ui.cursor:get_position()
-        self.translate = { x = love.graphics.getWidth() / zoom / 2 - cursor_x - (tile_size / 2), y = love.graphics.getHeight() / zoom / 2 - cursor_y - (tile_size / 2) }
-        love.graphics.translate(self.translate.x, self.translate.y)
-
-        self.world:draw()
+        self.world:draw("tiles")
+        self.ui:draw("areas")
+        self.world:draw("units")
+        self.ui:draw("planned_unit")
+        self.ui:draw("cursor")
+        self.ui:draw("menu")
         
         -- Draw animation if active.
         if self.animation.active then
@@ -71,12 +73,16 @@ function game:draw()
         end
     love.graphics.pop()
 
-    -- Draw UI without translation.
     love.graphics.push()
         love.graphics.scale(zoom)
-        
-        self.ui:draw()
-    love.graphics.pop()
+        self.ui:draw("hud")
+    
+end
+
+function game:center_cursor()
+    local cursor_x, cursor_y = self.ui.cursor:get_position()
+    self.translate = { x = love.graphics.getWidth() / zoom / 2 - cursor_x - (tile_size / 2), y = love.graphics.getHeight() / zoom / 2 - cursor_y - (tile_size / 2) }
+    love.graphics.translate(self.translate.x, self.translate.y)
 end
 
 function game:process_event(event)

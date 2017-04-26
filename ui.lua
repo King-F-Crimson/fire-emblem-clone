@@ -126,44 +126,45 @@ function ui:is_in_area(area, tile_x, tile_y)
     return self.areas[area][key(tile_x, tile_y)] ~= nil
 end
 
-function ui:draw()
-    self.hud:draw()
-
-    -- Translate screen.
-    love.graphics.push()
-        local cursor_x, cursor_y = self.cursor:get_position()
-        love.graphics.translate(love.graphics.getWidth() / zoom / 2 - cursor_x - (tile_size / 2), love.graphics.getHeight() / zoom / 2 - cursor_y - (tile_size / 2))
-
-        -- Draw movement area if exist (during movement state).
-        if self.state == moving then
-            self:draw_area("move")
-        end
-
-        -- Draw attack area if exist (during attack state).
-        if self.state == attacking then
-            self:draw_area("attack")
-        end
-
-        -- Draw danger area if exist.
-        self:draw_area("danger")
-
-        -- Draw temporary unit sprite if there's any.
-        if self.plan_sprite then
-            if self.state == moving or self.state == menu_control then
-                love.graphics.draw(self.plan_sprite, self.cursor.tile_x * tile_size, self.cursor.tile_y * tile_size)
-            elseif self.state == attacking then
-                love.graphics.draw(self.plan_sprite, self.plan_tile_x * tile_size, self.plan_tile_y * tile_size)
-            end
-        end
-
+function ui:draw(component)
+    if component == "hud" then
+        self.hud:draw()
+    elseif component == "areas" then
+        self:draw_areas()
+    elseif component == "planned_unit" then
+        self:draw_planned_sprite()
+    elseif component == "cursor" then
         self.cursor:draw()
-
-        -- Draw action menu if there's any.
+    elseif component == "menu" then
         if self.menu then
             self.menu:draw()
         end
+    end
+end
 
-    love.graphics.pop()
+function ui:draw_areas()
+    -- Draw movement area if exist (during movement state).
+    if self.state == moving then
+        self:draw_area("move")
+    end
+
+    -- Draw attack area if exist (during attack state).
+    if self.state == attacking then
+        self:draw_area("attack")
+    end
+
+    -- Draw danger area if exist.
+    self:draw_area("danger")
+end
+
+function ui:draw_planned_sprite()
+    if self.plan_sprite then
+        if self.state == moving or self.state == menu_control then
+            love.graphics.draw(self.plan_sprite, self.cursor.tile_x * tile_size, self.cursor.tile_y * tile_size)
+        elseif self.state == attacking then
+            love.graphics.draw(self.plan_sprite, self.plan_tile_x * tile_size, self.plan_tile_y * tile_size)
+        end
+    end
 end
 
 function ui:update()
