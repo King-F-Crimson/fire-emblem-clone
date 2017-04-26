@@ -2,6 +2,9 @@ require("game")
 require("observer")
 require("queue")
 
+tile_size = 16
+zoom = 2
+
 application = {
     font = love.graphics.newImageFont("assets/font.png",
     " abcdefghijklmnopqrstuvwxyz" ..
@@ -37,11 +40,11 @@ function application:draw()
     self.game:draw()
 end
 
-function application:receieve_event(event)
+function application:receive_event(event)
     self.event_queue:push(event)
 end
 
-function application:keypressed(key)
+function application:key_pressed(key)
     if key == "rctrl" then
         debug.debug()
     end
@@ -50,10 +53,15 @@ function application:keypressed(key)
     end
 
     local event = { type = "key_pressed", data = { key = key } }
-    self:receieve_event(event)
+    self:receive_event(event)
 end
 
-function application:keyreleased(key)
+function application:key_released(key)
     local event = { type = "key_released", data = { key = key } }
-    self:receieve_event(event)
+    self:receive_event(event)
+end
+
+function application:mouse_pressed(x, y, button)
+    local event = { type = "mouse_pressed", data = { button = button, x = x, y = y} }
+    self:receive_event(event)
 end

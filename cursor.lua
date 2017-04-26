@@ -28,20 +28,47 @@ function cursor:update()
 end
 
 function cursor:control(input_queue)
-    local input_type = { up = "move", down = "move", left = "move", right = "move", select = "select", cancel = "cancel" }
+    local input_type = { up = "move", down = "move", left = "move", right = "move", select = "select", cancel = "cancel",
+                         mouse_pressed = "mouse_pressed" }
 
     for input in pairs(input_queue) do
         local input_type = input_type[input]
         if input_type == "move" then
             self:move(input)
-            self.observer:notify("cursor_moved")
-        end
-        if input_type == "select" then
+        elseif input_type == "select" then
             self:select()
-        end
-        if input_type == "cancel" then
+        elseif input_type == "cancel" then
             self:cancel()
+        elseif input_type == "mouse_pressed" then
+            self:mouse_pressed(input_queue[input])
         end
+    end
+end
+
+function cursor:mouse_pressed(data)
+    local tile_x, tile_y = self.ui.game:get_tile_from_coordinate(data.x, data.y)
+
+    self:move_to(tile_x, tile_y)
+
+    self:rebound()
+end
+
+-- If tile_x or tile_y is less than minimum value, return the minimum value.
+-- If tile_x or tile_y is more than maximum value, return the maximum value.
+-- Internal method, doesn't notify "cursor_moved".
+function cursor:rebound()
+    local minimum = { x = 0, y = 0 }
+    local maximum = { x = self.ui.world.map.width - 1, y = self.ui.world.map.height - 1 }
+
+    if self.tile_x < minimum.x then
+        self.tile_x = minimum.x
+    elseif self.tile_x > maximum.x then
+        self.tile_x = maximum.x
+    end
+    if self.tile_y < minimum.y then
+        self.tile_y = minimum.y
+    elseif self.tile_y > maximum.y then
+        self.tile_y = maximum.y
     end
 end
 
@@ -57,25 +84,18 @@ function cursor:move(direction)
 
     self[tile_axis] = self[tile_axis] + origin_direction
 
-    -- Make cursor unmoveable to outside map.
+    -- Make sure cursor is not outside the map.
+    self:rebound()
 
-    -- Map left-side and up-side.
-    if self[tile_axis] < 0 then
-        self[tile_axis] = 0
-    end
+    self.ui.observer:notify("cursor_moved")
+end
 
-    -- Map right-side and down-side.
-    -- Determine the maximum value for the axis.
-    local max_value
-    if tile_axis == "tile_y" then
-        max_value = self.ui.world.map.width - 1
-    elseif tile_axis == "tile_x" then
-        max_value = self.ui.world.map.height - 1
-    end
+function cursor:move_to(tile_x, tile_y)
+    self.tile_x, self.tile_y = tile_x, tile_y
 
-    if self[tile_axis] > max_value then
-        self[tile_axis] = max_value
-    end
+    self:rebound()
+
+    self.ui.observer:notify("cursor_moved")
 end
 
 function cursor:select()

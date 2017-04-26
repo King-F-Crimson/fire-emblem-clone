@@ -1,9 +1,6 @@
 require("run")
 require("application")
 
-tile_size = 16
-zoom = 2
-
 function love.load()
     app = application.create()
 end
@@ -17,9 +14,13 @@ function love.draw()
 end
 
 function love.keypressed(key)
-    app:keypressed(key)
+    app:key_pressed(key)
 end
 
 function love.keyreleased(key)
-    app:keyreleased(key)
+    app:key_released(key)
+end
+
+function love.mousepressed(x, y, button, istouch)
+    app:mouse_pressed(x, y, button)
 end

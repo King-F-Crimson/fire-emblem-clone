@@ -38,6 +38,13 @@ function game:new_turn()
     self.current_turn = self.teams[self.current_turn_number]
 end
 
+function game:get_tile_from_coordinate(x, y)
+    local translated_x, translated_y = x / zoom - self.translate.x, y / zoom - self.translate.y
+    local tile_x, tile_y = math.floor(translated_x / tile_size), math.floor(translated_y / tile_size)
+
+    return tile_x, tile_y
+end
+
 function game:update()
     if self.animation.active then
         self.animation:update()
@@ -50,26 +57,25 @@ end
 function game:draw()
     -- Draw the world and animation with cursor at the center of the screen.
     love.graphics.push()
-    love.graphics.scale(zoom)
+        love.graphics.scale(zoom)
 
-    local cursor_x, cursor_y = self.ui.cursor:get_position()
-    love.graphics.translate(love.graphics.getWidth() / zoom / 2 - cursor_x - (tile_size / 2), love.graphics.getHeight() / zoom / 2 - cursor_y - (tile_size / 2))
+        local cursor_x, cursor_y = self.ui.cursor:get_position()
+        self.translate = { x = love.graphics.getWidth() / zoom / 2 - cursor_x - (tile_size / 2), y = love.graphics.getHeight() / zoom / 2 - cursor_y - (tile_size / 2) }
+        love.graphics.translate(self.translate.x, self.translate.y)
 
-    self.world:draw()
-    
-    -- Draw animation if active.
-    if self.animation.active then
-        self.animation:draw()
-    end
-
+        self.world:draw()
+        
+        -- Draw animation if active.
+        if self.animation.active then
+            self.animation:draw()
+        end
     love.graphics.pop()
 
     -- Draw UI without translation.
     love.graphics.push()
-    love.graphics.scale(zoom)
-    
-    self.ui:draw()
-
+        love.graphics.scale(zoom)
+        
+        self.ui:draw()
     love.graphics.pop()
 end
 

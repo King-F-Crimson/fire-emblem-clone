@@ -53,10 +53,14 @@ function ui.create(observer, game, world)
 end
 
 function ui:process_event(event)
-    local input = self.input_map[event.data.key]
+    if event.type == "key_pressed" then
+        local input = self.input_map[event.data.key]
 
-    if input and event.type == "key_pressed" then
-        self.input_queue[input] = true
+        if input and event.type == "key_pressed" then
+            self.input_queue[input] = true
+        end
+    elseif event.type == "mouse_pressed" then
+        self.input_queue["mouse_pressed"] = event.data
     end
 end
 
