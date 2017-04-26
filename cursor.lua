@@ -31,7 +31,7 @@ function cursor:control(input_queue)
     local input_type = { up = "move", down = "move", left = "move", right = "move", select = "select", cancel = "cancel",
                          mouse_pressed = "mouse_pressed" }
 
-    for input in pairs(input_queue) do
+    for input, data in pairs(input_queue) do
         local input_type = input_type[input]
         if input_type == "move" then
             self:move(input)
@@ -40,7 +40,7 @@ function cursor:control(input_queue)
         elseif input_type == "cancel" then
             self:cancel()
         elseif input_type == "mouse_pressed" then
-            self:mouse_pressed(input_queue[input])
+            self:mouse_pressed(data)
         end
     end
 end
@@ -49,9 +49,13 @@ function cursor:mouse_pressed(data)
     local tile_x, tile_y = self.ui.game:get_tile_from_coordinate(data.x, data.y)
 
     self:move_to(tile_x, tile_y)
-    self:select()
+    print(data.button)
 
-    self:rebound()
+    if data.button == 1 then
+        self:select()
+    elseif data.button == 2 then
+        self:cancel()
+    end
 end
 
 -- If tile_x or tile_y is less than minimum value, return the minimum value.

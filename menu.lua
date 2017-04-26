@@ -28,7 +28,7 @@ function menu:generate_content()
 end
 
 function menu:control(input_queue)
-    for input in pairs(input_queue) do
+    for input, data in pairs(input_queue) do
         -- Move the selected item with keys.
         if input == "up" then
             -- self.scroll_sound:play()
@@ -37,23 +37,28 @@ function menu:control(input_queue)
             else
                 self.pointer = self.pointer - 1
             end
-        end
-        if input == "down" then
+        elseif input == "down" then
             -- self.scroll_sound:play()
             if self.pointer == self.item_count then
                 self.pointer = 1             -- If self.pointer is at last item, set it to the first item.
             else
                 self.pointer = self.pointer + 1
             end
-        end
-        if input == "select" then
+        elseif input == "select" then
             -- self.select_sound:play()
             -- Push feedback to ui.
             self:push_action(self.actions[self.pointer])
-        end
-        if input == "cancel" then
+        elseif input == "cancel" then
             self:push_action("cancel")
+        elseif input == "mouse_pressed" then
+            self:mouse_pressed(data)
         end
+    end
+end
+
+function menu:mouse_pressed(data)
+    if data.button == 2 then
+        self:push_action("cancel")
     end
 end
 
