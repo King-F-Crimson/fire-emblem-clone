@@ -49,7 +49,6 @@ function cursor:mouse_pressed(data)
     local tile_x, tile_y = self.ui.game:get_tile_from_coordinate(data.x, data.y)
 
     self:move_to(tile_x, tile_y)
-    print(data.button)
 
     if data.button == 1 then
         self:select()
