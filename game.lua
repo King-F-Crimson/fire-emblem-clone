@@ -23,6 +23,8 @@ function game.create(observer)
     self.world = world.create(self.observer, self.teams, self.animation)
     self.ui = ui.create(self.observer, self, self.world)
 
+    self.translate = { x = 0, y = 0 }
+
     return self
 end
 
@@ -58,7 +60,8 @@ function game:draw()
     -- Draw the world and animation with cursor at the center of the screen.
     love.graphics.push()
         love.graphics.scale(zoom)
-        self:center_cursor()
+        self:set_translate_to_center_cursor()
+        love.graphics.translate(self.translate.x, self.translate.y)
 
         self.world:draw("tiles")
         self.ui:draw("areas")
@@ -79,10 +82,9 @@ function game:draw()
     love.graphics.pop()
 end
 
-function game:center_cursor()
+function game:set_translate_to_center_cursor()
     local cursor_x, cursor_y = self.ui.cursor:get_position()
     self.translate = { x = love.graphics.getWidth() / zoom / 2 - cursor_x - (tile_size / 2), y = love.graphics.getHeight() / zoom / 2 - cursor_y - (tile_size / 2) }
-    love.graphics.translate(self.translate.x, self.translate.y)
 end
 
 function game:process_event(event)
