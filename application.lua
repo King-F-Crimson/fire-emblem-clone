@@ -6,7 +6,7 @@ tile_size = 16
 zoom = 2
 
 application = {
-    font = love.graphics.newImageFont("assets/font.png",
+    font = love.graphics.newImageFont("assets/font_16_height.png",
     " abcdefghijklmnopqrstuvwxyz" ..
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ0" ..
     "123456789.,!?-+/():;%&`'*#=[]\"")
