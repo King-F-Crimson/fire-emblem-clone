@@ -57,9 +57,27 @@ function menu:control(input_queue)
 end
 
 function menu:mouse_pressed(data)
+    if data.button == 1 then
+        local index = self:get_index_from_coordinate(data.x, data.y)
+
+        if index >= 1 and index <= self.item_count then
+            if self.pointer == index then
+                self:push_action(self.actions[self.pointer])
+            else
+                self.pointer = index
+            end
+        end
+    end
     if data.button == 2 then
         self:push_action("cancel")
     end
+end
+
+function menu:get_index_from_coordinate(x, y)
+    -- Only works if font height is the same as tile_size.
+    local tile_x, tile_y = self.ui.game:get_tile_from_coordinate(x, y)
+    local index = tile_y - self.tile_y + 1
+    return index
 end
 
 function menu:push_action(action)
