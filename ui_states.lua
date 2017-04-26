@@ -67,6 +67,7 @@ function moving.process_feedback(ui, feedback)
     if feedback.action == "cancel" then
         -- Revert cursor position to original unit position.
         ui.cursor.tile_x, ui.cursor.tile_y = ui.selected_unit.tile_x, ui.selected_unit.tile_y
+        ui.observer:notify("cursor_moved")
 
         browsing.enter(ui)
     end
@@ -140,6 +141,7 @@ function attacking.process_feedback(ui, feedback)
 
             -- Put cursor in the attacking unit position.
             ui.cursor.tile_x, ui.cursor.tile_y = ui.plan_tile_x, ui.plan_tile_y
+            ui.observer:notify("cursor_moved")
 
             -- Revert to browsing state.
             browsing.enter(ui)
@@ -149,6 +151,7 @@ function attacking.process_feedback(ui, feedback)
     if feedback.action == "cancel" then
         -- Move cursor position to planned movement position.
         ui.cursor.tile_x, ui.cursor.tile_y = ui.plan_tile_x, ui.plan_tile_y
+        ui.observer:notify("cursor_moved")
 
         -- Set state to action menu control.
         menu_control.enter(ui, "action")
