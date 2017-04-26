@@ -76,7 +76,7 @@ function game:draw()
     love.graphics.push()
         love.graphics.scale(zoom)
         self.ui:draw("hud")
-    
+    love.graphics.pop()
 end
 
 function game:center_cursor()
