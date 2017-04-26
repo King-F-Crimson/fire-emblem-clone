@@ -24,6 +24,7 @@ function game.create(observer)
     self.ui = ui.create(self.observer, self, self.world)
 
     self.translate = { x = 0, y = 0 }
+    self.translate_mode = "center_cursor"
 
     return self
 end
@@ -60,7 +61,11 @@ function game:draw()
     -- Draw the world and animation with cursor at the center of the screen.
     love.graphics.push()
         love.graphics.scale(zoom)
-        self:set_translate_to_center_cursor()
+        if self.translate_mode == "center_cursor" then
+            self:set_translate_to_center_cursor()
+        elseif self.translate_mode == "not_center_cursor" then
+
+        end
         love.graphics.translate(self.translate.x, self.translate.y)
 
         self.world:draw("tiles")
@@ -88,5 +93,12 @@ function game:set_translate_to_center_cursor()
 end
 
 function game:process_event(event)
+    -- Change translate mode according to how the player moves the cursor.
+    if event.type == "key_pressed" then
+        self.translate_mode = "center_cursor"
+    elseif event.type == "mouse_pressed" then
+        self.translate_mode = "not_center_cursor"
+    end
+
     self.ui:process_event(event)
 end
