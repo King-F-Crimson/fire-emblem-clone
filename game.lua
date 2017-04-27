@@ -74,27 +74,24 @@ function game:draw()
         end
         love.graphics.translate(self.translate.x, self.translate.y)
 
-        love.graphics.push()
-            love.graphics.scale(self.world_zoom)
-            self.world:draw("tiles")
-            self.ui:draw("areas")
-            self.world:draw("units")
-            self.ui:draw("planned_unit")
-            self.ui:draw("cursor")
+        love.graphics.scale(self.world_zoom)
+        
+        self.world:draw("tiles")
+        self.ui:draw("areas")
+        self.world:draw("units")
+        self.ui:draw("planned_unit")
+        self.ui:draw("cursor")
 
-            -- Draw animation if active.
-            if self.animation.active then
-                self.animation:draw()
-            end
-        love.graphics.pop()
-
-        self.ui:draw("menu")
-
+        -- Draw animation if active.
+        if self.animation.active then
+            self.animation:draw()
+        end
     love.graphics.pop()
 
     love.graphics.push()
         love.graphics.scale(zoom)
         self.ui:draw("hud")
+        self.ui:draw("menu")
     love.graphics.pop()
 end
 

@@ -2,8 +2,8 @@ require("utility")
 
 menu = {}
 
-function menu.create(ui, menu_type, tile_x, tile_y)
-    local self = { ui = ui, menu_type = menu_type, tile_x = tile_x, tile_y = tile_y }
+function menu.create(ui, menu_type, x, y)
+    local self = { ui = ui, menu_type = menu_type, x = x, y = y }
     setmetatable(self, { __index = menu })
 
     self:generate_content()
@@ -74,9 +74,8 @@ function menu:mouse_pressed(data)
 end
 
 function menu:get_index_from_coordinate(x, y)
-    -- Only works if font height is the same as tile_size.
-    local tile_x, tile_y = self.ui.game:get_tile_from_coordinate(x, y)
-    local index = tile_y - self.tile_y + 1
+    local index = math.floor((y / zoom - self.y) / app.font:getHeight()) + 1
+    print(index)
     return index
 end
 
@@ -100,5 +99,5 @@ function menu:draw()
         output = output .. self.items[i] .. "\n"
     end
 
-    love.graphics.print(output, self.tile_x * tile_size, self.tile_y * tile_size)
+    love.graphics.print(output, self.x, self.y)
 end

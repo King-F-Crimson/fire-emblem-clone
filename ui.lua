@@ -75,7 +75,12 @@ function ui:process_feedback_queue()
 end
 
 function ui:create_menu(menu_type)
-    self.menu = menu.create(self, menu_type, self.cursor.tile_x + 1, self.cursor.tile_y)
+    local cursor_x, cursor_y = self.cursor:get_position()
+    cursor_x, cursor_y = cursor_x * self.game.world_zoom, cursor_y * self.game.world_zoom
+
+    local translated_cursor_x, translated_cursor_y = cursor_x + self.game.translate.x, cursor_y + self.game.translate.y
+
+    self.menu = menu.create(self, menu_type, translated_cursor_x + tile_size * self.game.world_zoom, translated_cursor_y)
 end
 
 function ui:create_area(area)
