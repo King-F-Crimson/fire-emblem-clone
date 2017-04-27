@@ -66,3 +66,8 @@ function application:mouse_pressed(x, y, button)
     local event = { type = "mouse_pressed", data = { button = button, x = x, y = y} }
     self:receive_event(event)
 end
+
+function application:mouse_wheel_moved(x, y)
+    local event = { type = "mouse_wheel_moved", data = { x = x, y = y } }
+    self:receive_event(event)
+end

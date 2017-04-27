@@ -24,3 +24,7 @@ end
 function love.mousepressed(x, y, button, istouch)
     app:mouse_pressed(x, y, button)
 end
+
+function love.wheelmoved(x, y)
+    app:mouse_wheel_moved(x, y)
+end
