@@ -26,6 +26,7 @@ function game.create(observer)
     self.world_zoom = 2
     self.min_world_zoom = 1
     self.max_world_zoom = 8
+    self.mouse_scroll_for_zoom = 2
 
     self.translate = { x = 0, y = 0 }
     self.translate_mode = "center_cursor"
@@ -106,9 +107,9 @@ function game:set_translate_to_center_cursor()
 end
 
 function game:zoom_world_using_mouse_wheel(x, y)
-    if y > 5 and self.world_zoom < self.max_world_zoom then
+    if y > self.mouse_scroll_for_zoom and self.world_zoom < self.max_world_zoom then
         self.world_zoom = self.world_zoom + 1
-    elseif y < -5 and self.world_zoom > self.min_world_zoom then
+    elseif y < -self.mouse_scroll_for_zoom and self.world_zoom > self.min_world_zoom then
         self.world_zoom = self.world_zoom - 1
     end
 end
