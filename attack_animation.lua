@@ -52,5 +52,8 @@ function attack_animation:update()
 end
 
 function attack_animation:draw()
-    love.graphics.draw(self.attacker.sprite, self.tile_x * tile_size, self.tile_y * tile_size)
+    love.graphics.push()
+        love.graphics.scale(tile_size / unit_size)
+        love.graphics.draw(self.attacker.sprite, self.tile_x * unit_size, self.tile_y * unit_size)
+    love.graphics.pop()
 end

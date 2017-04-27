@@ -11,7 +11,7 @@ unit_class = {
     },
 
     sword_fighter = {
-        base_sprite = love.graphics.newImage("assets/sword_fighter.png"),
+        base_sprite = love.graphics.newImage("assets/sword_fighter_large.png"),
 
         name = "Sword Fighter",
         
@@ -24,7 +24,7 @@ unit_class = {
     },
 
     lance_fighter = {
-        base_sprite = love.graphics.newImage("assets/lance_fighter.png"),
+        base_sprite = love.graphics.newImage("assets/lance_fighter_large.png"),
 
         name = "Lance Fighter",
         
@@ -37,7 +37,7 @@ unit_class = {
     },
 
     axe_fighter = {
-        base_sprite = love.graphics.newImage("assets/axe_fighter.png"),
+        base_sprite = love.graphics.newImage("assets/axe_fighter_large.png"),
 
         name = "Axe Fighter",
         
@@ -50,7 +50,7 @@ unit_class = {
     },
 
     bow_fighter = {
-        base_sprite = love.graphics.newImage("assets/bow_fighter.png"),
+        base_sprite = love.graphics.newImage("assets/bow_fighter_large.png"),
 
         name = "Bow Fighter",
         

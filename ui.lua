@@ -159,11 +159,17 @@ end
 
 function ui:draw_planned_sprite()
     if self.plan_sprite then
+        local tile_x, tile_y
         if self.state == moving or self.state == menu_control then
-            love.graphics.draw(self.plan_sprite, self.cursor.tile_x * tile_size, self.cursor.tile_y * tile_size)
+            tile_x, tile_y = self.cursor.tile_x, self.cursor.tile_y
         elseif self.state == attacking then
-            love.graphics.draw(self.plan_sprite, self.plan_tile_x * tile_size, self.plan_tile_y * tile_size)
+            tile_x, tile_y = self.plan_tile_x, self.plan_tile_y
         end
+
+        love.graphics.push()
+            love.graphics.scale(tile_size / unit_size)
+            love.graphics.draw(self.plan_sprite, tile_x * unit_size, tile_y * unit_size)
+        love.graphics.pop()
     end
 end
 

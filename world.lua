@@ -20,6 +20,7 @@ function world.create(observer, teams, animation)
 
     self.command_queue = {}
 
+    self.unit_size = 32
     local unit_layer = unit_layer.create(self.map, self.observer)
 
     -- Create player units.
@@ -105,7 +106,10 @@ function world:draw(component)
             end
         end
     elseif component == "units" then
-        self.map.layers.unit_layer:draw()
+        love.graphics.push()
+            love.graphics.scale(tile_size / unit_size)
+            self.map.layers.unit_layer:draw()
+        love.graphics.pop()
     end
 end
 

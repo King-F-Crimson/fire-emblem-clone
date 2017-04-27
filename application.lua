@@ -3,6 +3,7 @@ require("observer")
 require("queue")
 
 tile_size = 16
+unit_size = 32
 zoom = 2
 
 application = {

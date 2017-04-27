@@ -3,13 +3,13 @@ require("unit_class")
 
 unit = {
     base_sprite = love.graphics.newImage("assets/template_unit.png"),
-    colored_part = love.graphics.newImage("assets/template_unit_color.png"),
+    colored_part = love.graphics.newImage("assets/template_unit_color_large.png"),
 
-    health_bar_base = love.graphics.newImage("assets/health_bar.png"),
+    health_bar_base = love.graphics.newImage("assets/health_bar_32.png"),
 
     colorize_shader = love.graphics.newShader("shaders/colorize_shader.fs"),
     desaturate_shader = love.graphics.newShader("shaders/desaturate_shader.fs"),
-    gradient_shader = love.graphics.newShader("shaders/gradient_shader.fs")
+    gradient_shader = love.graphics.newShader("shaders/gradient_shader.fs"),
 }
 
 unit.base_sprite:setFilter("nearest")
@@ -77,7 +77,7 @@ function unit:draw()
             love.graphics.setShader(self.desaturate_shader)
         end
 
-        love.graphics.draw(self.sprite, self.tile_x * tile_size, self.tile_y * tile_size)
+        love.graphics.draw(self.sprite, self.tile_x * unit_size, self.tile_y * unit_size)
 
         love.graphics.setShader()
 
@@ -86,7 +86,7 @@ function unit:draw()
 end
 
 function unit:draw_health_bar()
-    local x, y = self.tile_x * tile_size, (self.tile_y + 7/8) * tile_size
+    local x, y = self.tile_x * unit_size, (self.tile_y + 7/8) * unit_size
     love.graphics.draw(self.health_bar, x, y)
 end
 
@@ -114,7 +114,8 @@ function unit:generate_health_bar()
     self.health_bar = love.graphics.newCanvas()
     self.health_bar:setFilter("nearest")
 
-    local bar_length = self.data.health / self.max_health * tile_size
+    local bar_length = self.data.health / self.max_health * self.health_bar_base:getWidth()
+    local bar_height = self.health_bar_base:getHeight()
 
     love.graphics.setCanvas(self.health_bar)
         -- Draw the health bar with gradient according to the max_health.
@@ -126,7 +127,7 @@ function unit:generate_health_bar()
 
         -- Draw black cover.
         love.graphics.setColor(10, 10, 10)
-            love.graphics.rectangle("fill", bar_length, 0, tile_size - bar_length, tile_size / 16)
+            love.graphics.rectangle("fill", bar_length, 0, unit_size - bar_length, bar_height)
         -- Reset color so canvas will be drawn properly.
         love.graphics.setColor(255, 255, 255, 255)
 
