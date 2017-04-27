@@ -75,7 +75,6 @@ end
 
 function menu:get_index_from_coordinate(x, y)
     local index = math.floor((y / zoom - self.y) / app.font:getHeight()) + 1
-    print(index)
     return index
 end
 
