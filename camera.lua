@@ -1,7 +1,7 @@
 camera = {}
 
-function camera.create(ui)
-    local self = { ui = ui }
+function camera.create(observer, ui)
+    local self = { observer = observer, ui = ui }
     setmetatable(self, {__index = camera})
 
     self.zoom = 2
@@ -10,8 +10,7 @@ function camera.create(ui)
     self.mouse_scroll_for_zoom = 2
 
     self.translate = { x = 0, y = 0 }
-    self.manual_center = { x = 0, y = 0 }
-    self.translate_mode = "center_cursor"
+    self:set_translate_center_to_cursor()
 
     self.manual_move_threshold = 1/10 * love.graphics.getWidth()
     self.manual_movement_base_speed = 5
@@ -19,13 +18,13 @@ function camera.create(ui)
     self.screen_center_x = love.graphics.getWidth() / 2 / zoom
     self.screen_center_y = love.graphics.getHeight() / 2 / zoom
 
+    self.observer:add_listener("cursor_moved_using_keyboard", function() self:set_translate_center_to_cursor() end)
+
     return self
 end
 
 function camera:update()
-    if self.translate_mode == "manual" then
-        self:move_manual_center_with_mouse()
-    end
+    self:move_manual_center_with_mouse()
 end
 
 function camera:move_manual_center_with_mouse()
@@ -48,20 +47,12 @@ function camera:move_manual_center_with_mouse()
         translate_movement.y = (y - (screen_height - threshold)) / threshold * speed
     end
 
-    self.manual_center.x = self.manual_center.x + translate_movement.x
-    self.manual_center.y = self.manual_center.y + translate_movement.y
+    self.translate_center.x = self.translate_center.x + translate_movement.x
+    self.translate_center.y = self.translate_center.y + translate_movement.y
 end
 
 function camera:control(event)
-    -- Change translate mode according to how the player moves the cursor.
-    if event.type == "key_pressed" then
-        self.translate_mode = "center_cursor"
-    elseif event.type == "mouse_pressed" then
-        -- Set manual_center object to last center_object.
-        self.manual_center = { x = self.center_object.x, y =self.center_object.y }
-        self.translate_mode = "manual"
-    -- Use mouse wheel to zoom
-    elseif event.type == "mouse_wheel_moved" then
+    if event.type == "mouse_wheel_moved" then
         self:zoom_using_mouse_wheel(event.data.x, event.data.y)
     end
 end
@@ -74,14 +65,8 @@ function camera:get_tile_from_coordinate(x, y)
 end
 
 function camera:set_translate()
-    if self.translate_mode == "center_cursor" then
-        self:set_translate_center_to_cursor()
-    elseif self.translate_mode == "manual" then
-        self:set_translate_center_manually()
-    end
-
-    self.translate = { x = self.screen_center_x - self.center_object.x * self.zoom,
-                       y = self.screen_center_y - self.center_object.y * self.zoom }
+    self.translate = { x = self.screen_center_x - self.translate_center.x * self.zoom,
+                       y = self.screen_center_y - self.translate_center.y * self.zoom }
 
     love.graphics.translate(self.translate.x, self.translate.y)
 end
@@ -102,9 +87,5 @@ function camera:set_translate_center_to_cursor()
     local cursor_x, cursor_y = self.ui.cursor:get_position()
     local cursor_center_x, cursor_center_y = (cursor_x + (tile_size / 2)), (cursor_y + (tile_size / 2))
 
-    self.center_object = { x = cursor_center_x, y = cursor_center_y }
-end
-
-function camera:set_translate_center_manually()
-    self.center_object = { x = self.manual_center.x, y = self.manual_center.y }
+    self.translate_center = { x = cursor_center_x, y = cursor_center_y }
 end

@@ -92,6 +92,7 @@ function cursor:move(direction)
     self:rebound()
 
     self.ui.observer:notify("cursor_moved")
+    self.ui.observer:notify("cursor_moved_using_keyboard")
 end
 
 function cursor:move_to(tile_x, tile_y)

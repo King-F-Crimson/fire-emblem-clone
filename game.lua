@@ -23,7 +23,7 @@ function game.create(observer)
     self.animation = animation.create()
     self.world = world.create(self.observer, self.teams, self.animation)
     self.ui = ui.create(self.observer, self, self.world)
-    self.camera = camera.create(self.ui)
+    self.camera = camera.create(self.observer, self.ui)
 
     return self
 end
