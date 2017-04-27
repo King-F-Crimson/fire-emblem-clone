@@ -41,6 +41,9 @@ function game:new_turn()
 end
 
 function game:update()
+    -- Camera is moveable both during and outside animation.
+    self.camera:update()
+
     if self.animation.active then
         self.animation:update()
     else

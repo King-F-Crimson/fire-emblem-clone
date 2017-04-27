@@ -13,10 +13,43 @@ function camera.create(ui)
     self.manual_center = { x = 0, y = 0 }
     self.translate_mode = "center_cursor"
 
+    self.manual_move_threshold = 1/10 * love.graphics.getWidth()
+    self.manual_movement_base_speed = 5
+
     self.screen_center_x = love.graphics.getWidth() / 2 / zoom
     self.screen_center_y = love.graphics.getHeight() / 2 / zoom
 
     return self
+end
+
+function camera:update()
+    if self.translate_mode == "manual" then
+        self:move_manual_center_with_mouse()
+    end
+end
+
+function camera:move_manual_center_with_mouse()
+    local x, y = love.mouse.getPosition()
+    local screen_width, screen_height = love.graphics.getWidth(), love.graphics.getHeight()
+    local threshold = self.manual_move_threshold
+    local speed = self.manual_movement_base_speed
+
+    local translate_movement = { x = 0, y = 0 }
+
+    if x < threshold then
+        translate_movement.x = (x - threshold) / threshold * speed
+    elseif x > screen_width - threshold then
+        translate_movement.x = (x - (screen_width - threshold)) / threshold * speed
+    end
+
+    if y < threshold then
+        translate_movement.y = (y - threshold) / threshold * speed
+    elseif y > screen_height - threshold then
+        translate_movement.y = (y - (screen_height - threshold)) / threshold * speed
+    end
+
+    self.manual_center.x = self.manual_center.x + translate_movement.x
+    self.manual_center.y = self.manual_center.y + translate_movement.y
 end
 
 function camera:control(event)
