@@ -76,11 +76,11 @@ end
 
 function ui:create_menu(menu_type)
     local cursor_x, cursor_y = self.cursor:get_position()
-    cursor_x, cursor_y = cursor_x * self.game.world_zoom, cursor_y * self.game.world_zoom
+    cursor_x, cursor_y = cursor_x * self.game.camera.zoom, cursor_y * self.game.camera.zoom
 
-    local translated_cursor_x, translated_cursor_y = cursor_x + self.game.translate.x, cursor_y + self.game.translate.y
+    local translated_cursor_x, translated_cursor_y = cursor_x + self.game.camera.translate.x, cursor_y + self.game.camera.translate.y
 
-    self.menu = menu.create(self, menu_type, translated_cursor_x + tile_size * self.game.world_zoom, translated_cursor_y)
+    self.menu = menu.create(self, menu_type, translated_cursor_x + tile_size * self.game.camera.zoom, translated_cursor_y)
 end
 
 function ui:create_area(area)
