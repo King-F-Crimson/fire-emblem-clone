@@ -39,7 +39,7 @@ unit_class = {
 
     axe_fighter = {
         base_sprite = love.graphics.newImage("assets/axe_fighter_idle.png"),
-        colored_part = love.graphics.newImage("assets/template_unit_idle.png"),
+        colored_part = love.graphics.newImage("assets/template_unit_idle_color.png"),
 
         name = "Axe Fighter",
         

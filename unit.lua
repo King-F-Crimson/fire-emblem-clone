@@ -75,7 +75,7 @@ function unit:draw()
 end
 
 function unit:draw_health_bar()
-    local x, y = self.tile_x * unit_size, (self.tile_y + 7/8) * unit_size
+    local x, y = self.tile_x * unit_size, (self.tile_y + 1) * unit_size
     love.graphics.draw(self.health_bar, x, y)
 end
 
