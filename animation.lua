@@ -1,7 +1,9 @@
 require("queue")
 require("attack_animation")
 
-animation = {}
+animation = {
+    colorize_shader = love.graphics.newShader("shaders/colorize_shader.fs"),
+}
 
 function animation.create()
     local self = {}

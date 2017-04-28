@@ -1,5 +1,7 @@
 require("utility")
 require("unit_class")
+require("colored_sprite")
+require("animated_sprite")
 
 unit = {
     base_sprite = love.graphics.newImage("assets/template_unit.png"),
@@ -32,38 +34,23 @@ function unit.create(class, tile_x, tile_y, data)
         self.data.health = self.max_health
     end
 
-    self:generate_sprite()
+    self.sprite = colored_sprite.create(self.base_sprite, self.colored_part, self.data.team.color)
+    self.idle_animation = animated_sprite.create{
+        image = self.sprite,
+        frame_width = unit_size,
+        durations = 10
+    }
+
     self:generate_health_bar()
 
     -- Create movement filter functions.
     function self.movement_filter(terrain, unit)
-        local cost
-
-        local terrain_cost = {
-            plain = 1,
-            water = "impassable",
-            sand = 2,
-            wall = "impassable",
-        }
-
-        -- Defaults to impassable.
-        cost = terrain_cost[terrain] or "impassable"
-
-        -- Check unit on tile if exist.
-        if unit then
-            if unit.data.team ~= self.data.team then
-                cost = "impassable"
-            end
-        end
-
-        return cost
+        return self:default_movement_filter(terrain, unit)
     end
 
     -- Create unlandable tile filter functions.
     function self.unlandable_filter(terrain, unit)
-        local unlandable = false
-
-        return unlandable
+        return self:default_unlandable_filter(terrain, unit)
     end
 
     return self
@@ -77,7 +64,9 @@ function unit:draw()
             love.graphics.setShader(self.desaturate_shader)
         end
 
-        love.graphics.draw(self.sprite, self.tile_x * unit_size, self.tile_y * unit_size)
+        -- love.graphics.draw(self.sprite, self.tile_x * unit_size, self.tile_y * unit_size)
+        self.idle_animation:update()
+        self.idle_animation:draw(self.tile_x * unit_size, self.tile_y * unit_size)
 
         love.graphics.setShader()
 
@@ -88,26 +77,6 @@ end
 function unit:draw_health_bar()
     local x, y = self.tile_x * unit_size, (self.tile_y + 7/8) * unit_size
     love.graphics.draw(self.health_bar, x, y)
-end
-
--- Get team colorized sprite.
-function unit:generate_sprite()
-    -- Draw to canvas to apply colorize shader.
-    self.sprite = love.graphics.newCanvas()
-    self.sprite:setFilter("nearest")
-
-    love.graphics.setCanvas(self.sprite)
-        -- Draw the normal sprite.
-        love.graphics.draw(self.base_sprite)
-
-        -- Draw team-colorized part using shader.
-        local team_color = self.data.team.color:get_color_as_table(1)
-        self.colorize_shader:send("tint_color", team_color)
-        love.graphics.setShader(self.colorize_shader)
-        love.graphics.draw(self.colored_part, 0, 0)
-        love.graphics.setShader()
-
-    love.graphics.setCanvas()
 end
 
 function unit:generate_health_bar()
@@ -175,4 +144,33 @@ end
 
 function unit:move(tile_x, tile_y)
     self.tile_x, self.tile_y = tile_x, tile_y
+end
+
+function unit:default_movement_filter(terrain, unit)
+    local cost
+
+    local terrain_cost = {
+        plain = 1,
+        water = "impassable",
+        sand = 2,
+        wall = "impassable",
+    }
+
+    -- Defaults to impassable.
+    cost = terrain_cost[terrain] or "impassable"
+
+    -- Check unit on tile if exist.
+    if unit then
+        if unit.data.team ~= self.data.team then
+            cost = "impassable"
+        end
+    end
+
+    return cost
+end
+
+function unit:default_unlandable_filter(terrain, unit)
+    local unlandable = false
+
+    return unlandable
 end

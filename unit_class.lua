@@ -26,6 +26,7 @@ unit_class = {
     lance_fighter = {
         base_sprite = love.graphics.newImage("assets/lance_fighter_large.png"),
 
+
         name = "Lance Fighter",
         
         max_health = 18,
@@ -37,7 +38,8 @@ unit_class = {
     },
 
     axe_fighter = {
-        base_sprite = love.graphics.newImage("assets/axe_fighter_large.png"),
+        base_sprite = love.graphics.newImage("assets/axe_fighter_idle.png"),
+        colored_part = love.graphics.newImage("assets/template_unit_idle.png"),
 
         name = "Axe Fighter",
         
