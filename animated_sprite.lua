@@ -23,7 +23,6 @@ function animated_sprite:construct_grid(frame_width, frame_height, image_width, 
     self.grid = anim8.newGrid(frame_width, frame_height, image_width, image_height, left, top, border)
 
     self.row_count = image_width / frame_width
-    print(image_width, frame_width)
     self.column_count = image_height / frame_height
 end
 
