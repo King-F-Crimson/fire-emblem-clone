@@ -137,7 +137,7 @@ function ui:draw(component)
     elseif component == "areas" then
         self:draw_areas()
     elseif component == "planned_unit" then
-        self:draw_planned_sprite()
+        self:draw_planned_unit()
     elseif component == "cursor" then
         self.cursor:draw()
     elseif component == "menu" then
@@ -162,8 +162,8 @@ function ui:draw_areas()
     self:draw_area("danger")
 end
 
-function ui:draw_planned_sprite()
-    if self.plan_sprite then
+function ui:draw_planned_unit()
+    if self.selected_unit then
         local tile_x, tile_y
         if self.state == moving or self.state == menu_control then
             tile_x, tile_y = self.cursor.tile_x, self.cursor.tile_y
@@ -173,7 +173,7 @@ function ui:draw_planned_sprite()
 
         love.graphics.push()
             love.graphics.scale(tile_size / unit_size)
-            love.graphics.draw(self.plan_sprite, tile_x * unit_size, tile_y * unit_size)
+            self.selected_unit:draw("run", tile_x * unit_size, tile_y * unit_size)
         love.graphics.pop()
     end
 end

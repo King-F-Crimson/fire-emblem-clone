@@ -4,8 +4,8 @@ require("colored_sprite")
 require("animated_sprite")
 
 unit = {
-    base_sprite = love.graphics.newImage("assets/template_unit.png"),
-    colored_part = love.graphics.newImage("assets/template_unit_color_large.png"),
+    idle_color = love.graphics.newImage("assets/template_unit_idle_color.png"),
+    run_color = love.graphics.newImage("assets/template_unit_run_color.png"),
 
     health_bar_base = love.graphics.newImage("assets/health_bar_32.png"),
 
@@ -13,8 +13,6 @@ unit = {
     desaturate_shader = love.graphics.newShader("shaders/desaturate_shader.fs"),
     gradient_shader = love.graphics.newShader("shaders/gradient_shader.fs"),
 }
-
-unit.base_sprite:setFilter("nearest")
 
 function unit.create(class, tile_x, tile_y, data)
     local self = deepcopy(class)
@@ -34,12 +32,7 @@ function unit.create(class, tile_x, tile_y, data)
         self.data.health = self.max_health
     end
 
-    self.sprite = colored_sprite.create(self.base_sprite, self.colored_part, self.data.team.color)
-    self.idle_animation = animated_sprite.create{
-        image = self.sprite,
-        frame_width = unit_size,
-        durations = 10
-    }
+    self:generate_animations()
 
     self:generate_health_bar()
 
@@ -56,22 +49,40 @@ function unit.create(class, tile_x, tile_y, data)
     return self
 end
 
-function unit:draw()
-    -- Unit will be hidden during animation.
-    if not self.hidden then
-        -- Gray out unit if it has moved.
-        if self.data.moved then
-            love.graphics.setShader(self.desaturate_shader)
-        end
+function unit:generate_animations()
+    self.sprites = {
+        idle = colored_sprite.create(self.idle_base, self.idle_color, self.data.team.color),
+        run = colored_sprite.create(self.run_base, self.run_color, self.data.team.color),
+    }
+    self.animations = {
+        idle = animated_sprite.create{ image = self.sprites.idle, frame_width = unit_size, durations = 10 },
+        run = animated_sprite.create{ image = self.sprites.run, frame_width = unit_size, durations = 5 },
+    }
+end
 
-        -- love.graphics.draw(self.sprite, self.tile_x * unit_size, self.tile_y * unit_size)
-        self.idle_animation:update()
-        self.idle_animation:draw(self.tile_x * unit_size, self.tile_y * unit_size)
-
-        love.graphics.setShader()
-
-        self:draw_health_bar()
+function unit:update_animation()
+    for k, animation in pairs(self.animations) do
+        animation:update(1)
     end
+end
+
+function unit:draw(animation, x, y)
+    -- Gray out unit if it has moved.
+    if self.data.moved then
+        love.graphics.setShader(self.desaturate_shader)
+    end
+
+    if animation == "idle" then
+        animation = self.animations.idle
+    elseif
+        animation == "run" then animation = self.animations.run
+    end
+
+    animation:draw(x, y)
+
+    love.graphics.setShader()
+
+    self:draw_health_bar()
 end
 
 function unit:draw_health_bar()

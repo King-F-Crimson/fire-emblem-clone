@@ -17,8 +17,11 @@ function unit_layer.create(map, observer)
     function self:draw()
         for y, column in pairs(self.tiles) do
             for x, unit in pairs(column) do
-                if unit ~= nil then
-                    unit:draw()
+                -- Unit will be hidden during animation and when it's selected.
+                if unit ~= nil and not unit.hidden then
+                    local x, y = (x - 1) * unit_size, (y - 1) * unit_size
+
+                    unit:draw("idle", x, y)
                 end
             end
         end

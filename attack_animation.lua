@@ -54,6 +54,6 @@ end
 function attack_animation:draw()
     love.graphics.push()
         love.graphics.scale(tile_size / unit_size)
-        love.graphics.draw(self.attacker.sprite, self.tile_x * unit_size, self.tile_y * unit_size)
+        self.attacker:draw("run", self.tile_x * unit_size, self.tile_y * unit_size)
     love.graphics.pop()
 end

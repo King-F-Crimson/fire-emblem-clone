@@ -98,6 +98,14 @@ function world:update()
     self.map:update()
 end
 
+function world:update_animation()
+    units = self:get_all_units()
+
+    for k, unit in pairs(units) do
+        unit:update_animation()
+    end
+end
+
 function world:draw(component)
     if component == "tiles" then
         for i, layer in ipairs(self.map.layers) do

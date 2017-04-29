@@ -43,6 +43,7 @@ end
 function game:update()
     -- Camera is moveable both during and outside animation.
     self.camera:update()
+    self.world:update_animation()
 
     if self.animation.active then
         self.animation:update()

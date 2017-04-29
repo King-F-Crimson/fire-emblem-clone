@@ -14,9 +14,6 @@ function browsing.process_feedback(ui, feedback)
             if unit.data.team == ui.game.current_turn and not unit.data.moved then
                 ui.selected_unit = unit
 
-                -- Set planned unit sprite.
-                ui.plan_sprite = unit.sprite
-
                 moving.enter(ui)
             -- If it's an enemy unit then toggle it in marked_units
             -- to mark it's possible attack position.
@@ -39,8 +36,6 @@ end
 
 function browsing.enter(ui)
     ui.selected_unit = nil
-
-    ui.plan_sprite = nil
 
     ui.plan_tile_x, ui.plan_tile_y = nil
 
