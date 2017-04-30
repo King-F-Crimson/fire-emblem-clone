@@ -63,9 +63,9 @@ function game:draw()
 
         self.world:draw("tiles")
         self.ui:draw("areas")
+        self.ui:draw("cursor")
         self.world:draw("units")
         self.ui:draw("planned_unit")
-        self.ui:draw("cursor")
 
         -- Draw animation if active.
         if self.animation.active then

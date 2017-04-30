@@ -11,8 +11,8 @@ unit_class = {
     },
 
     sword_fighter = {
-        idle_base = love.graphics.newImage("assets/axe_fighter_idle.png"),
-        run_base = love.graphics.newImage("assets/axe_fighter_run.png"),
+        idle_base = love.graphics.newImage("assets/sword_fighter_idle.png"),
+        run_base = love.graphics.newImage("assets/sword_fighter_run.png"),
 
         name = "Sword Fighter",
         
@@ -25,8 +25,8 @@ unit_class = {
     },
 
     lance_fighter = {
-        idle_base = love.graphics.newImage("assets/axe_fighter_idle.png"),
-        run_base = love.graphics.newImage("assets/axe_fighter_run.png"),
+        idle_base = love.graphics.newImage("assets/lance_fighter_idle.png"),
+        run_base = love.graphics.newImage("assets/lance_fighter_run.png"),
 
         name = "Lance Fighter",
         
@@ -53,8 +53,8 @@ unit_class = {
     },
 
     bow_fighter = {
-        idle_base = love.graphics.newImage("assets/axe_fighter_idle.png"),
-        run_base = love.graphics.newImage("assets/axe_fighter_run.png"),
+        idle_base = love.graphics.newImage("assets/bow_fighter_idle.png"),
+        run_base = love.graphics.newImage("assets/bow_fighter_run.png"),
 
         name = "Bow Fighter",
         
@@ -66,8 +66,3 @@ unit_class = {
         weapon_type = "bow"
     }
 }
-
--- Apply nearest filter to all
--- for k, class in pairs(unit_class) do
---     class.base_sprite:setFilter("nearest")
--- end
