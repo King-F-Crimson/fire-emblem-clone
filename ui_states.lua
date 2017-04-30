@@ -36,7 +36,9 @@ function browsing.process_feedback(ui, feedback)
 end
 
 function browsing.enter(ui)
-    ui.selected_unit.hidden = false
+    if ui.selected_unit then
+        ui.selected_unit.hidden = false
+    end
     ui.selected_unit = nil
 
     ui.plan_tile_x, ui.plan_tile_y = nil

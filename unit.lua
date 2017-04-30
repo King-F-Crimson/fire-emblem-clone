@@ -82,12 +82,11 @@ function unit:draw(animation, x, y)
 
     love.graphics.setShader()
 
-    self:draw_health_bar()
+    self:draw_health_bar(x, y)
 end
 
-function unit:draw_health_bar()
-    local x, y = self.tile_x * unit_size, (self.tile_y + 1) * unit_size
-    love.graphics.draw(self.health_bar, x, y)
+function unit:draw_health_bar(x, y)
+    love.graphics.draw(self.health_bar, x, y + unit_size)
 end
 
 function unit:generate_health_bar()
