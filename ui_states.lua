@@ -13,6 +13,7 @@ function browsing.process_feedback(ui, feedback)
             -- If unit is player unit and has not moved, select it.
             if unit.data.team == ui.game.current_turn and not unit.data.moved then
                 ui.selected_unit = unit
+                ui.selected_unit.hidden = true
 
                 moving.enter(ui)
             -- If it's an enemy unit then toggle it in marked_units
@@ -35,6 +36,7 @@ function browsing.process_feedback(ui, feedback)
 end
 
 function browsing.enter(ui)
+    ui.selected_unit.hidden = false
     ui.selected_unit = nil
 
     ui.plan_tile_x, ui.plan_tile_y = nil
