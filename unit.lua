@@ -11,7 +11,7 @@ unit = {
 
     colorize_shader = love.graphics.newShader("shaders/colorize_shader.fs"),
     desaturate_shader = love.graphics.newShader("shaders/desaturate_shader.fs"),
-    gradient_shader = love.graphics.newShader("shaders/gradient_shader.fs"),
+    gradient_shader = love.graphics.newShader("shaders/gradient_shader_blocky.fs"),
 }
 
 function unit.create(class, tile_x, tile_y, data)
