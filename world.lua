@@ -4,6 +4,7 @@ require("unit_class")
 require("unit_layer")
 require("weapon_class")
 require("queue")
+require("combat")
 require("debug")
 
 local sti = require "libs/Simple-Tiled-Implementation/sti"
@@ -62,21 +63,7 @@ function world:process_command_queue()
 end
 
 function world:combat(attacker, tile_x, tile_y)
-    local attack_power = attacker.strength + attacker.data.weapon.power
-
-    local target_unit = self:get_unit(tile_x, tile_y)
-
-    if target_unit then
-        target_unit.data.health = target_unit.data.health - attack_power
-
-        -- Regenerate health_bar display since health is changed.
-        target_unit:generate_health_bar()
-
-        if target_unit.data.health <= 0 then
-            local unit_layer = self.map.layers.unit_layer
-            unit_layer:delete_unit(target_unit)
-        end
-    end
+    combat.initiate(self, attacker, tile_x, tile_y)
 
     -- Construct animation from combat.
     local animation = { type = "attack" }
