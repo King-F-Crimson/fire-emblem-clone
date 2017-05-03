@@ -25,17 +25,17 @@ function world.create(observer, teams, animation)
     local unit_layer = unit_layer.create(self.map, self.observer)
 
     -- Create player units.
-    unit_layer:create_unit(unit_class.sword_fighter, 0, 0, { weapon = weapon_class.iron_sword, team = self.teams[1] })
-    unit_layer:create_unit(unit_class.axe_fighter, 3, 5, { weapon = weapon_class.iron_axe, team = self.teams[1] })
-    unit_layer:create_unit(unit_class.lance_fighter, 2, 10, { weapon = weapon_class.iron_lance, team = self.teams[1] })
-    unit_layer:create_unit(unit_class.bow_fighter, 4, 8, { weapon = weapon_class.iron_bow, team = self.teams[1] })
+    unit_layer:create_unit(unit_class.sword_fighter, 0, 0, { active_weapon = weapon_class.iron_sword, weapons = {weapon_class.iron_sword}, team = self.teams[1] })
+    unit_layer:create_unit(unit_class.axe_fighter, 3, 5, { active_weapon = weapon_class.iron_axe, weapons = {weapon_class.iron_axe}, team = self.teams[1] })
+    unit_layer:create_unit(unit_class.lance_fighter, 2, 10, { active_weapon = weapon_class.iron_lance, weapons = {weapon_class.iron_lance}, team = self.teams[1] })
+    unit_layer:create_unit(unit_class.bow_fighter, 4, 8, { active_weapon = weapon_class.iron_bow, weapons = {weapon_class.iron_bow}, team = self.teams[1] })
 
     -- Create enemy units.
-    unit_layer:create_unit(unit_class.sword_fighter, 3, 14, { weapon = weapon_class.iron_sword, team = self.teams[2] })
-    unit_layer:create_unit(unit_class.sword_fighter, 29, 29, { weapon = weapon_class.iron_sword, team = self.teams[2] })
-    unit_layer:create_unit(unit_class.axe_fighter, 26, 24, { weapon = weapon_class.iron_axe, team = self.teams[2] })
-    unit_layer:create_unit(unit_class.lance_fighter, 27, 20, { weapon = weapon_class.iron_lance, team = self.teams[2] })
-    unit_layer:create_unit(unit_class.bow_fighter, 22, 26, { weapon = weapon_class.iron_bow, team = self.teams[2] })
+    unit_layer:create_unit(unit_class.sword_fighter, 3, 14, { active_weapon = weapon_class.iron_sword, weapons = {weapon_class.iron_sword}, team = self.teams[2] })
+    unit_layer:create_unit(unit_class.sword_fighter, 29, 29, { active_weapon = weapon_class.iron_sword, weapons = {weapon_class.iron_sword}, team = self.teams[2] })
+    unit_layer:create_unit(unit_class.axe_fighter, 26, 24, { active_weapon = weapon_class.iron_axe, weapons = {weapon_class.iron_axe}, team = self.teams[2] })
+    unit_layer:create_unit(unit_class.lance_fighter, 27, 20, { active_weapon = weapon_class.iron_lance, weapons = {weapon_class.iron_lance}, team = self.teams[2] })
+    unit_layer:create_unit(unit_class.bow_fighter, 22, 26, { active_weapon = weapon_class.iron_bow, weapons = {weapon_class.iron_bow}, team = self.teams[2] })
 
     self.observer:add_listener("new_turn", function() self:new_turn() end)
 

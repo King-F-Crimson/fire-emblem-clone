@@ -43,3 +43,11 @@ end
 function print_all(table)
     for k, v in pairs(table) do print(k, v) end
 end
+
+-- Check if table is empty.
+function is_empty(table)
+    for _ in pairs(table) do
+        return false
+    end
+    return true
+end

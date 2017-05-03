@@ -38,8 +38,8 @@ function unit_info:draw()
     local unit = self.displayed_unit
     if unit then
         local info = string.format("%s\nHealth: %i\nStrength: %i\nSpeed: %i", unit.name, unit.data.health, unit.strength, unit.speed)
-        if unit.data.weapon then
-            info = string.format("%s\nWeapon: %s", info, unit.data.weapon.name)
+        if unit.data.active_weapon then
+            info = string.format("%s\nWeapon: %s", info, unit.data.active_weapon.name)
         end
         love.graphics.print(info, tile_size, tile_size)
     end

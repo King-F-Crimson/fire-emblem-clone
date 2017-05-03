@@ -1,3 +1,5 @@
+require("utility")
+
 browsing = {}
 moving = {}
 menu_control = {}
@@ -94,7 +96,8 @@ function menu_control.process_feedback(ui, feedback)
 
     if feedback.action == "attack" then
         -- Make attack unselectable when selected unit has no weapon.
-        if ui.selected_unit.data.weapon then
+        print(ui.selected_unit.data.weapons)
+        if not is_empty(ui.selected_unit.data.weapons) then
             attacking.enter(ui)
         end
     end

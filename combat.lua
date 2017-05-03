@@ -1,7 +1,7 @@
 combat = {}
 
 function combat.initiate(world, attacker, tile_x, tile_y)
-    local attack_power = attacker.strength + attacker.data.weapon.power
+    local attack_power = attacker.strength + attacker.data.active_weapon.power
 
     local target_unit = world:get_unit(tile_x, tile_y)
 
