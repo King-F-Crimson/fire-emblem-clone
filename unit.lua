@@ -191,6 +191,18 @@ function unit:move(tile_x, tile_y)
     self.tile_x, self.tile_y = tile_x, tile_y
 end
 
+function unit:damage(world, damage)
+    self.data.health = self.data.health - damage
+
+    -- Regenerate health_bar display since health is changed.
+    self:generate_health_bar()
+
+    if self.data.health <= 0 then
+        local unit_layer = world.map.layers.unit_layer
+        unit_layer:delete_unit(self)
+    end
+end
+
 function unit:default_movement_filter(terrain, unit)
     local cost
 
