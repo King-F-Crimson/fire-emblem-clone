@@ -167,6 +167,15 @@ function unit:get_valid_weapons(world, tile_x, tile_y, target_tile_x, target_til
     return valid_weapons
 end
 
+function unit:can_counter_attack(world, target_tile_x, target_tile_y)
+    local function key(x, y) return string.format("(%i, %i)", x, y) end
+
+    local weapon = self.data.active_weapon
+    local attack_area = world:get_tiles_in_distance{tile_x = self.tile_x, tile_y = self.tile_y, distance = weapon.range, min_distance = weapon.min_range or 1}
+
+    return attack_area[key(target_tile_x, target_tile_y)] ~= nil
+end
+
 -- Get every posible area that the unit can attack by moving then attacking.
 function unit:get_danger_area(world)
     local danger_area = {}

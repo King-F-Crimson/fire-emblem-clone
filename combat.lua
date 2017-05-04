@@ -6,7 +6,7 @@ function combat.initiate(world, attacker, tile_x, tile_y)
     if defender then
         combat.attack(world, attacker, defender)
 
-        if defender.data.health > 0 then
+        if defender.data.health > 0 and defender:can_counter_attack(world, attacker.tile_x, attacker.tile_y) then
             combat.attack(world, defender, attacker)
         end
     end
