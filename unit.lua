@@ -126,12 +126,45 @@ function unit:get_attack_area(world, tile_x, tile_y)
         end
     end
 
+    local attack_area = {}
+
     for k, weapon in pairs(self.data.weapons) do
         -- Default min_range to 1.
         local min_range = weapon.min_range or 1
 
-        return world:get_tiles_in_distance{tile_x = tile_x, tile_y = tile_y, distance = weapon.range, min_distance = min_range, unlandable_filter = unlandable_filter}
+        for key, tile in pairs(world:get_tiles_in_distance{tile_x = tile_x, tile_y = tile_y, distance = weapon.range, min_distance = min_range, unlandable_filter = unlandable_filter}) do
+            if not attack_area[key] then
+                attack_area[key] = tile
+            end
+        end
     end
+
+    return attack_area
+end
+
+-- Weapons that can attack a tile.
+function unit:get_valid_weapons(world, tile_x, tile_y, target_tile_x, target_tile_y)
+    local function key(x, y) return string.format("(%i, %i)", x, y) end
+
+    local valid_weapons = {}
+
+    local function unlandable_filter(terrain, unit)
+        if terrain == "wall" then
+            return true
+        end
+    end
+
+    for k, weapon in pairs(self.data.weapons) do
+        -- Default min_range to 1.
+        local min_range = weapon.min_range or 1
+
+        local valid_tiles = world:get_tiles_in_distance{tile_x = tile_x, tile_y = tile_y, distance = weapon.range, min_distance = min_range, unlandable_filter = unlandable_filter}
+        if valid_tiles[key(target_tile_x, target_tile_y)] then
+            table.insert(valid_weapons, weapon)
+        end
+    end
+
+    return valid_weapons
 end
 
 -- Get every posible area that the unit can attack by moving then attacking.

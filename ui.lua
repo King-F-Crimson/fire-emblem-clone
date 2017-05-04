@@ -74,13 +74,13 @@ function ui:process_feedback_queue()
     end
 end
 
-function ui:create_menu(menu_type)
+function ui:create_menu(menu_type, content_data)
     local cursor_x, cursor_y = self.cursor:get_position()
     cursor_x, cursor_y = cursor_x * self.game.camera.zoom, cursor_y * self.game.camera.zoom
 
     local translated_cursor_x, translated_cursor_y = cursor_x + self.game.camera.translate.x, cursor_y + self.game.camera.translate.y
 
-    self.menu = menu.create(self, menu_type, translated_cursor_x + tile_size * self.game.camera.zoom, translated_cursor_y)
+    self.menu = menu.create(self, menu_type, content_data, translated_cursor_x + tile_size * self.game.camera.zoom, translated_cursor_y)
 end
 
 function ui:create_area(area)
@@ -165,9 +165,9 @@ end
 function ui:draw_planned_unit()
     if self.selected_unit then
         local tile_x, tile_y
-        if self.state == moving or self.state == menu_control then
+        if self.state == moving then
             tile_x, tile_y = self.cursor.tile_x, self.cursor.tile_y
-        elseif self.state == attacking then
+        elseif self.state == attacking or self.state == menu_control then
             tile_x, tile_y = self.plan_tile_x, self.plan_tile_y
         end
 

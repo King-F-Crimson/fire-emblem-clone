@@ -2,29 +2,43 @@ require("utility")
 
 menu = {}
 
-function menu.create(ui, menu_type, x, y)
+function menu.create(ui, menu_type, content_data, x, y)
     local self = { ui = ui, menu_type = menu_type, x = x, y = y }
     setmetatable(self, { __index = menu })
 
-    self:generate_content()
+    self:generate_content(content_data)
 
     return self
 end
 
-function menu:generate_content()
+function menu:generate_content(content_data)
     self.items = {}
     self.actions = {}
     self.pointer = 1
 
     if self.menu_type == "action" then
         self.items  = { "Wait", "Attack", "Items" }
-        self.actions = { "wait", "attack", "items" }
+        self.actions = { {action = "wait"}, {action = "prompt_attack"}, {action = "items"} }
     elseif self.menu_type == "turn" then
         self.items = { "End turn" }
-        self.actions = { "end_turn" }
+        self.actions = { {action = "end_turn"} }
+    elseif self.menu_type == "weapon_select" then
+        self:create_weapon_select_content(content_data)
     end
 
     self.item_count = #self.items
+end
+
+function menu:create_weapon_select_content(content_data)
+    self.items = {}
+    self.actions = {}
+
+    local weapons = content_data.weapons
+    for k, weapon in pairs(weapons) do
+        table.insert(self.items, weapon.name)
+        table.insert(self.actions, {action = "attack",
+            data = { weapon = weapon, tile_x = content_data.tile_x, tile_y = content_data.tile_y }} )
+    end
 end
 
 function menu:control(input_queue)
@@ -47,9 +61,9 @@ function menu:control(input_queue)
         elseif input == "select" then
             -- self.select_sound:play()
             -- Push feedback to ui.
-            self:push_action(self.actions[self.pointer])
+            self:push_feedback(self.actions[self.pointer])
         elseif input == "cancel" then
-            self:push_action("cancel")
+            self:push_feedback({ action = "cancel" })
         elseif input == "mouse_pressed" then
             self:mouse_pressed(data)
         end
@@ -62,14 +76,14 @@ function menu:mouse_pressed(data)
 
         if index >= 1 and index <= self.item_count then
             if self.pointer == index then
-                self:push_action(self.actions[self.pointer])
+                self:push_feedback(self.actions[self.pointer])
             else
                 self.pointer = index
             end
         end
     end
     if data.button == 2 then
-        self:push_action("cancel")
+        self:push_feedback({ action = "cancel" })
     end
 end
 
@@ -78,10 +92,7 @@ function menu:get_index_from_coordinate(x, y)
     return index
 end
 
-function menu:push_action(action)
-    local feedback = {}
-    feedback.action = action
-
+function menu:push_feedback(feedback)
     self.ui:receive_feedback(feedback)
 end
 

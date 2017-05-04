@@ -5,6 +5,19 @@ moving = {}
 menu_control = {}
 attacking = {}
 
+-- Maybe a stack should be implemented, so cancelling could be handled better.
+-- Example:
+-- Stack: browsing -> moving -> menu
+-- Then when cancelled, the stack is moved back to "moving".
+-- This would improve codes such as:
+    -- if menu_type == "action" then
+    --     moving.enter(ui)
+    -- elseif menu_type == "turn" then
+    --     browsing.enter(ui)
+    -- elseif menu_type == "weapon_select" then
+    --     attacking.enter(ui)
+    -- end
+
 function browsing.process_feedback(ui, feedback)
     -- Select a tile which could contain controllable unit to select it.
     -- Later could also be enemy unit to toggle area, or special tile to get information.
@@ -94,9 +107,8 @@ function menu_control.process_feedback(ui, feedback)
         browsing.enter(ui)
     end
 
-    if feedback.action == "attack" then
+    if feedback.action == "prompt_attack" then
         -- Make attack unselectable when selected unit has no weapon.
-        print(ui.selected_unit.data.weapons)
         if not is_empty(ui.selected_unit.data.weapons) then
             attacking.enter(ui)
         end
@@ -104,10 +116,14 @@ function menu_control.process_feedback(ui, feedback)
 
     if feedback.action == "cancel" then
         -- Return to previous state based on the menu type.
-        if ui.menu.menu_type == "action" then
+        local menu_type = ui.menu.menu_type
+
+        if menu_type == "action" then
             moving.enter(ui)
-        elseif ui.menu.menu_type == "turn" then
+        elseif menu_type == "turn" then
             browsing.enter(ui)
+        elseif menu_type == "weapon_select" then
+            attacking.enter(ui)
         end
     end
 
@@ -116,12 +132,32 @@ function menu_control.process_feedback(ui, feedback)
 
         browsing.enter(ui)
     end
+
+    if feedback.action == "attack" then
+        -- Change the unit active_weapon to selected weapon.
+        ui.selected_unit.data.active_weapon = feedback.data.weapon
+
+        -- Push command to world to move then attack.
+        local move_command = { action = "move_unit" }
+        move_command.data = { unit = ui.selected_unit, tile_x = ui.plan_tile_x, tile_y = ui.plan_tile_y }
+        ui.world:receive_command(move_command)
+
+        local attack_command = { action = "attack" }
+        attack_command.data = { unit = ui.selected_unit, tile_x = feedback.data.tile_x, tile_y = feedback.data.tile_y }
+        ui.world:receive_command(attack_command)
+
+        -- Put cursor in the attacking unit position.
+        ui.cursor:move_to(ui.plan_tile_x, ui.plan_tile_y)
+
+        -- Revert to browsing state.
+        browsing.enter(ui)
+    end
 end
 
-function menu_control.enter(ui, menu_type)
+function menu_control.enter(ui, menu_type, content_data)
     ui.areas.move = nil
 
-    ui:create_menu(menu_type)
+    ui:create_menu(menu_type, content_data)
     ui.active_input = "menu"
 
     ui.state = menu_control
@@ -130,21 +166,13 @@ end
 function attacking.process_feedback(ui, feedback)
     -- Attack position.
     if feedback.action == "select" then
-        if ui:is_in_area("attack", feedback.data.tile_x, feedback.data.tile_y) then
-            -- Push command to world to move then attack.
-            local move_command = { action = "move_unit" }
-            move_command.data = { unit = ui.selected_unit, tile_x = ui.plan_tile_x, tile_y = ui.plan_tile_y }
-            ui.world:receive_command(move_command)
+        local target_tile_x, target_tile_y = feedback.data.tile_x, feedback.data.tile_y
+        -- Weapons that can attack the tile.
+        local valid_weapons = ui.selected_unit:get_valid_weapons(ui.world, ui.plan_tile_x, ui.plan_tile_y, target_tile_x, target_tile_y)
+        local content_data = { weapons = valid_weapons, tile_x = target_tile_x, tile_y = target_tile_y }
 
-            local attack_command = { action = "attack" }
-            attack_command.data = { unit = ui.selected_unit, tile_x = feedback.data.tile_x, tile_y = feedback.data.tile_y }
-            ui.world:receive_command(attack_command)
-
-            -- Put cursor in the attacking unit position.
-            ui.cursor:move_to(ui.plan_tile_x, ui.plan_tile_y)
-
-            -- Revert to browsing state.
-            browsing.enter(ui)
+        if not is_empty(valid_weapons) then
+            menu_control.enter(ui, "weapon_select", content_data)
         end
     end
 
