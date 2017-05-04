@@ -37,7 +37,7 @@ end
 function unit_info:draw()
     local unit = self.displayed_unit
     if unit then
-        local info = string.format("%s\nHealth: %i\nStrength: %i\nSpeed: %i", unit.name, unit.data.health, unit.strength, unit.speed)
+        local info = string.format("%s\nHealth: %i\nStrength: %i\nDefense: %i\nSkill: %i\nSpeed: %i", unit.name, unit.data.health, unit.strength, unit.defense, unit.skill, unit.speed)
         if unit.data.active_weapon then
             info = string.format("%s\nWeapon: %s", info, unit.data.active_weapon.name)
         end

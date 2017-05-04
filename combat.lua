@@ -13,6 +13,15 @@ function combat.initiate(world, attacker, tile_x, tile_y)
 end
 
 function combat.attack(world, attacker, target)
-    local attack_power = attacker.strength + attacker.data.active_weapon.power
-    target:damage(world, attack_power)
+    local weapon = attacker.data.active_weapon
+
+    local attack_power = weapon.power + attacker.strength - target.defense
+    if attack_power < 0 then attack_power = 0 end
+    
+    local accuracy = weapon.accuracy + attacker.skill * 2 - target.speed * 2
+
+    -- Check miss:
+    if math.random(1, 100) <= accuracy then
+        target:damage(world, attack_power)
+    end
 end
