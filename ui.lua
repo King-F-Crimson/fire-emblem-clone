@@ -13,6 +13,7 @@ ui = {
 
 ui.sprite.move_area:setFilter("nearest")
 ui.sprite.attack_area:setFilter("nearest")
+ui.sprite.danger_area:setFilter("nearest")
 
 function ui.create(observer, game, world)
     local self = { observer = observer, game = game, world = world }
