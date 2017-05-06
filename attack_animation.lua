@@ -48,7 +48,6 @@ function attack_animation:update()
     self.tile_y = self.attacker.tile_y + displacement_y
 
     if self.current_frame == 10 then
-        print(self.miss)
         if self.miss then
             self.miss_sound:play()
         else
