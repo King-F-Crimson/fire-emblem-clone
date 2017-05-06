@@ -13,15 +13,34 @@ function combat.initiate(world, attacker, tile_x, tile_y)
 end
 
 function combat.attack(world, attacker, target)
-    local weapon = attacker.data.active_weapon
-
-    local attack_power = weapon.power + attacker.strength - target.defense
-    if attack_power < 0 then attack_power = 0 end
-    
-    local accuracy = weapon.accuracy + attacker.skill * 2 - target.speed * 2
-
     -- Check miss:
-    if math.random(1, 100) <= accuracy then
-        target:damage(world, attack_power)
+    if math.random(1, 100) <= combat.get_hit_rate(world, attacker, target) then
+        target:damage(world, combat.get_attack_power(world, attacker, target))
+
+        combat.push_animation(world, attacker, target, "attack")
     end
+end
+
+function combat.get_attack_power(world, attacker, target)
+    local attack_power = attacker.data.active_weapon.power + attacker.strength - target.defense
+    if attack_power < 0 then attack_power = 0 end
+
+    return attack_power
+end
+
+function combat.get_hit_rate(world, attacker, target)
+    local hit_rate = attacker.data.active_weapon.accuracy + attacker.skill * 2 - target.speed * 2
+
+    return hit_rate
+end
+
+function combat.push_animation(world, attacker, target, animation_type)
+    local animation
+
+    if animation_type == "attack" then
+        animation = { type = "attack" }
+        animation.data = { attacker = attacker, tile_x = target.tile_x, tile_y = target.tile_y }
+    end
+
+    world.animation:receive_animation(animation)
 end

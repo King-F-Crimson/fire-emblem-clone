@@ -64,12 +64,6 @@ end
 
 function world:combat(attacker, tile_x, tile_y)
     combat.initiate(self, attacker, tile_x, tile_y)
-
-    -- Construct animation from combat.
-    local animation = { type = "attack" }
-    animation.data = { attacker = attacker, tile_x = tile_x, tile_y = tile_y }
-
-    self.animation:receive_animation(animation)
 end
 
 function world:new_turn()

@@ -3,10 +3,13 @@ require("utility")
 menu = {}
 
 function menu.create(ui, menu_type, content_data, x, y)
-    local self = { ui = ui, menu_type = menu_type, x = x, y = y }
+    local self = { ui = ui, observer = ui.observer, menu_type = menu_type, x = x, y = y }
     setmetatable(self, { __index = menu })
 
     self:generate_content(content_data)
+
+    -- Notify menu creation, passing data on current action for objects that need it such as combat_info.
+    self.observer:notify("menu_created", self.actions[self.pointer])
 
     return self
 end
@@ -45,21 +48,10 @@ function menu:control(input_queue)
     for input, data in pairs(input_queue) do
         -- Move the selected item with keys.
         if input == "up" then
-            -- self.scroll_sound:play()
-            if self.pointer == 1 then
-                self.pointer = self.item_count    -- If self.pointer is at first item, set it to the last item.
-            else
-                self.pointer = self.pointer - 1
-            end
+            self:move("up")
         elseif input == "down" then
-            -- self.scroll_sound:play()
-            if self.pointer == self.item_count then
-                self.pointer = 1             -- If self.pointer is at last item, set it to the first item.
-            else
-                self.pointer = self.pointer + 1
-            end
+            self:move("down")
         elseif input == "select" then
-            -- self.select_sound:play()
             -- Push feedback to ui.
             self:push_feedback(self.actions[self.pointer])
         elseif input == "cancel" then
@@ -68,6 +60,24 @@ function menu:control(input_queue)
             self:mouse_pressed(data)
         end
     end
+end
+
+function menu:move(direction)
+    if direction == "up" then
+        if self.pointer == 1 then
+            self.pointer = self.item_count    -- If self.pointer is at first item, set it to the last item.
+        else
+            self.pointer = self.pointer - 1
+        end
+    elseif direction == "down" then
+        if self.pointer == self.item_count then
+            self.pointer = 1             -- If self.pointer is at last item, set it to the first item.
+        else
+            self.pointer = self.pointer + 1
+        end
+    end
+
+    self.observer:notify("menu_moved", self.actions[self.pointer])
 end
 
 function menu:mouse_pressed(data)

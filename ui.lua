@@ -84,6 +84,11 @@ function ui:create_menu(menu_type, content_data)
     self.menu = menu.create(self, menu_type, content_data, translated_cursor_x + tile_size * self.game.camera.zoom, translated_cursor_y)
 end
 
+function ui:destroy_menu()
+    self.observer:notify("menu_destroyed")
+    self.menu = nil
+end
+
 function ui:create_area(area)
     local unit = self.selected_unit
     if area == "move" then

@@ -58,7 +58,7 @@ function browsing.enter(ui)
 
     ui.plan_tile_x, ui.plan_tile_y = nil
 
-    ui.menu = nil
+    ui:destroy_menu()
     ui.active_input = "cursor"
 
     ui.state = browsing
@@ -89,7 +89,7 @@ end
 function moving.enter(ui)
     ui.plan_tile_x, ui.plan_tile_y = nil
 
-    ui.menu = nil
+    ui:destroy_menu()
     ui.active_input = "cursor"
 
     ui:create_area("move")
@@ -186,7 +186,7 @@ function attacking.process_feedback(ui, feedback)
 end
 
 function attacking.enter(ui)
-    ui.menu = nil
+    ui:destroy_menu()
     ui.active_input = "cursor"
 
     ui:create_area("attack")
