@@ -1,5 +1,6 @@
 require("queue")
 require("attack_animation")
+require("wait_animation")
 
 animation = {
     colorize_shader = love.graphics.newShader("shaders/colorize_shader.fs"),
@@ -26,7 +27,9 @@ function animation:process_animation_queue()
     if not self.animation_queue:empty() then
         local animation = self.animation_queue:pop()
         if animation.type == "attack" then
-            self.current_animation = attack_animation.create(animation.data.attacker, animation.data.tile_x, animation.data.tile_y)
+            self.current_animation = attack_animation.create(animation.data)
+        elseif animation.type == "wait" then
+            self.current_animation = wait_animation.create(animation.data)
         end
     else
         self.active = false

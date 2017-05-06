@@ -1,18 +1,21 @@
 attack_animation = {
-    sound = love.audio.newSource("assets/hit.wav", "static")
+    hit_sound = love.audio.newSource("assets/hit.wav", "static"),
+    miss_sound = love.audio.newSource("assets/miss.wav", "static")
 }
 
-function attack_animation.create(attacker, tile_x, tile_y)
+function attack_animation.create(data)
     local self = {}
     setmetatable(self, {__index = attack_animation})
 
-    self.attacker = attacker
+    self.attacker = data.attacker
     self.tile_x, self.tile_y = self.attacker.tile_x, self.attacker.tile_y
 
     -- Hide attacker so it's not drawn.
     self.attacker.hidden = true
 
-    self.distance_tile_x, self.distance_tile_y = tile_x - attacker.tile_x, tile_y - attacker.tile_y
+    self.distance_tile_x, self.distance_tile_y = data.tile_x - self.attacker.tile_x, data.tile_y - self.attacker.tile_y
+
+    self.miss = data.miss
 
     self.current_frame = 1
     self.complete = false
@@ -45,7 +48,12 @@ function attack_animation:update()
     self.tile_y = self.attacker.tile_y + displacement_y
 
     if self.current_frame == 10 then
-        self.sound:play()
+        print(self.miss)
+        if self.miss then
+            self.miss_sound:play()
+        else
+            self.hit_sound:play()
+        end
     end
 
     self.current_frame = self.current_frame + 1
