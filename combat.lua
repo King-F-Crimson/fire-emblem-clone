@@ -37,8 +37,8 @@ end
 
 function combat.attack(world, attacker, target)
     -- Check miss:
-    if math.random(1, 100) <= combat.get_hit_rate(world, attacker, target) then
-        target:damage(world, combat.get_attack_power(world, attacker, target))
+    if math.random(1, 100) <= combat.get_hit_rate(world, attacker, attacker.data.active_weapon, target) then
+        target:damage(world, combat.get_attack_power(world, attacker, attacker.data.active_weapon, target))
 
         combat.push_animation(world, {attacker = attacker, target = target}, "attack")
     else
@@ -46,17 +46,17 @@ function combat.attack(world, attacker, target)
     end
 end
 
-function combat.get_attack_power(world, attacker, target)
-    local attack_power = attacker.data.active_weapon.power + attacker.strength - target.defense
+function combat.get_attack_power(world, attacker, weapon, target)
+    local attack_power = weapon.power + attacker.strength - target.defense
     if attack_power < 0 then attack_power = 0 end
 
     return attack_power
 end
 
-function combat.get_hit_rate(world, attacker, target)
+function combat.get_hit_rate(world, attacker, weapon, target)
     local hit_rate = attacker.data.active_weapon.accuracy + attacker.skill * 2 - target.speed * 2
 
-    local weapon_advantage = combat.get_weapon_advantage(attacker.data.active_weapon, target.data.active_weapon)
+    local weapon_advantage = combat.get_weapon_advantage(weapon, target.data.active_weapon)
 
     if weapon_advantage == "win" then
         hit_rate = hit_rate + 10
