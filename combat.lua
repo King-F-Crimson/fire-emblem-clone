@@ -1,5 +1,12 @@
 combat = {}
 
+combat.weapon_advantage = {
+    sword = { sword = "neutral", lance = "lose",    axe = "win",     bow = "neutral" },
+    lance = { sword = "win",     lance = "neutral", axe = "lose",    bow = "neutral" },
+    axe   = { sword = "lose",    lance = "win",     axe = "neutral", bow = "neutral" },
+    bow   = { sword = "neutral", lance = "neutral", axe = "neutral", bow = "neutral" },
+}
+
 function combat.initiate(world, attacker, tile_x, tile_y)
     local defender = world:get_unit(tile_x, tile_y)
 
@@ -49,7 +56,19 @@ end
 function combat.get_hit_rate(world, attacker, target)
     local hit_rate = attacker.data.active_weapon.accuracy + attacker.skill * 2 - target.speed * 2
 
+    local weapon_advantage = combat.get_weapon_advantage(attacker.data.active_weapon, target.data.active_weapon)
+
+    if weapon_advantage == "win" then
+        hit_rate = hit_rate + 10
+    elseif weapon_advantage == "lose" then
+        hit_rate = hit_rate - 10
+    end
+
     return hit_rate
+end
+
+function combat.get_weapon_advantage(attacking_weapon, defending_weapon)
+    return combat.weapon_advantage[attacking_weapon.type][defending_weapon.type]
 end
 
 function combat.push_animation(world, data, animation_type)

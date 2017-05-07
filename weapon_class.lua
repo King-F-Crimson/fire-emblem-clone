@@ -6,7 +6,7 @@ weapon_class = {
         accuracy = 100,
         range = 1,
 
-        weapon_type = "sword",
+        type = "sword",
     },
 
     iron_lance = {
@@ -16,7 +16,7 @@ weapon_class = {
         accuracy = 85,
         range = 1,
 
-        weapon_type = "lance",
+        type = "lance",
     },
 
     iron_axe = {
@@ -26,7 +26,7 @@ weapon_class = {
         accuracy = 70,
         range = 1,
 
-        weapon_type = "axe",
+        type = "axe",
     },
 
     iron_bow = {
@@ -37,6 +37,6 @@ weapon_class = {
         range = 2,
         min_range = 2,
 
-        weapon_type = "bow",
+        type = "bow",
     },
 }
