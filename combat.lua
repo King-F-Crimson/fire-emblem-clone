@@ -64,6 +64,9 @@ function combat.get_hit_rate(world, attacker, weapon, target)
         hit_rate = hit_rate - 10
     end
 
+    if hit_rate < 0 then hit_rate = 0 end
+    if hit_rate > 100 then hit_rate = 100 end
+
     return hit_rate
 end
 

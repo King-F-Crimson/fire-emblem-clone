@@ -15,12 +15,14 @@ end
 
 function combat_info:set_combat_info(action)
     if action.action == "attack" then
-        local unit = self.ui.world:get_unit(action.data.tile_x, action.data.tile_y)
-        if unit then
+        local target_unit = self.ui.world:get_unit(action.data.tile_x, action.data.tile_y)
+        if target_unit then
             self.info = string.format(
-                "Attack power: %i\nHit rate: %i",
-                combat.get_attack_power(self.ui.world, self.ui.selected_unit, action.data.weapon, unit),
-                combat.get_hit_rate(self.ui.world, self.ui.selected_unit, action.data.weapon, unit)
+                "Attack power: %i\nHit rate: %i%%\n\nAttack power: %i\nHit rate: %i%%",
+                combat.get_attack_power(self.ui.world, self.ui.selected_unit, action.data.weapon, target_unit),
+                combat.get_hit_rate(self.ui.world, self.ui.selected_unit, action.data.weapon, target_unit),
+                combat.get_attack_power(self.ui.world, target_unit, target_unit.data.active_weapon, self.ui.selected_unit),
+                combat.get_hit_rate(self.ui.world, target_unit, target_unit.data.active_weapon, self.ui.selected_unit)
             )
         end
     end
