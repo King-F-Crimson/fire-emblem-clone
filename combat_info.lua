@@ -14,27 +14,36 @@ function combat_info.create(observer, ui, x, y)
 end
 
 function combat_info:set_combat_info(action)
-    local world = self.ui.world
-    local selected_unit = self.ui.selected_unit
-
     if action.action == "attack" then
+        local world = self.ui.world
+        local selected_unit = self.ui.selected_unit
+        local selected_weapon = action.data.weapon
+
         local target_unit = world:get_unit(action.data.tile_x, action.data.tile_y)
         if target_unit then
-            if target_unit:can_counter_attack(world, self.ui.plan_tile_x, self.ui.plan_tile_y) then
-                self.info = string.format(
-                    "Attack power: %i\nHit rate: %i%%\n\nAttack power: %i\nHit rate: %i%%",
-                    combat.get_attack_power(world, selected_unit, action.data.weapon, target_unit),
-                    combat.get_hit_rate(world, selected_unit, action.data.weapon, target_unit),
-                    combat.get_attack_power(world, target_unit, target_unit.data.active_weapon, selected_unit),
-                    combat.get_hit_rate(world, target_unit, target_unit.data.active_weapon, selected_unit)
-                )
-            else
-                self.info = string.format(
-                    "Attack power: %i\nHit rate: %i%%\n\nAttack power: -\nHit rate: -",
-                    combat.get_attack_power(world, selected_unit, action.data.weapon, target_unit),
-                    combat.get_hit_rate(world, selected_unit, action.data.weapon, target_unit)
-                )
+            local player_attack_power, player_hit_rate, enemy_attack_power, enemy_hit_rate
+
+            player_attack_power = tostring(combat.get_attack_power(world, selected_unit, action.data.weapon, target_unit))
+            if combat.can_double_attack(world, selected_unit, selected_weapon, target_unit) then
+                player_attack_power = player_attack_power .. " x2"
             end
+            player_hit_rate = tostring(combat.get_hit_rate(world, selected_unit, action.data.weapon, target_unit)) .. "%"
+
+            if target_unit:can_counter_attack(world, self.ui.plan_tile_x, self.ui.plan_tile_y) then
+                enemy_attack_power = tostring(combat.get_attack_power(world, target_unit, target_unit.data.active_weapon, selected_unit))
+                if combat.can_double_attack(world, target_unit, target_unit.data.active_weapon, selected_unit) then
+                    enemy_attack_power = enemy_attack_power .. " x2"
+                end
+                enemy_hit_rate = tostring(combat.get_hit_rate(world, target_unit, target_unit.data.active_weapon, selected_unit)) .. "%"
+            else
+                enemy_attack_power = "-"
+                enemy_hit_rate = "-"
+            end
+
+            self.info = string.format(
+                "Attack power: %s\nHit rate: %s\n\nAttack power: %s\nHit rate: %s",
+                player_attack_power, player_hit_rate, enemy_attack_power, enemy_hit_rate
+            )
         end
     end
 end

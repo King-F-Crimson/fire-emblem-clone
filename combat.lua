@@ -70,6 +70,10 @@ function combat.get_hit_rate(world, attacker, weapon, target)
     return hit_rate
 end
 
+function combat.can_double_attack(world, attacker, weapon, target)
+    return attacker.speed >= target.speed + 5
+end
+
 function combat.get_weapon_advantage(attacking_weapon, defending_weapon)
     return combat.weapon_advantage[attacking_weapon.type][defending_weapon.type]
 end
