@@ -19,7 +19,7 @@ function combat.initiate(world, attacker, tile_x, tile_y)
 
             combat.attack(world, defender, attacker)
 
-            if defender.speed >= attacker.speed + 5 then
+            if defender.speed >= attacker.speed + 5 and attacker.data.health > 0 then
                 combat.push_animation(world, {length = 20}, "wait")
 
                 combat.attack(world, defender, attacker)
@@ -27,7 +27,7 @@ function combat.initiate(world, attacker, tile_x, tile_y)
         end
 
         -- Double attack if speed is 5 or more.
-        if attacker.speed >= defender.speed + 5 then
+        if attacker.speed >= defender.speed + 5 and defender.data.health > 0 then
             combat.push_animation(world, {length = 20}, "wait")
 
             combat.attack(world, attacker, defender)
