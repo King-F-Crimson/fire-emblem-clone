@@ -1,4 +1,5 @@
 require("game")
+require("title_screen")
 require("observer")
 require("queue")
 
@@ -23,7 +24,7 @@ function application.create()
     love.keyboard.setKeyRepeat(true)
 
     self.observer = observer.create()
-    self.game = game.create(self.observer)
+    self.state = title_screen.create(self, self.observer)
 
     self.event_queue = queue.create()
 
@@ -32,13 +33,17 @@ end
 
 function application:update()
     while not self.event_queue:empty() do
-        self.game:process_event(self.event_queue:pop())
-    end    
-    self.game:update()
+        self.state:process_event(self.event_queue:pop())
+    end
+    self.state:update()
 end
 
 function application:draw()
-    self.game:draw()
+    self.state:draw()
+end
+
+function application:change_state(new_state)
+    self.state = new_state.create(self, self.observer)
 end
 
 function application:receive_event(event)

@@ -8,8 +8,8 @@ require("camera")
 
 game = {}
 
-function game.create(observer)
-    local self = { observer = observer }
+function game.create(application, observer)
+    local self = { application = application, observer = observer }
     setmetatable(self, {__index = game})
 
     self.teams = {
