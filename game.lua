@@ -5,6 +5,7 @@ require("animation")
 require("team")
 require("color")
 require("camera")
+require("pause_menu")
 
 game = {}
 
@@ -20,6 +21,9 @@ function game.create(application, observer)
     self.current_turn = self.teams[1]
     self.current_turn_number = 1
 
+    self.is_paused = false
+
+    self.pause_menu = pause_menu.create()
     self.animation = animation.create()
     self.world = world.create(self.observer, self.teams, self.animation)
     self.ui = ui.create(self.observer, self, self.world)
@@ -45,7 +49,9 @@ function game:update()
     self.camera:update()
     self.world:update_animation()
 
-    if self.animation.active then
+    if self.is_paused then
+        self.pause_menu:update()
+    elseif self.animation.active then
         self.animation:update()
     else
         self.ui:update()
@@ -77,11 +83,23 @@ function game:draw()
         love.graphics.scale(zoom)
         self.ui:draw("hud")
         self.ui:draw("menu")
+
+        if self.is_paused then
+            self.pause_menu:draw()
+        end
     love.graphics.pop()
 end
 
 function game:process_event(event)
-    self.camera:control(event)
+    if event.type == "key_pressed" and event.data.key == "p" then
+        self.is_paused = not self.is_paused
+    end
 
-    self.ui:process_event(event)
+    self.camera:process_event(event)
+
+    if self.is_paused then
+        self.pause_menu:process_event(event)
+    else
+        self.ui:process_event(event)
+    end
 end

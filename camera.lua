@@ -51,7 +51,7 @@ function camera:move_manual_center_with_mouse()
     self.translate_center.y = self.translate_center.y + translate_movement.y
 end
 
-function camera:control(event)
+function camera:process_event(event)
     if event.type == "mouse_wheel_moved" then
         self:zoom_using_mouse_wheel(event.data.x, event.data.y)
     end
