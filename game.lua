@@ -23,7 +23,7 @@ function game.create(application, observer)
 
     self.is_paused = false
 
-    self.pause_menu = pause_menu.create()
+    self.pause_menu = pause_menu.create(self.application)
     self.animation = animation.create()
     self.world = world.create(self.observer, self.teams, self.animation)
     self.ui = ui.create(self.observer, self, self.world)
@@ -83,11 +83,11 @@ function game:draw()
         love.graphics.scale(zoom)
         self.ui:draw("hud")
         self.ui:draw("menu")
-
-        if self.is_paused then
-            self.pause_menu:draw()
-        end
     love.graphics.pop()
+
+    if self.is_paused then
+        self.pause_menu:draw()
+    end
 end
 
 function game:process_event(event)

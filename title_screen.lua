@@ -5,12 +5,7 @@ function title_screen.create(application)
     setmetatable(self, {__index = title_screen})
 
     self.title = love.graphics.newText(self.application.font, "Fire Emblem Clone")
-    self.title_width = self.title:getWidth()
-    self.title_height = self.title:getHeight()
-
     self.instruction = love.graphics.newText(self.application.font, "Press any button to start!")
-    self.instruction_width = self.instruction:getWidth()
-    self.instruction_height = self.instruction:getHeight()
 
     self.zoom = 4
 
@@ -30,7 +25,7 @@ end
 function title_screen:draw()
     love.graphics.push()
         love.graphics.scale(self.zoom)
-        love.graphics.draw(self.title, (love.graphics.getWidth() / self.zoom - self.title_width) / 2, self.title_height)
-        love.graphics.draw(self.instruction, (love.graphics.getWidth() / self.zoom - self.instruction_width) / 2, love.graphics.getHeight() / self.zoom - self.instruction_height * 2)
+        love.graphics.draw(self.title, (love.graphics.getWidth() / self.zoom - self.title:getWidth()) / 2, self.title:getHeight())
+        love.graphics.draw(self.instruction, (love.graphics.getWidth() / self.zoom - self.instruction:getWidth()) / 2, love.graphics.getHeight() / self.zoom - self.instruction:getHeight() * 2)
     love.graphics.pop()
 end
