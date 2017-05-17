@@ -4,7 +4,7 @@ function pause_menu.create(application)
     local self = { application = application }
     setmetatable(self, {__index = pause_menu})
 
-    self.text = love.graphics.newText(self.application.font, "Paused")
+    self.text = love.graphics.newText(self.application.font, "Paused, press P to unpause")
 
     self.zoom = 4
 
