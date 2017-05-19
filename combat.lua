@@ -38,11 +38,12 @@ end
 function combat.attack(world, attacker, target)
     -- Check miss:
     if math.random(1, 100) <= combat.get_hit_rate(world, attacker, attacker.data.active_weapon, target) then
-        target:damage(world, combat.get_attack_power(world, attacker, attacker.data.active_weapon, target))
+        local damage = combat.get_attack_power(world, attacker, attacker.data.active_weapon, target)
+        target:damage(world, damage)
 
-        combat.push_animation(world, {attacker = attacker, target = target}, "attack")
+        combat.push_animation(world, {attacker = attacker, target = target, damage = damage }, "attack")
     else
-        combat.push_animation(world, {attacker = attacker, target = target, miss = true}, "attack")
+        combat.push_animation(world, {attacker = attacker, target = target, miss = true, damage = damage }, "attack")
     end
 end
 
@@ -82,7 +83,7 @@ function combat.push_animation(world, data, animation_type)
     local animation
 
     if animation_type == "attack" then
-        animation = { type = "attack", data = { attacker = data.attacker, tile_x = data.target.tile_x, tile_y = data.target.tile_y, miss = data.miss } }
+        animation = { type = "attack", data = { attacker = data.attacker, tile_x = data.target.tile_x, tile_y = data.target.tile_y, miss = data.miss, damage = data.damage } }
     elseif animation_type == "wait" then
         animation = { type = "wait", data = data }
     end

@@ -13,9 +13,16 @@ function attack_animation.create(data)
     -- Hide attacker so it's not drawn.
     self.attacker.hidden = true
 
+    self.target_tile_x, self.target_tile_y = data.tile_x, data.tile_y
     self.distance_tile_x, self.distance_tile_y = data.tile_x - self.attacker.tile_x, data.tile_y - self.attacker.tile_y
 
     self.miss = data.miss
+
+    if self.miss then
+        self.text = "MUDA DA!"
+    else
+        self.text = tostring(data.damage)
+    end
 
     self.current_frame = 1
     self.complete = false
@@ -55,6 +62,12 @@ function attack_animation:update()
         end
     end
 
+    if self.current_frame >= 4 then
+        self.text_visible = true
+    else
+        self.text_visible = false
+    end
+
     self.current_frame = self.current_frame + 1
 end
 
@@ -62,5 +75,8 @@ function attack_animation:draw()
     love.graphics.push()
         love.graphics.scale(tile_size / unit_size)
         self.attacker:draw("run", self.tile_x * unit_size, self.tile_y * unit_size)
+        if self.text_visible then
+            love.graphics.print(self.text, self.target_tile_x * unit_size, (self.target_tile_y - 1) * unit_size)
+        end
     love.graphics.pop()
 end
