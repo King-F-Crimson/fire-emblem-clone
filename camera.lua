@@ -27,6 +27,16 @@ function camera:update()
     self:move_manual_center_with_mouse()
 end
 
+function camera:set_bounds_to_map(map)
+
+end
+
+function camera:set_bounds(min_x, min_y, max_x, max_y)
+    -- Make camera cannot move outside bounds.
+
+    self.bounds = { min_x = min_x, min_y = min_y, max_x = max_x, max_y = max_y }
+end
+
 function camera:move_manual_center_with_mouse()
     local x, y = love.mouse.getPosition()
     local screen_width, screen_height = love.graphics.getWidth(), love.graphics.getHeight()
