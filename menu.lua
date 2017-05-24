@@ -98,7 +98,7 @@ function menu:mouse_pressed(data)
 end
 
 function menu:get_index_from_coordinate(x, y)
-    local index = math.floor((y / zoom - self.y) / app.font:getHeight()) + 1
+    local index = math.floor((y / self.ui.game.application.zoom - self.y) / app.font:getHeight()) + 1
     return index
 end
 

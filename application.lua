@@ -5,7 +5,6 @@ require("queue")
 
 tile_size = 16
 unit_size = 32
-zoom = 2
 
 application = {
     font = love.graphics.newImageFont("assets/font_16_height.png",
@@ -23,12 +22,22 @@ function application.create()
     love.window.setFullscreen(true, "desktop")
     love.keyboard.setKeyRepeat(true)
 
+    self.zoom = 2
+
     self.observer = observer.create()
     self.state = title_screen.create(self, self.observer)
 
     self.event_queue = queue.create()
 
     return self
+end
+
+function application:get_scaled_window_width()
+    return love.graphics.getWidth() / self.zoom
+end
+
+function application:get_scaled_window_height()
+    return love.graphics.getHeight() / self.zoom
 end
 
 function application:update()
@@ -39,7 +48,10 @@ function application:update()
 end
 
 function application:draw()
-    self.state:draw()
+    love.graphics.push()
+        love.graphics.scale(self.zoom)
+        self.state:draw()
+    love.graphics.pop()
 end
 
 function application:change_state(new_state)

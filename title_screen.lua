@@ -25,7 +25,7 @@ end
 function title_screen:draw()
     love.graphics.push()
         love.graphics.scale(self.zoom)
-        love.graphics.draw(self.title, (love.graphics.getWidth() / self.zoom - self.title:getWidth()) / 2, self.title:getHeight())
-        love.graphics.draw(self.instruction, (love.graphics.getWidth() / self.zoom - self.instruction:getWidth()) / 2, love.graphics.getHeight() / self.zoom - self.instruction:getHeight() * 2)
+        love.graphics.draw(self.title, (self.application:get_scaled_window_width() / self.zoom - self.title:getWidth()) / 2, self.title:getHeight())
+        love.graphics.draw(self.instruction, (self.application:get_scaled_window_width() / self.zoom - self.instruction:getWidth()) / 2, self.application:get_scaled_window_height() / self.zoom - self.instruction:getHeight() * 2)
     love.graphics.pop()
 end

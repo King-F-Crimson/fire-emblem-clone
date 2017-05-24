@@ -62,8 +62,6 @@ end
 function game:draw()
     -- Draw the world and animation with cursor at the center of the screen.
     love.graphics.push()
-        love.graphics.scale(zoom)
-
         self.camera:set_translate()
         self.camera:set_zoom()
 
@@ -80,7 +78,6 @@ function game:draw()
     love.graphics.pop()
 
     love.graphics.push()
-        love.graphics.scale(zoom)
         self.ui:draw("hud")
         self.ui:draw("menu")
     love.graphics.pop()

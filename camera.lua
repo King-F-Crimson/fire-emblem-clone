@@ -1,7 +1,7 @@
 camera = {}
 
 function camera.create(observer, ui)
-    local self = { observer = observer, ui = ui }
+    local self = { observer = observer, ui = ui, application = ui.game.application }
     setmetatable(self, {__index = camera})
 
     self.zoom = 2
@@ -15,8 +15,8 @@ function camera.create(observer, ui)
     self.manual_move_threshold = 1/10 * love.graphics.getWidth()
     self.manual_movement_base_speed = 5
 
-    self.screen_center_x = love.graphics.getWidth() / 2 / zoom
-    self.screen_center_y = love.graphics.getHeight() / 2 / zoom
+    self.screen_center_x = self.application:get_scaled_window_width() / 2
+    self.screen_center_y = self.application:get_scaled_window_height() / 2
 
     self.observer:add_listener("cursor_moved_using_keyboard", function() self:set_translate_center_to_cursor() end)
 
@@ -68,7 +68,7 @@ function camera:process_event(event)
 end
 
 function camera:get_tile_from_coordinate(x, y)
-    local translated_x, translated_y = (x / zoom - self.translate.x) / self.zoom, (y / zoom - self.translate.y) / self.zoom
+    local translated_x, translated_y = (x / self.application.zoom - self.translate.x) / self.zoom, (y / self.application.zoom - self.translate.y) / self.zoom
     local tile_x, tile_y = math.floor(translated_x / tile_size), math.floor(translated_y / tile_size)
 
     return tile_x, tile_y
