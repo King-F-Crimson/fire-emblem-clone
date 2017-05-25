@@ -7,7 +7,7 @@ function title_screen.create(application)
     self.title = love.graphics.newText(self.application.font, "Fire Emblem Clone")
     self.instruction = love.graphics.newText(self.application.font, "Press any button to start!")
 
-    self.zoom = 4
+    self.zoom = 2
 
     return self
 end
