@@ -9,6 +9,8 @@ function camera.create(observer, ui)
     self.max_zoom = 8
     self.mouse_scroll_for_zoom = 2
 
+    self:set_bounds_to_map(ui.game.world.map)
+
     self.translate = { x = 0, y = 0 }
     self:set_translate_center_to_cursor()
 
@@ -28,7 +30,7 @@ function camera:update()
 end
 
 function camera:set_bounds_to_map(map)
-
+    self:set_bounds(0, 0, map.width * tile_size, map.height * tile_size)
 end
 
 function camera:set_bounds(min_x, min_y, max_x, max_y)
@@ -57,8 +59,24 @@ function camera:move_manual_center_with_mouse()
         translate_movement.y = (y - (screen_height - threshold)) / threshold * speed
     end
 
-    self.translate_center.x = self.translate_center.x + translate_movement.x
-    self.translate_center.y = self.translate_center.y + translate_movement.y
+    self:set_translate_center(self.translate_center.x + translate_movement.x, self.translate_center.y + translate_movement.y)
+end
+
+function camera:set_translate_center(x, y)
+    local x, y = x, y
+
+    if x < self.bounds.min_x then
+        x = self.bounds.min_x
+    elseif x > self.bounds.max_x then
+        x = self.bounds.max_x
+    end
+    if y < self.bounds.min_y then
+        y = self.bounds.min_y
+    elseif y > self.bounds.max_y then
+        y = self.bounds.max_y
+    end
+
+    self.translate_center = { x = x, y = y }
 end
 
 function camera:process_event(event)
@@ -97,5 +115,5 @@ function camera:set_translate_center_to_cursor()
     local cursor_x, cursor_y = self.ui.cursor:get_position()
     local cursor_center_x, cursor_center_y = (cursor_x + (tile_size / 2)), (cursor_y + (tile_size / 2))
 
-    self.translate_center = { x = cursor_center_x, y = cursor_center_y }
+    self:set_translate_center(cursor_center_x, cursor_center_y)
 end
