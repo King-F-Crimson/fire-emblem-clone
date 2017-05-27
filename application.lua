@@ -21,6 +21,7 @@ function application.create()
 
     love.window.setFullscreen(true, "desktop")
     love.keyboard.setKeyRepeat(true)
+    love.graphics.setBackgroundColor(32, 32, 32)
 
     self.zoom = 2
 
