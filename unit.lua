@@ -207,9 +207,13 @@ function unit:damage(world, damage)
     self:generate_health_bar()
 
     if self.data.health <= 0 then
-        local unit_layer = world.map.layers.unit_layer
-        unit_layer:delete_unit(self)
+        self.die_flag = true
     end
+end
+
+function unit:die(world)
+    local unit_layer = world.map.layers.unit_layer
+    unit_layer:delete_unit(self)
 end
 
 function unit:default_movement_filter(terrain, unit)

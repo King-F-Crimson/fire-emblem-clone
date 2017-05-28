@@ -42,6 +42,10 @@ function combat.attack(world, attacker, target)
         target:damage(world, damage)
 
         combat.push_animation(world, {attacker = attacker, target = target, damage = damage }, "attack")
+
+        if target.die_flag then
+            target:die(world)
+        end
     else
         combat.push_animation(world, {attacker = attacker, target = target, miss = true, damage = damage }, "attack")
     end
