@@ -23,6 +23,8 @@ function application.create()
     love.keyboard.setKeyRepeat(true)
     love.graphics.setBackgroundColor(32, 32, 32)
 
+    math.randomseed(os.time())
+
     self.zoom = 2
 
     self.observer = observer.create()
