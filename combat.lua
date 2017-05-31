@@ -13,13 +13,13 @@ function combat.initiate(world, attacker, tile_x, tile_y)
     if defender then
         combat.attack(world, attacker, defender)
 
-        if defender.data.health > 0 and defender:can_counter_attack(world, attacker.tile_x, attacker.tile_y) then
+        if not defender.die_flag and defender:can_counter_attack(world, attacker.tile_x, attacker.tile_y) then
             -- Create empty wait animation for 20 frames.
             combat.push_animation(world, {length = 20}, "wait")
 
             combat.attack(world, defender, attacker)
 
-            if defender.speed >= attacker.speed + 5 and attacker.data.health > 0 then
+            if defender.speed >= attacker.speed + 5 and not attacker.die_flag and not defender.die_flag then
                 combat.push_animation(world, {length = 20}, "wait")
 
                 combat.attack(world, defender, attacker)
@@ -27,7 +27,7 @@ function combat.initiate(world, attacker, tile_x, tile_y)
         end
 
         -- Double attack if speed is 5 or more.
-        if attacker.speed >= defender.speed + 5 and defender.data.health > 0 then
+        if attacker.speed >= defender.speed + 5 and not defender.die_flag and not attacker.die_flag then
             combat.push_animation(world, {length = 20}, "wait")
 
             combat.attack(world, attacker, defender)
