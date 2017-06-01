@@ -15,12 +15,12 @@ function combat.initiate(world, attacker, tile_x, tile_y)
 
         if not defender.die_flag and defender:can_counter_attack(world, attacker.tile_x, attacker.tile_y) then
             -- Create empty wait animation for 20 frames.
-            combat.push_animation(world, {length = 20}, "wait")
+            combat.push_animation(world, {length = 20, attacker = attacker, target = defender}, "wait")
 
             combat.attack(world, defender, attacker)
 
             if defender.speed >= attacker.speed + 5 and not attacker.die_flag and not defender.die_flag then
-                combat.push_animation(world, {length = 20}, "wait")
+                combat.push_animation(world, {length = 20, attacker = attacker, target = defender}, "wait")
 
                 combat.attack(world, defender, attacker)
             end
@@ -28,7 +28,7 @@ function combat.initiate(world, attacker, tile_x, tile_y)
 
         -- Double attack if speed is 5 or more.
         if attacker.speed >= defender.speed + 5 and not defender.die_flag and not attacker.die_flag then
-            combat.push_animation(world, {length = 20}, "wait")
+            combat.push_animation(world, {length = 20, attacker = attacker, target = defender}, "wait")
 
             combat.attack(world, attacker, defender)
         end
@@ -87,7 +87,7 @@ function combat.push_animation(world, data, animation_type)
     local animation
 
     if animation_type == "attack" then
-        animation = { type = "attack", data = { attacker = data.attacker, tile_x = data.target.tile_x, tile_y = data.target.tile_y, miss = data.miss, damage = data.damage } }
+        animation = { type = "attack", data = data }
     elseif animation_type == "wait" then
         animation = { type = "wait", data = data }
     end

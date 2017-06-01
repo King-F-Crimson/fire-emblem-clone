@@ -3,25 +3,28 @@ attack_animation = {
     miss_sound = love.audio.newSource("assets/miss.wav", "static")
 }
 
-function attack_animation.create(data)
+function attack_animation.create(args)
     local self = {}
     setmetatable(self, {__index = attack_animation})
 
-    self.attacker = data.attacker
+    self.attacker = args.attacker
     self.tile_x, self.tile_y = self.attacker.tile_x, self.attacker.tile_y
 
-    -- Hide attacker so it's not drawn.
+    self.target = args.target
+    self.target_tile_x, self.target_tile_y = self.target.tile_x, self.target.tile_y
+
+    -- Hide attacker and target so it's not drawn in world:draw("units").
     self.attacker.hidden = true
+    self.target.hidden = true
 
-    self.target_tile_x, self.target_tile_y = data.tile_x, data.tile_y
-    self.distance_tile_x, self.distance_tile_y = data.tile_x - self.attacker.tile_x, data.tile_y - self.attacker.tile_y
+    self.distance_tile_x, self.distance_tile_y = self.target.tile_x - self.attacker.tile_x, self.target.tile_y - self.attacker.tile_y
 
-    self.miss = data.miss
+    self.miss = args.miss
 
     if self.miss then
         self.text = "MUDA DA!"
     else
-        self.text = tostring(data.damage)
+        self.text = tostring(args.damage)
     end
 
     self.current_frame = 1
@@ -33,8 +36,9 @@ end
 function attack_animation:exit()
     self.complete = true
 
-    -- Unhide attacker.
+    -- Unhide attacker and target.
     self.attacker.hidden = false
+    self.target.hidden = false
 end
 
 function attack_animation:update()
@@ -75,6 +79,7 @@ function attack_animation:draw()
     love.graphics.push()
         love.graphics.scale(tile_size / unit_size)
         self.attacker:draw("run", self.tile_x * unit_size, self.tile_y * unit_size)
+        self.target:draw("run", self.target_tile_x * unit_size, self.target_tile_y * unit_size)
         if self.text_visible then
             love.graphics.print(self.text, self.target_tile_x * unit_size, (self.target_tile_y - 1) * unit_size)
         end
