@@ -6,8 +6,8 @@ animation = {
     colorize_shader = love.graphics.newShader("shaders/colorize_shader.fs"),
 }
 
-function animation.create()
-    local self = {}
+function animation.create(observer)
+    local self = { observer = observer }
     setmetatable(self, {__index = animation})
 
     self.active = false

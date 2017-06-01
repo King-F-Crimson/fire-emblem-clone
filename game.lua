@@ -24,7 +24,7 @@ function game.create(application, observer)
     self.is_paused = false
 
     self.pause_menu = pause_menu.create(self.application)
-    self.animation = animation.create()
+    self.animation = animation.create(self.observer)
     self.world = world.create(self.observer, self.teams, self.animation)
     self.ui = ui.create(self.observer, self, self.world)
     self.camera = camera.create(self.observer, self.ui)
