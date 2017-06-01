@@ -142,8 +142,8 @@ function ui:draw(component)
         self.hud:draw()
     elseif component == "areas" then
         self:draw_areas()
-    elseif component == "planned_unit" then
-        self:draw_planned_unit()
+    elseif component == "selected_unit" then
+        self:draw_selected_unit()
     elseif component == "cursor" then
         self.cursor:draw()
     elseif component == "menu" then
@@ -168,7 +168,7 @@ function ui:draw_areas()
     self:draw_area("danger")
 end
 
-function ui:draw_planned_unit()
+function ui:draw_selected_unit()
     if self.selected_unit then
         local tile_x, tile_y
         if self.state == moving then
@@ -180,6 +180,7 @@ function ui:draw_planned_unit()
         love.graphics.push()
             love.graphics.scale(tile_size / unit_size)
             self.selected_unit:draw("run", tile_x * unit_size, tile_y * unit_size)
+            self.selected_unit:draw_health_bar(tile_x * unit_size, tile_y * unit_size)
         love.graphics.pop()
     end
 end

@@ -99,6 +99,11 @@ function world:draw(component)
             love.graphics.scale(tile_size / unit_size)
             self.map.layers.unit_layer:draw()
         love.graphics.pop()
+    elseif component == "health_bars" then
+        love.graphics.push()
+            love.graphics.scale(tile_size / unit_size)
+            self.map.layers.unit_layer:draw_health_bars()
+        love.graphics.pop()
     end
 end
 

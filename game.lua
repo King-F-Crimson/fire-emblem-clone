@@ -69,7 +69,8 @@ function game:draw()
         self.ui:draw("areas")
         self.ui:draw("cursor")
         self.world:draw("units")
-        self.ui:draw("planned_unit")
+        self.ui:draw("selected_unit")
+        self.world:draw("health_bars")
 
         -- Draw animation if active.
         if self.animation.active then

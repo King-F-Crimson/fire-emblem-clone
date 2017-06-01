@@ -27,6 +27,19 @@ function unit_layer.create(map, observer)
         end
     end
 
+    function self:draw_health_bars()
+        for y, column in pairs(self.tiles) do
+            for x, unit in pairs(column) do
+                -- Unit will be hidden during animation and when it's selected.
+                if unit ~= nil and not unit.hidden then
+                    local x, y = (x - 1) * unit_size, (y - 1) * unit_size
+
+                    unit:draw_health_bar(x, y)
+                end
+            end
+        end
+    end
+
     function self:update(dt)
 
     end

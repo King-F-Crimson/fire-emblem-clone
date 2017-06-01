@@ -81,8 +81,6 @@ function unit:draw(animation, x, y)
     animation:draw(x, y)
 
     love.graphics.setShader()
-
-    self:draw_health_bar(x, y)
 end
 
 function unit:draw_health_bar(x, y)
