@@ -33,6 +33,8 @@ function animation:process_animation_queue()
         end
     else
         self.active = false
+
+        self.observer:notify("animation_ended")
     end
 end
 

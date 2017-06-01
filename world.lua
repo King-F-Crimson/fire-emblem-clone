@@ -38,6 +38,7 @@ function world.create(observer, teams, animation)
     unit_layer:create_unit(unit_class.bow_fighter, 22, 26, { active_weapon = weapon_class.iron_bow, weapons = {weapon_class.iron_bow}, team = self.teams[2] })
 
     self.observer:add_listener("new_turn", function() self:new_turn() end)
+    self.observer:add_listener("animation_ended", function() self:clean_dead_units() end)
 
     return self
 end
@@ -70,6 +71,14 @@ function world:new_turn()
     -- Uncheck 'moved' flag on every unit.
     for k, unit in pairs(self:get_all_units()) do
         unit.data.moved = false
+    end
+end
+
+function world:clean_dead_units()
+    for k, unit in pairs(self:get_all_units()) do
+        if unit.death_flag then
+            unit:die(self)
+        end
     end
 end
 

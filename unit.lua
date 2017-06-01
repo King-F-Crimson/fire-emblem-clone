@@ -205,7 +205,7 @@ function unit:damage(world, damage)
     self:generate_health_bar()
 
     if self.data.health <= 0 then
-        self.die_flag = true
+        self.death_flag = true
     end
 end
 
