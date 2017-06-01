@@ -25,9 +25,12 @@ function wait_animation:update()
 end
 
 function wait_animation:draw()
+    local attacker, target = self.attacker, self.target
+
     love.graphics.push()
         love.graphics.scale(tile_size / unit_size)
-        self.attacker:draw("run", self.attacker.tile_x * unit_size, self.attacker.tile_y * unit_size)
-        self.target:draw("run", self.target.tile_x * unit_size, self.target.tile_y * unit_size)
+
+        attacker:draw("run", attacker.tile_x * unit_size, attacker.tile_y * unit_size)
+        target:draw("run", target.tile_x * unit_size, target.tile_y * unit_size)
     love.graphics.pop()
 end
