@@ -8,10 +8,10 @@ function attack_animation.create(args)
     setmetatable(self, {__index = attack_animation})
 
     self.attacker = args.attacker
-    self.tile_x, self.tile_y = self.attacker.tile_x, self.attacker.tile_y
-
     self.target = args.target
-    self.target_tile_x, self.target_tile_y = self.target.tile_x, self.target.tile_y
+
+    -- Attacker's temporary position in animation.
+    self.tile_x, self.tile_y = self.attacker.tile_x, self.attacker.tile_y
 
     -- Hide attacker and target so it's not drawn in world:draw("units").
     self.attacker.hidden = true
@@ -76,12 +76,14 @@ function attack_animation:update()
 end
 
 function attack_animation:draw()
+    local attacker, target = self.attacker, self.target
+
     love.graphics.push()
         love.graphics.scale(tile_size / unit_size)
-        self.attacker:draw("run", self.tile_x * unit_size, self.tile_y * unit_size)
-        self.target:draw("run", self.target_tile_x * unit_size, self.target_tile_y * unit_size)
+        attacker:draw("run", self.tile_x * unit_size, self.tile_y * unit_size)
+        target:draw("run", target.tile_x * unit_size, target.tile_y * unit_size)
         if self.text_visible then
-            love.graphics.print(self.text, self.target_tile_x * unit_size, (self.target_tile_y - 1) * unit_size)
+            love.graphics.print(self.text, target.tile_x * unit_size, (target.tile_y - 1) * unit_size)
         end
     love.graphics.pop()
 end
