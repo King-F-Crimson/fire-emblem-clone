@@ -39,6 +39,7 @@ function world.create(observer, teams, animation)
 
     self.observer:add_listener("new_turn", function() self:new_turn() end)
     self.observer:add_listener("animation_ended", function() self:clean_dead_units() end)
+    self.observer:add_listener("world_changed", function() self:check_win() end)
 
     return self
 end
@@ -61,6 +62,10 @@ function world:process_command_queue()
     end
 
     self.command_queue = {}
+end
+
+function world:check_win()
+    print("check win")
 end
 
 function world:combat(attacker, tile_x, tile_y)
