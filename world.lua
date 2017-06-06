@@ -39,7 +39,7 @@ function world.create(observer, teams, animation)
 
     self.observer:add_listener("new_turn", function() self:new_turn() end)
     self.observer:add_listener("animation_ended", function() self:clean_dead_units() end)
-    self.observer:add_listener("world_changed", function() self:check_win() end)
+    self.observer:add_listener("world_changed", function() print(self:check_win()) end)
 
     return self
 end
@@ -65,7 +65,15 @@ function world:process_command_queue()
 end
 
 function world:check_win()
-    print("check win")
+    local no_more_enemy = true
+
+    for k, unit in pairs(self:get_all_units()) do
+        if unit.data.team == self.teams[2] then
+            no_more_enemy = false
+        end
+    end
+
+    return no_more_enemy
 end
 
 function world:combat(attacker, tile_x, tile_y)
