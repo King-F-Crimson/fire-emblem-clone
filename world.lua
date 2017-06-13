@@ -32,14 +32,14 @@ function world.create(observer, teams, animation)
 
     -- Create enemy units.
     unit_layer:create_unit(unit_class.sword_fighter, 3, 14, { active_weapon = weapon_class.iron_sword, weapons = {weapon_class.iron_sword}, team = self.teams[2] })
-    unit_layer:create_unit(unit_class.sword_fighter, 29, 29, { active_weapon = weapon_class.iron_sword, weapons = {weapon_class.iron_sword}, team = self.teams[2] })
-    unit_layer:create_unit(unit_class.axe_fighter, 26, 24, { active_weapon = weapon_class.iron_axe, weapons = {weapon_class.iron_axe}, team = self.teams[2] })
-    unit_layer:create_unit(unit_class.lance_fighter, 27, 20, { active_weapon = weapon_class.iron_lance, weapons = {weapon_class.iron_lance}, team = self.teams[2] })
-    unit_layer:create_unit(unit_class.bow_fighter, 22, 26, { active_weapon = weapon_class.iron_bow, weapons = {weapon_class.iron_bow}, team = self.teams[2] })
+    -- unit_layer:create_unit(unit_class.sword_fighter, 29, 29, { active_weapon = weapon_class.iron_sword, weapons = {weapon_class.iron_sword}, team = self.teams[2] })
+    -- unit_layer:create_unit(unit_class.axe_fighter, 26, 24, { active_weapon = weapon_class.iron_axe, weapons = {weapon_class.iron_axe}, team = self.teams[2] })
+    -- unit_layer:create_unit(unit_class.lance_fighter, 27, 20, { active_weapon = weapon_class.iron_lance, weapons = {weapon_class.iron_lance}, team = self.teams[2] })
+    -- unit_layer:create_unit(unit_class.bow_fighter, 22, 26, { active_weapon = weapon_class.iron_bow, weapons = {weapon_class.iron_bow}, team = self.teams[2] })
 
     self.observer:add_listener("new_turn", function() self:new_turn() end)
     self.observer:add_listener("animation_ended", function() self:clean_dead_units() end)
-    self.observer:add_listener("world_changed", function() print(self:check_win()) end)
+    self.observer:add_listener("world_changed", function() self:check_win() end)
 
     return self
 end
@@ -57,8 +57,6 @@ function world:process_command_queue()
         if command.action == "attack" then
             self:combat(data.unit, data.tile_x, data.tile_y)
         end
-
-        self.observer:notify("world_changed")
     end
 
     self.command_queue = {}
@@ -73,7 +71,9 @@ function world:check_win()
         end
     end
 
-    return no_more_enemy
+    if no_more_enemy then
+        -- Do what to do when the player wins.
+    end
 end
 
 function world:combat(attacker, tile_x, tile_y)
@@ -93,6 +93,8 @@ function world:clean_dead_units()
             unit:die(self)
         end
     end
+
+    self.observer:notify("world_changed")
 end
 
 function world:update()
