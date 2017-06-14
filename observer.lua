@@ -19,7 +19,11 @@ function observer:add_listener(event, callback)
 end
 
 function observer:notify(event, data)
-    for k, callback in pairs(self.listeners[event]) do
-        callback(data)
+    if self.listeners[event] then
+        for k, callback in pairs(self.listeners[event]) do
+            callback(data)
+        end
+    else
+        print(string.format("No listener exists for \"%s\" event.", event))
     end
 end
