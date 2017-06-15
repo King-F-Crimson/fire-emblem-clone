@@ -26,20 +26,22 @@ function menu:generate_content(content_data)
         self.items = { "End turn" }
         self.actions = { {action = "end_turn"} }
     elseif self.menu_type == "weapon_select" then
-        self:create_weapon_select_content(content_data)
+        self:create_weapon_select_content(content_data, "attack")
+    elseif self.menu_type == "weapon_equip" then
+        self:create_weapon_select_content(content_data, "equip")
     end
 
     self.item_count = #self.items
 end
 
-function menu:create_weapon_select_content(content_data)
+function menu:create_weapon_select_content(content_data, action)
     self.items = {}
     self.actions = {}
 
     local weapons = content_data.weapons
     for k, weapon in pairs(weapons) do
         table.insert(self.items, weapon.name)
-        table.insert(self.actions, {action = "attack",
+        table.insert(self.actions, {action = action,
             data = { weapon = weapon, tile_x = content_data.tile_x, tile_y = content_data.tile_y }} )
     end
 end

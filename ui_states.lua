@@ -114,6 +114,13 @@ function menu_control.process_feedback(ui, feedback)
         end
     end
 
+    if feedback.action == "items" then
+        local weapons = ui.selected_unit.data.weapons
+        local content_data = { weapons = weapons, tile_x = ui.plan_tile_x, tile_y = ui.plan_tile_y }
+
+        menu_control.enter(ui, "weapon_equip", content_data)
+    end
+
     if feedback.action == "cancel" then
         -- Return to previous state based on the menu type.
         local menu_type = ui.menu.menu_type
@@ -150,6 +157,16 @@ function menu_control.process_feedback(ui, feedback)
         ui.cursor:move_to(ui.plan_tile_x, ui.plan_tile_y)
 
         -- Revert to browsing state.
+        browsing.enter(ui)
+    end
+
+    if feedback.action == "equip" then
+        ui.selected_unit.data.active_weapon = feedback.data.weapon
+
+        local move_command = { action = "move_unit" }
+        move_command.data = { unit = ui.selected_unit, tile_x = ui.plan_tile_x, tile_y = ui.plan_tile_y }
+        ui.world:receive_command(move_command)
+
         browsing.enter(ui)
     end
 end
