@@ -39,7 +39,13 @@ function unit_info:draw()
     if unit then
         local info = string.format("%s\nHealth: %i\nStrength: %i\nDefense: %i\nSkill: %i\nSpeed: %i", unit.name, unit.data.health, unit.strength, unit.defense, unit.skill, unit.speed)
         if unit.data.active_weapon then
-            info = string.format("%s\nWeapon: %s", info, unit.data.active_weapon.name)
+            info = string.format("%s\nActive Weapon: %s", info, unit.data.active_weapon.name)
+        end
+        if unit.data.weapons then
+            info = string.format("%s\nWeapons:", info)
+            for k, weapon in pairs(unit.data.weapons) do
+                info = string.format("%s\n%s", info, weapon.name)
+            end
         end
         love.graphics.print(info, tile_size, tile_size)
     end
