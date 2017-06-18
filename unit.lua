@@ -28,9 +28,10 @@ function unit.create(class, tile_x, tile_y, data)
     end
 
     -- If health is not already specified then set health to max_health.
-    if not self.data.health then
-        self.data.health = self.max_health
-    end
+    self.data.health = self.data.health or self.max_health
+
+    -- Set the default active_weapon index to 1.
+    self.data.active_weapon = self.data.active_weapon or 1
 
     self:generate_animations()
 
@@ -47,6 +48,10 @@ function unit.create(class, tile_x, tile_y, data)
     end
 
     return self
+end
+
+function unit:get_active_weapon()
+    return self.data.weapons[self.data.active_weapon]
 end
 
 function unit:generate_animations()
@@ -158,7 +163,7 @@ function unit:get_valid_weapons(world, tile_x, tile_y, target_tile_x, target_til
 
         local valid_tiles = world:get_tiles_in_distance{tile_x = tile_x, tile_y = tile_y, distance = weapon.range, min_distance = min_range, unlandable_filter = unlandable_filter}
         if valid_tiles[key(target_tile_x, target_tile_y)] then
-            table.insert(valid_weapons, weapon)
+            valid_weapons[k] = weapon
         end
     end
 
@@ -168,7 +173,7 @@ end
 function unit:can_counter_attack(world, target_tile_x, target_tile_y)
     local function key(x, y) return string.format("(%i, %i)", x, y) end
 
-    local weapon = self.data.active_weapon
+    local weapon = self:get_active_weapon()
     local attack_area = world:get_tiles_in_distance{tile_x = self.tile_x, tile_y = self.tile_y, distance = weapon.range, min_distance = weapon.min_range or 1}
 
     return attack_area[key(target_tile_x, target_tile_y)] ~= nil

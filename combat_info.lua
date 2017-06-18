@@ -30,11 +30,11 @@ function combat_info:set_combat_info(action)
             player_hit_rate = tostring(combat.get_hit_rate(world, selected_unit, action.data.weapon, target_unit)) .. "%"
 
             if target_unit:can_counter_attack(world, self.ui.plan_tile_x, self.ui.plan_tile_y) then
-                enemy_attack_power = tostring(combat.get_attack_power(world, target_unit, target_unit.data.active_weapon, selected_unit))
-                if combat.can_double_attack(world, target_unit, target_unit.data.active_weapon, selected_unit) then
+                enemy_attack_power = tostring(combat.get_attack_power(world, target_unit, target_unit:get_active_weapon(), selected_unit))
+                if combat.can_double_attack(world, target_unit, target_unit:get_active_weapon(), selected_unit) then
                     enemy_attack_power = enemy_attack_power .. " x2"
                 end
-                enemy_hit_rate = tostring(combat.get_hit_rate(world, target_unit, target_unit.data.active_weapon, selected_unit)) .. "%"
+                enemy_hit_rate = tostring(combat.get_hit_rate(world, target_unit, target_unit:get_active_weapon(), selected_unit)) .. "%"
             else
                 enemy_attack_power = "-"
                 enemy_hit_rate = "-"

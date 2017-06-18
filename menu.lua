@@ -42,7 +42,7 @@ function menu:create_weapon_select_content(content_data, action)
     for k, weapon in pairs(weapons) do
         table.insert(self.items, weapon.name)
         table.insert(self.actions, {action = action,
-            data = { weapon = weapon, tile_x = content_data.tile_x, tile_y = content_data.tile_y }} )
+            data = { weapon = weapon, weapon_index = k, tile_x = content_data.tile_x, tile_y = content_data.tile_y }} )
     end
 end
 

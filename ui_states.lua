@@ -142,7 +142,7 @@ function menu_control.process_feedback(ui, feedback)
 
     if feedback.action == "attack" then
         -- Change the unit active_weapon to selected weapon.
-        ui.selected_unit.data.active_weapon = feedback.data.weapon
+        ui.selected_unit.data.active_weapon = feedback.data.weapon_index
 
         -- Push command to world to move then attack.
         local move_command = { action = "move_unit" }
@@ -161,7 +161,7 @@ function menu_control.process_feedback(ui, feedback)
     end
 
     if feedback.action == "equip" then
-        ui.selected_unit.data.active_weapon = feedback.data.weapon
+        ui.selected_unit.data.active_weapon = feedback.data.weapon_index
 
         local move_command = { action = "move_unit" }
         move_command.data = { unit = ui.selected_unit, tile_x = ui.plan_tile_x, tile_y = ui.plan_tile_y }
