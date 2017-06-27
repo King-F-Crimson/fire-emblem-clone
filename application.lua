@@ -28,7 +28,7 @@ function application.create()
     self.zoom = 2
 
     self.observer = observer.create()
-    self.state = title_screen.create(self, self.observer)
+    self:change_state(title_screen)
 
     self.event_queue = queue.create()
 

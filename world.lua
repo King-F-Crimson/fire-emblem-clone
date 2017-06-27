@@ -73,6 +73,7 @@ function world:check_win()
 
     if no_more_enemy then
         -- Do what to do when the player wins.
+        self.observer:notify("player_won")
     end
 end
 
