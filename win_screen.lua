@@ -12,10 +12,8 @@ function win_screen.create(application)
 end
 
 function win_screen:process_event(event)
-    if event.type == "key_pressed" then
-        if event.data.key == "enter" then
-            self.application:change_state(game)
-        end
+    if event.type == "key_pressed" or event.type == "mouse_pressed" then
+        self.application:change_state(title_screen)
     end
 end
 
