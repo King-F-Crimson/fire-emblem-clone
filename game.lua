@@ -1,4 +1,5 @@
 require("cursor")
+require("ai")
 require("ui")
 require("world")
 require("animation")
@@ -15,8 +16,8 @@ function game.create(application, observer)
     setmetatable(self, {__index = game})
 
     self.teams = {
-        team.create("Player 1 Army", color.create_from_rgb(25, 83, 255)),
-        team.create("Player 2 Army", color.create_from_rgb(255, 25, 25)),
+        team.create("Player 1 Army", color.create_from_rgb(25, 83, 255), "player"),
+        team.create("Player 2 Army", color.create_from_rgb(255, 25, 25), "ai"),
     }
 
     self.current_turn = self.teams[1]
@@ -28,6 +29,7 @@ function game.create(application, observer)
     self.animation = animation.create(self.observer)
     self.world = world.create(self.observer, self.teams, self.animation)
     self.ui = ui.create(self.observer, self, self.world)
+    self.ai = ai.create(self.observer, self, self.world)
     self.camera = camera.create(self.observer, self.ui)
 
     self.observer:add_listener("player_won", function() self:win() end)
@@ -62,6 +64,10 @@ function game:update()
         self.animation:update()
     else
         self.ui:update()
+        if self.current_turn.controller == "ai" then
+            self.ai:set_team(self.current_turn)
+            self.ai:do_turn()
+        end
         self.world:update()
     end
 end
@@ -105,6 +111,9 @@ function game:process_event(event)
     if self.is_paused then
         self.pause_menu:process_event(event)
     else
-        self.ui:process_event(event)
+        if self.current_turn.controller == "player" then
+            self.ui:process_event(event)
+        end
     end
 end
+
