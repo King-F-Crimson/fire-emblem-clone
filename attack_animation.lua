@@ -1,6 +1,7 @@
 attack_animation = {
     hit_sound = love.audio.newSource("assets/hit.wav", "static"),
-    miss_sound = love.audio.newSource("assets/miss.wav", "static")
+    miss_sound = love.audio.newSource("assets/miss.wav", "static"),
+    crit_sound = love.audio.newSource("assets/ability_activate.ogg", "static")
 }
 
 function attack_animation.create(args)
