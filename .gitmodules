@@ -1,6 +1,8 @@
 [submodule "libs/anim8"]
 	path = libs/anim8
 	url = https://github.com/kikito/anim8
+	ignore = dirty
 [submodule "libs/Simple-Tiled-Implementation"]
 	path = libs/Simple-Tiled-Implementation
 	url = https://github.com/karai17/Simple-Tiled-Implementation
+	ignore = dirty
