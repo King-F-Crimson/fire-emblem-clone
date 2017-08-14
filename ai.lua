@@ -31,6 +31,9 @@ end
 function ai:move_unit(unit)
     local move_command = { action = "move_unit" }
     local x = unit.tile_x - 1
+    if self.world:get_unit(x, unit.tile_y) then
+        x = unit.tile_x
+    end
     if x < 0 then x = 0 end
     move_command.data = { unit = unit, tile_x = x, tile_y = unit.tile_y}
 
