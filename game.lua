@@ -66,7 +66,7 @@ function game:update()
         self.ui:update()
         if self.current_turn.controller == "ai" then
             self.ai:set_team(self.current_turn)
-            self.ai:do_turn()
+            self.ai:do_step()
         end
         self.world:update()
     end
