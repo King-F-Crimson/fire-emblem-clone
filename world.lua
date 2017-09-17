@@ -171,6 +171,15 @@ function world:get_adjacent_tiles(tile_x, tile_y)
 end
 
 function world:get_tiles_in_distance(arg)
+    -- Args:
+    -- tile_x: origin tile x
+    -- tile_y: origin tile y
+    -- distance: the max distance / max cost to traverse
+    -- min_distance: to exclude tiles that can't be attacked such as by bow users.
+    -- movement_filter: function that converts tile data (unit on it and terrain) to value on how much it cost to traverse.
+    -- unlandable_filter: function that determines if a tile is landable or not based on the unit and tile on it.
+    -- early_exit: function that returns true if early exit condition is met.
+
     local function key(x, y) return string.format("(%i, %i)", x, y) end
 
     -- Movement filter defaults to treat everything as 1 value for weapon.
@@ -178,7 +187,11 @@ function world:get_tiles_in_distance(arg)
     -- Unlandable filter defaults to treat everything as landable.
     local unlandable_filter = arg.unlandable_filter or function() return nil end
 
+    -- Default early_exit function which never exits.
+    local early_exit = arg.early_exit or function() return false end
+
     local output = {}
+    -- Include the origin tile.
     output[key(arg.tile_x, arg.tile_y)] = { x = arg.tile_x, y = arg.tile_y, distance = 0 }
 
     -- Initiate the frontier, with a queue for each unit of distance.
@@ -219,12 +232,19 @@ function world:get_tiles_in_distance(arg)
                 -- add it to output and frontier.
                 if  (tile.x >= 0 and tile.y >= 0 and tile.x < self.map.width and tile.y < self.map.height) and
                     output[key(tile.x, tile.y)] == nil and cost ~= "impassable" and i - 1 + cost <= arg.distance then
-                    output[key(tile.x, tile.y)] = { x = tile.x, y = tile.y, distance = i - 1 + cost, unlandable = unlandable }
+                    output[key(tile.x, tile.y)] = { x = tile.x, y = tile.y, distance = i - 1 + cost, unlandable = unlandable, come_from = { x = current.x, y = current.y },
+                    tile_content = { terrain = terrain, unit = unit_on_tile } }
                     frontiers[i + cost]:push(output[key(tile.x, tile.y)])
+                end
+
+                -- Check if unit and/or tile consitutes for early exit.
+                if early_exit(terrain, unit_on_tile) then
+                    goto early_exit_loop
                 end
             end
         end
     end
+    ::early_exit_loop::
 
     -- Filter out tiles where it is less than minimum distance or unlandable (for example because there's an allied unit on the tile).
 
