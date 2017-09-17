@@ -79,6 +79,8 @@ end
 
 function world:combat(attacker, tile_x, tile_y)
     combat.initiate(self, attacker, tile_x, tile_y)
+
+    self.observer:notify("world_changed")
 end
 
 function world:new_turn()
@@ -86,6 +88,8 @@ function world:new_turn()
     for k, unit in pairs(self:get_all_units()) do
         unit.data.moved = false
     end
+
+    self.observer:notify("world_changed")
 end
 
 function world:clean_dead_units()
@@ -145,6 +149,8 @@ function world:move_unit(unit, tile_x, tile_y)
 
     -- Mark unit as moved.
     unit.data.moved = true
+
+    self.observer:notify("world_changed")
 end
 
 function world:get_terrain_map()
