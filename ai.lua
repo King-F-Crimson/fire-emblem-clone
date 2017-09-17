@@ -30,56 +30,53 @@ end
 
 function ai:move_unit(unit)
     local move_command = { action = "move_unit" }
-    local x = unit.tile_x - 1
-    if self.world:get_unit(x, unit.tile_y) then
-        x = unit.tile_x
-    end
-    if x < 0 then x = 0 end
-    move_command.data = { unit = unit, tile_x = x, tile_y = unit.tile_y }
 
-    self:determine_move_spot(unit)
+    local x, y = self:determine_move_spot(unit)
+
+    move_command.data = { unit = unit, tile_x = x, tile_y = y }
 
     self.world:receive_command(move_command)
 end
 
 function ai:determine_move_spot(unit)
-    local function early_exit(terain, unit_on_tile)
-        if unit_on_tile then
-            return unit_on_tile.data.team ~= unit.data.team
-        else
-            return false
-        end
-    end
+    local function key(x, y) return string.format("(%i, %i)", x, y) end
 
-    local function movement_filter(terrain, unit_on_tile)
-        local cost
+    -- Early exit if the unit can attack from the position.
+    local function early_exit(tile)
+        if not tile.unlandable then
+            local attack_area = unit:get_attack_area(self.world, tile.x, tile.y)
 
-        local terrain_cost = {
-            plain = 1,
-            water = "impassable",
-            sand = 2,
-            wall = "impassable",
-        }
-
-        -- Defaults to impassable.
-        cost = terrain_cost[terrain] or "impassable"
-
-        return cost
-    end
-
-    local tiles = self.world:get_tiles_in_distance({distance = 500, min_distance = 1, tile_x = unit.tile_x, tile_y = unit.tile_y, early_exit = early_exit, movement_filter = movement_filter})
-
-    local nearest_enemy
-
-    for key, tile in pairs(tiles) do
-        if tile.tile_content.unit then
-            if tile.tile_content.unit.data.team ~= unit.data.team then
-                nearest_enemy = tile.tile_content.unit
+            for key, tile in pairs(attack_area) do
+                if tile.tile_content.unit then
+                    if tile.tile_content.unit.data.team ~= unit.data.team then
+                        return true
+                    end
+                end
             end
         end
     end
 
-    if nearest_enemy then
-        print(string.format("Nearest enemy: %s at (%s, %s)", nearest_enemy.name, nearest_enemy.tile_x, nearest_enemy.tile_y))
+    local traversed_tiles = self.world:get_tiles_in_distance({distance = 100, min_distance = 1, tile_x = unit.tile_x, tile_y = unit.tile_y, early_exit = early_exit, movement_filter = unit.movement_filter, unlandable_filter = unit.unlandable_filter})
+
+    -- Find the nearest spot where the unit can attack an enemy.
+    local nearest_attacking_spot
+
+    for key, tile in pairs(traversed_tiles) do
+        if tile.trigger_early_exit then
+            nearest_attacking_spot = tile
+        end
     end
+
+    if nearest_attacking_spot then
+        print(string.format("Nearest attacking spot at (%s, %s)", nearest_attacking_spot.x, nearest_attacking_spot.y))
+    end
+
+    -- Find the furthest the unit can go to reach the spot.
+    local furthest_traversable_spot = nearest_attacking_spot
+
+    while furthest_traversable_spot.distance > unit.movement do
+        furthest_traversable_spot = traversed_tiles[key(furthest_traversable_spot.come_from.x, furthest_traversable_spot.come_from.y)]
+    end
+
+    return furthest_traversable_spot.x, furthest_traversable_spot.y
 end

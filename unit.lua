@@ -245,5 +245,9 @@ end
 function unit:default_unlandable_filter(terrain, unit)
     local unlandable = false
 
+    if unit then
+        unlandable = true
+    end
+
     return unlandable
 end

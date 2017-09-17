@@ -32,10 +32,10 @@ function world.create(observer, teams, animation)
 
     -- Create enemy units.
     unit_layer:create_unit(unit_class.sword_fighter, 3, 14, { active_weapon = 1, weapons = {weapon_class.iron_sword}, team = self.teams[2] })
-    unit_layer:create_unit(unit_class.sword_fighter, 4, 29, { active_weapon = 1, weapons = {weapon_class.iron_sword}, team = self.teams[2] })
-    unit_layer:create_unit(unit_class.axe_fighter, 1, 24, { active_weapon = 1, weapons = {weapon_class.iron_axe}, team = self.teams[2] })
-    unit_layer:create_unit(unit_class.lance_fighter, 3, 20, { active_weapon = 1, weapons = {weapon_class.iron_lance}, team = self.teams[2] })
-    unit_layer:create_unit(unit_class.bow_fighter, 2, 26, { active_weapon = 1, weapons = {weapon_class.iron_bow}, team = self.teams[2] })
+    -- unit_layer:create_unit(unit_class.sword_fighter, 4, 29, { active_weapon = 1, weapons = {weapon_class.iron_sword}, team = self.teams[2] })
+    -- unit_layer:create_unit(unit_class.axe_fighter, 1, 24, { active_weapon = 1, weapons = {weapon_class.iron_axe}, team = self.teams[2] })
+    -- unit_layer:create_unit(unit_class.lance_fighter, 3, 20, { active_weapon = 1, weapons = {weapon_class.iron_lance}, team = self.teams[2] })
+    -- unit_layer:create_unit(unit_class.bow_fighter, 2, 26, { active_weapon = 1, weapons = {weapon_class.iron_bow}, team = self.teams[2] })
 
     self.observer:add_listener("new_turn", function() self:new_turn() end)
     self.observer:add_listener("animation_ended", function() self:clean_dead_units() end)
@@ -188,7 +188,7 @@ function world:get_tiles_in_distance(arg)
     local unlandable_filter = arg.unlandable_filter or function() return nil end
 
     -- Default early_exit function which never exits.
-    local early_exit = arg.early_exit or function() return false end
+    local early_exit = arg.early_exit or function() return nil end
 
     local output = {}
     -- Include the origin tile.
@@ -230,16 +230,24 @@ function world:get_tiles_in_distance(arg)
 
                 -- If tile is in bound, not already in output, and is not impassable, and the distance to the tile is not larger than the max distance
                 -- add it to output and frontier.
+                local output_tile
+
                 if  (tile.x >= 0 and tile.y >= 0 and tile.x < self.map.width and tile.y < self.map.height) and
                     output[key(tile.x, tile.y)] == nil and cost ~= "impassable" and i - 1 + cost <= arg.distance then
-                    output[key(tile.x, tile.y)] = { x = tile.x, y = tile.y, distance = i - 1 + cost, unlandable = unlandable, come_from = { x = current.x, y = current.y },
-                    tile_content = { terrain = terrain, unit = unit_on_tile } }
+
+                    local output_tile = { x = tile.x, y = tile.y, distance = i - 1 + cost, unlandable = unlandable, come_from = { x = current.x, y = current.y },
+                    tile_content = { terrain = terrain, unit = unit_on_tile }}
+                    output_tile.trigger_early_exit = early_exit(output_tile)
+
+                    output[key(tile.x, tile.y)] = output_tile
                     frontiers[i + cost]:push(output[key(tile.x, tile.y)])
                 end
 
-                -- Check if unit and/or tile consitutes for early exit.
-                if early_exit(terrain, unit_on_tile) then
-                    goto early_exit_loop
+                -- Check output tile for early exit.
+                if output_tile then
+                    if early_exit(output_tile) then
+                        goto early_exit_loop
+                    end
                 end
             end
         end
