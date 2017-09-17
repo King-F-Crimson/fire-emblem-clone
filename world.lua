@@ -256,13 +256,12 @@ function world:get_tiles_in_distance(arg)
 
                     output[key(tile.x, tile.y)] = output_tile
                     frontiers[i + cost]:push(output[key(tile.x, tile.y)])
-                end
 
-                -- Check output tile for early exit.
-                if output_tile then
                     if early_exit(output_tile) then
                         goto early_exit_loop
                     end
+
+                    print(key(tile.x, tile.y))
                 end
             end
         end
