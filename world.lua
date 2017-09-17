@@ -26,16 +26,16 @@ function world.create(observer, teams, animation)
 
     -- Create player units.
     unit_layer:create_unit(unit_class.sword_fighter, 1, 2, { active_weapon = 1, weapons = {weapon_class.iron_sword}, team = self.teams[1] })
-    unit_layer:create_unit(unit_class.axe_fighter, 3, 5, { active_weapon = 1, weapons = {weapon_class.iron_axe}, team = self.teams[1] })
-    unit_layer:create_unit(unit_class.lance_fighter, 2, 10, { active_weapon = 1, weapons = {weapon_class.iron_lance}, team = self.teams[1] })
-    unit_layer:create_unit(unit_class.bow_fighter, 4, 8, { active_weapon = 1, weapons = {weapon_class.iron_bow, weapon_class.iron_sword}, team = self.teams[1] })
+    -- unit_layer:create_unit(unit_class.axe_fighter, 3, 5, { active_weapon = 1, weapons = {weapon_class.iron_axe}, team = self.teams[1] })
+    -- unit_layer:create_unit(unit_class.lance_fighter, 2, 10, { active_weapon = 1, weapons = {weapon_class.iron_lance}, team = self.teams[1] })
+    -- unit_layer:create_unit(unit_class.bow_fighter, 2, 8, { active_weapon = 1, weapons = {weapon_class.iron_bow, weapon_class.iron_sword}, team = self.teams[1] })
 
     -- Create enemy units.
-    unit_layer:create_unit(unit_class.sword_fighter, 3, 14, { active_weapon = 1, weapons = {weapon_class.iron_sword}, team = self.teams[2] })
-    -- unit_layer:create_unit(unit_class.sword_fighter, 4, 29, { active_weapon = 1, weapons = {weapon_class.iron_sword}, team = self.teams[2] })
-    -- unit_layer:create_unit(unit_class.axe_fighter, 1, 24, { active_weapon = 1, weapons = {weapon_class.iron_axe}, team = self.teams[2] })
-    -- unit_layer:create_unit(unit_class.lance_fighter, 3, 20, { active_weapon = 1, weapons = {weapon_class.iron_lance}, team = self.teams[2] })
-    -- unit_layer:create_unit(unit_class.bow_fighter, 2, 26, { active_weapon = 1, weapons = {weapon_class.iron_bow}, team = self.teams[2] })
+    unit_layer:create_unit(unit_class.sword_fighter, 2, 9, { active_weapon = 1, weapons = {weapon_class.iron_sword}, team = self.teams[2] })
+    unit_layer:create_unit(unit_class.sword_fighter, 1, 8, { active_weapon = 1, weapons = {weapon_class.iron_sword}, team = self.teams[2] })
+    unit_layer:create_unit(unit_class.axe_fighter, 1, 24, { active_weapon = 1, weapons = {weapon_class.iron_axe}, team = self.teams[2] })
+    unit_layer:create_unit(unit_class.lance_fighter, 3, 20, { active_weapon = 1, weapons = {weapon_class.iron_lance}, team = self.teams[2] })
+    unit_layer:create_unit(unit_class.bow_fighter, 2, 26, { active_weapon = 1, weapons = {weapon_class.iron_bow}, team = self.teams[2] })
 
     self.observer:add_listener("new_turn", function() self:new_turn() end)
     self.observer:add_listener("animation_ended", function() self:clean_dead_units() end)
@@ -260,8 +260,6 @@ function world:get_tiles_in_distance(arg)
                     if early_exit(output_tile) then
                         goto early_exit_loop
                     end
-
-                    print(key(tile.x, tile.y))
                 end
             end
         end
@@ -273,11 +271,8 @@ function world:get_tiles_in_distance(arg)
     for k, tile in pairs(output) do
         if arg.min_distance then
             if tile.distance < arg.min_distance then
-                output[k] = nil
+                output[k].unlandable = true
             end
-        end
-        if tile.unlandable then
-            output[k] = nil
         end
     end
 

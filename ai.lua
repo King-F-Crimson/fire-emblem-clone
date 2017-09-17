@@ -67,18 +67,19 @@ function ai:determine_move_spot(unit)
         end
     end
 
+    -- If there's a spot that the unit can attack from, move to get closer to it
+    -- If there's none, stay
     if nearest_attacking_spot then
-        print(string.format("Nearest attacking spot at (%s, %s)", nearest_attacking_spot.x, nearest_attacking_spot.y))
-    end
+        local furthest_traversable_spot = nearest_attacking_spot
 
-    -- Find the furthest the unit can move to reach the spot.
-    local furthest_traversable_spot = nearest_attacking_spot
-
-    while furthest_traversable_spot.distance > unit.movement do
-        if furthest_traversable_spot.come_from ~= "origin" then
-            furthest_traversable_spot = traversed_tiles[key(furthest_traversable_spot.come_from.x, furthest_traversable_spot.come_from.y)]
+        while furthest_traversable_spot.distance > unit.movement do
+            if furthest_traversable_spot.come_from ~= "origin" then
+                furthest_traversable_spot = traversed_tiles[key(furthest_traversable_spot.come_from.x, furthest_traversable_spot.come_from.y)]
+            end
         end
-    end
 
-    return furthest_traversable_spot.x, furthest_traversable_spot.y
+        return furthest_traversable_spot.x, furthest_traversable_spot.y
+    else
+        return unit.x, unit.y
+    end
 end
