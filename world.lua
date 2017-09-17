@@ -272,8 +272,7 @@ function world:get_tiles_in_distance(arg)
     end
     ::early_exit_loop::
 
-    -- Filter out tiles where it is less than minimum distance or unlandable (for example because there's an allied unit on the tile).
-
+    -- Mark tiles where it is less than minimum distance.
     for k, tile in pairs(output) do
         if arg.min_distance then
             if tile.distance < arg.min_distance then

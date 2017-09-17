@@ -72,14 +72,12 @@ function ai:determine_move_spot(unit)
     if nearest_attacking_spot then
         local furthest_traversable_spot = nearest_attacking_spot
 
-        while furthest_traversable_spot.distance > unit.movement do
-            if furthest_traversable_spot.come_from ~= "origin" then
-                furthest_traversable_spot = traversed_tiles[key(furthest_traversable_spot.come_from.x, furthest_traversable_spot.come_from.y)]
-            end
+        while furthest_traversable_spot.distance > unit.movement or furthest_traversable_spot.unlandable do
+            furthest_traversable_spot = traversed_tiles[key(furthest_traversable_spot.come_from.x, furthest_traversable_spot.come_from.y)]
         end
 
         return furthest_traversable_spot.x, furthest_traversable_spot.y
     else
-        return unit.x, unit.y
+        return unit.tile_x, unit.tile_y
     end
 end
