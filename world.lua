@@ -202,18 +202,19 @@ function world:get_tiles_in_distance(arg)
     origin_tile.trigger_early_exit = early_exit(origin_tile)
     output[key(arg.tile_x, arg.tile_y)] = origin_tile
 
+    -- Initiate the frontier, with a queue for each unit of distance.
+    -- The frontier index is one less than the distance since Lua indexs start from 1.
     local frontiers = {}
+    
+    for i = 1, arg.distance + 1 do
+        frontiers[i] = queue.create()
+    end
 
+    -- If the origin tile itself qualifies for early_exit, then skip the rest.
     if origin_tile.trigger_early_exit then
         goto early_exit_loop
     end
 
-
-    -- Initiate the frontier, with a queue for each unit of distance.
-    -- The frontier index is one less than the distance since Lua indexs start from 1.
-    for i = 1, arg.distance + 1 do
-        frontiers[i] = queue.create()
-    end
 
     -- Start the frontier from the first tile.
     frontiers[1]:push(output[key(arg.tile_x, arg.tile_y)])
