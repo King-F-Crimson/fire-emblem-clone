@@ -192,11 +192,25 @@ function world:get_tiles_in_distance(arg)
 
     local output = {}
     -- Include the origin tile.
-    output[key(arg.tile_x, arg.tile_y)] = { x = arg.tile_x, y = arg.tile_y, distance = 0 }
+    local origin_tile = { x = arg.tile_x, y = arg.tile_y, distance = 0,
+                                            tile_content = {
+                                                terrain = self.map:getTileProperties("terrain", arg.tile_x + 1, arg.tile_y + 1).terrain,
+                                                unit = self:get_unit(arg.tile_x, arg.tile_y)
+                                            },
+                                            come_from = "origin"
+    }
+    origin_tile.trigger_early_exit = early_exit(origin_tile)
+    output[key(arg.tile_x, arg.tile_y)] = origin_tile
+
+    local frontiers = {}
+
+    if origin_tile.trigger_early_exit then
+        goto early_exit_loop
+    end
+
 
     -- Initiate the frontier, with a queue for each unit of distance.
     -- The frontier index is one less than the distance since Lua indexs start from 1.
-    local frontiers = {}
     for i = 1, arg.distance + 1 do
         frontiers[i] = queue.create()
     end

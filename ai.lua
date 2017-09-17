@@ -56,7 +56,7 @@ function ai:determine_move_spot(unit)
         end
     end
 
-    local traversed_tiles = self.world:get_tiles_in_distance({distance = 100, min_distance = 1, tile_x = unit.tile_x, tile_y = unit.tile_y, early_exit = early_exit, movement_filter = unit.movement_filter, unlandable_filter = unit.unlandable_filter})
+    local traversed_tiles = self.world:get_tiles_in_distance({distance = 100, tile_x = unit.tile_x, tile_y = unit.tile_y, early_exit = early_exit, movement_filter = unit.movement_filter, unlandable_filter = unit.unlandable_filter})
 
     -- Find the nearest spot where the unit can attack an enemy.
     local nearest_attacking_spot
@@ -71,11 +71,13 @@ function ai:determine_move_spot(unit)
         print(string.format("Nearest attacking spot at (%s, %s)", nearest_attacking_spot.x, nearest_attacking_spot.y))
     end
 
-    -- Find the furthest the unit can go to reach the spot.
+    -- Find the furthest the unit can move to reach the spot.
     local furthest_traversable_spot = nearest_attacking_spot
 
     while furthest_traversable_spot.distance > unit.movement do
-        furthest_traversable_spot = traversed_tiles[key(furthest_traversable_spot.come_from.x, furthest_traversable_spot.come_from.y)]
+        if furthest_traversable_spot.come_from ~= "origin" then
+            furthest_traversable_spot = traversed_tiles[key(furthest_traversable_spot.come_from.x, furthest_traversable_spot.come_from.y)]
+        end
     end
 
     return furthest_traversable_spot.x, furthest_traversable_spot.y
