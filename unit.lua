@@ -136,7 +136,7 @@ function unit:get_attack_area(world, tile_x, tile_y)
         local min_range = weapon.min_range or 1
 
         for key, tile in pairs(world:get_tiles_in_distance{tile_x = tile_x, tile_y = tile_y, distance = weapon.range, min_distance = min_range, unlandable_filter = unlandable_filter}) do
-            if not attack_area[key] then
+            if not attack_area[key] and not tile.unlandable then
                 attack_area[key] = tile
             end
         end
@@ -176,7 +176,11 @@ function unit:can_counter_attack(world, target_tile_x, target_tile_y)
     local weapon = self:get_active_weapon()
     local attack_area = world:get_tiles_in_distance{tile_x = self.tile_x, tile_y = self.tile_y, distance = weapon.range, min_distance = weapon.min_range or 1}
 
-    return attack_area[key(target_tile_x, target_tile_y)] ~= nil
+    if attack_area[key(target_tile_x, target_tile_y)] ~= nil then
+        return not attack_area[key(target_tile_x, target_tile_y)].unlandable
+    else
+        return false
+    end
 end
 
 -- Get every posible area that the unit can attack by moving then attacking.
