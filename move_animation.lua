@@ -10,11 +10,16 @@ function move_animation.create(args)
 
     self.path = args.path
 
-    self.length_per_tile = 10
+    self.length_per_tile = 5
 
     self.length = self.length_per_tile * (#self.path - 1)
     self.current_frame = 1
     self.complete = false
+
+    -- If the path length is 1 (not moving), end the animation immediately.
+    if #self.path == 1 then
+        self.complete = true
+    end
 
     return self
 end
@@ -31,7 +36,14 @@ end
 
 function move_animation:draw()
     local unit = self.unit
-    local x, y = self:determine_position()
+
+    -- Handles if path length is 1.
+    local x, y
+    if #self.path ~= 1 then
+        x, y = self:determine_position()
+    else
+        x, y = unit.tile_x, unit.tile_y
+    end
 
     love.graphics.push()
         love.graphics.scale(tile_size / unit_size)
