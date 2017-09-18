@@ -97,12 +97,16 @@ function moving.enter(ui)
     ui.state = moving
 end
 
+function menu_control.create_move_command(ui, feedback)
+
+end
+
 function menu_control.process_feedback(ui, feedback)
     if feedback.action == "wait" then
         -- Construct command to move unit for world.
-        local command = { action = "move_unit" }
-        command.data = { unit = ui.selected_unit, tile_x = ui.plan_tile_x, tile_y = ui.plan_tile_y }
-        ui.world:receive_command(command)
+        local move_command = { action = "move_unit" }
+        move_command.data = { unit = ui.selected_unit, tile_x = ui.plan_tile_x, tile_y = ui.plan_tile_y }
+        ui.world:receive_command(move_command)
 
         browsing.enter(ui)
     end

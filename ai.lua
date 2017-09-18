@@ -1,3 +1,5 @@
+require("generate_path")
+
 ai = {}
 
 function ai.create(observer, game, world)
@@ -35,9 +37,9 @@ end
 function ai:move_unit(unit)
     local move_command = { action = "move_unit" }
 
-    local x, y = self:determine_move_spot(unit)
+    local x, y, path = self:determine_move_spot(unit)
 
-    move_command.data = { unit = unit, tile_x = x, tile_y = y }
+    move_command.data = { unit = unit, tile_x = x, tile_y = y, path = path }
 
     self.world:receive_command(move_command)
 
@@ -82,9 +84,13 @@ function ai:determine_move_spot(unit)
             furthest_traversable_spot = traversed_tiles[key(furthest_traversable_spot.come_from.x, furthest_traversable_spot.come_from.y)]
         end
 
-        return furthest_traversable_spot.x, furthest_traversable_spot.y
+        local path = generate_path(furthest_traversable_spot, traversed_tiles)
+
+        return furthest_traversable_spot.x, furthest_traversable_spot.y, path
     else
-        return unit.tile_x, unit.tile_y
+        local path = generate_path(traversed_tiles[key(unit.tile_x, unit.tile_y)], traversed_tiles)
+
+        return unit.tile_x, unit.tile_y, path
     end
 end
 

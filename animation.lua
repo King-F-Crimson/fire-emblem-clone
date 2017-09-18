@@ -1,6 +1,7 @@
 require("queue")
 require("attack_animation")
 require("wait_animation")
+require("move_animation")
 
 animation = {
     colorize_shader = love.graphics.newShader("shaders/colorize_shader.fs"),
@@ -30,6 +31,8 @@ function animation:process_animation_queue()
             self.current_animation = attack_animation.create(animation.data)
         elseif animation.type == "wait" then
             self.current_animation = wait_animation.create(animation.data)
+        elseif animation.type == "move" then
+            self.current_animation = move_animation.create(animation.data)
         end
     else
         self.active = false

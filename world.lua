@@ -52,7 +52,7 @@ function world:process_command_queue()
     for k, command in pairs(self.command_queue) do
         local data = command.data
         if command.action == "move_unit" then
-            self:move_unit(data.unit, data.tile_x, data.tile_y)
+            self:move_unit(data.unit, data.tile_x, data.tile_y, data.path)
         end
         if command.action == "attack" then
             self:combat(data.unit, data.tile_x, data.tile_y)
@@ -144,8 +144,16 @@ function world:get_all_units()
     return self.map.layers.unit_layer:get_all_units()
 end
 
-function world:move_unit(unit, tile_x, tile_y)
+function world:move_unit(unit, tile_x, tile_y, path)
     self.map.layers.unit_layer:move_unit(unit, tile_x, tile_y)
+
+    -- Check if path is provided for animation.
+    if path then
+        local animation = { type = "move" }
+        animation.data = { unit = unit, path = path }
+
+        self.animation:receive_animation(animation)
+    end
 
     -- Mark unit as moved.
     unit.data.moved = true
