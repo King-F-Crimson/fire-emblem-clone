@@ -176,7 +176,7 @@ function world:get_adjacent_tiles(tile_x, tile_y)
             }
 end
 
-function world:get_tiles_in_distance(arg)
+function world:get_tiles_in_distance(args)
     -- Args:
     -- tile_x: origin tile x
     -- tile_y: origin tile y
@@ -189,30 +189,30 @@ function world:get_tiles_in_distance(arg)
     local function key(x, y) return string.format("(%i, %i)", x, y) end
 
     -- Movement filter defaults to treat everything as 1 value for weapon.
-    local movement_filter = arg.movement_filter or function() return 1 end
+    local movement_filter = args.movement_filter or function() return 1 end
     -- Unlandable filter defaults to treat everything as landable.
-    local unlandable_filter = arg.unlandable_filter or function() return nil end
+    local unlandable_filter = args.unlandable_filter or function() return nil end
 
     -- Default early_exit function which never exits.
-    local early_exit = arg.early_exit or function() return nil end
+    local early_exit = args.early_exit or function() return nil end
 
     local output = {}
     -- Include the origin tile.
-    local origin_tile = { x = arg.tile_x, y = arg.tile_y, distance = 0,
+    local origin_tile = { x = args.tile_x, y = args.tile_y, distance = 0,
                                             tile_content = {
-                                                terrain = self.map:getTileProperties("terrain", arg.tile_x + 1, arg.tile_y + 1).terrain,
-                                                unit = self:get_unit(arg.tile_x, arg.tile_y)
+                                                terrain = self.map:getTileProperties("terrain", args.tile_x + 1, args.tile_y + 1).terrain,
+                                                unit = self:get_unit(args.tile_x, args.tile_y)
                                             },
                                             come_from = "origin"
     }
     origin_tile.trigger_early_exit = early_exit(origin_tile)
-    output[key(arg.tile_x, arg.tile_y)] = origin_tile
+    output[key(args.tile_x, args.tile_y)] = origin_tile
 
     -- Initiate the frontier, with a queue for each unit of distance.
     -- The frontier index is one less than the distance since Lua indexs start from 1.
     local frontiers = {}
     
-    for i = 1, arg.distance + 1 do
+    for i = 1, args.distance + 1 do
         frontiers[i] = queue.create()
     end
 
@@ -223,10 +223,10 @@ function world:get_tiles_in_distance(arg)
 
 
     -- Start the frontier from the first tile.
-    frontiers[1]:push(output[key(arg.tile_x, arg.tile_y)])
+    frontiers[1]:push(output[key(args.tile_x, args.tile_y)])
 
     -- Each iteration increases the distance.
-    for i = 1, arg.distance do
+    for i = 1, args.distance do
         -- Expand each frontier in current distance.
         while not frontiers[i]:empty() do
             local current = frontiers[i]:pop()
@@ -252,7 +252,7 @@ function world:get_tiles_in_distance(arg)
                 -- If tile is in bound, not already in output, and is not impassable, and the distance to the tile is not larger than the max distance
                 -- add it to output and frontier.
                 if  (tile.x >= 0 and tile.y >= 0 and tile.x < self.map.width and tile.y < self.map.height) and
-                    output[key(tile.x, tile.y)] == nil and cost ~= "impassable" and i - 1 + cost <= arg.distance then
+                    output[key(tile.x, tile.y)] == nil and cost ~= "impassable" and i - 1 + cost <= args.distance then
 
                     local output_tile = { x = tile.x, y = tile.y, distance = i - 1 + cost, unlandable = unlandable, come_from = { x = current.x, y = current.y },
                     tile_content = { terrain = terrain, unit = unit_on_tile }}
@@ -272,8 +272,8 @@ function world:get_tiles_in_distance(arg)
 
     -- Mark tiles where it is less than minimum distance.
     for k, tile in pairs(output) do
-        if arg.min_distance then
-            if tile.distance < arg.min_distance then
+        if args.min_distance then
+            if tile.distance < args.min_distance then
                 output[k].unlandable = true
             end
         end
