@@ -17,8 +17,10 @@ function ai:do_step()
 
     for k, unit in pairs(units) do
         if unit.data.team == self.team and not unit.data.moved then
-            self:move_unit(unit)
-            self:attack_enemy_in_range(unit)
+            -- Get where the unit would move and feed it to attack position.
+            local x_move, y_move = self:move_unit(unit)
+            
+            self:attack_enemy_in_range(unit, x_move, y_move)
 
             move_unit_flag = true
             break
@@ -38,6 +40,8 @@ function ai:move_unit(unit)
     move_command.data = { unit = unit, tile_x = x, tile_y = y }
 
     self.world:receive_command(move_command)
+
+    return x, y
 end
 
 function ai:determine_move_spot(unit)
@@ -85,8 +89,8 @@ function ai:determine_move_spot(unit)
 end
 
 -- Attack a random enemy within range.
-function ai:attack_enemy_in_range(unit)
-    local attack_area = unit:get_attack_area(self.world, unit.tile_x, unit.tile_y)
+function ai:attack_enemy_in_range(unit, x, y)
+    local attack_area = unit:get_attack_area(self.world, x, y)
 
     local enemies_in_range = {}
 
