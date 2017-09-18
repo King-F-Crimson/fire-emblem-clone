@@ -31,8 +31,8 @@ function world.create(observer, teams, animation)
     unit_layer:create_unit(unit_class.bow_fighter, 2, 8, { active_weapon = 1, weapons = {weapon_class.iron_bow, weapon_class.iron_sword}, team = self.teams[1] })
 
     -- Create enemy units.
-    unit_layer:create_unit(unit_class.sword_fighter, 2, 9, { active_weapon = 1, weapons = {weapon_class.iron_sword}, team = self.teams[2] })
-    unit_layer:create_unit(unit_class.sword_fighter, 1, 8, { active_weapon = 1, weapons = {weapon_class.iron_sword}, team = self.teams[2] })
+    unit_layer:create_unit(unit_class.sword_fighter, 2, 15, { active_weapon = 1, weapons = {weapon_class.iron_sword}, team = self.teams[2] })
+    unit_layer:create_unit(unit_class.sword_fighter, 1, 16, { active_weapon = 1, weapons = {weapon_class.iron_sword}, team = self.teams[2] })
     unit_layer:create_unit(unit_class.axe_fighter, 1, 24, { active_weapon = 1, weapons = {weapon_class.iron_axe}, team = self.teams[2] })
     unit_layer:create_unit(unit_class.lance_fighter, 3, 20, { active_weapon = 1, weapons = {weapon_class.iron_lance}, team = self.teams[2] })
     unit_layer:create_unit(unit_class.bow_fighter, 2, 26, { active_weapon = 1, weapons = {weapon_class.iron_bow}, team = self.teams[2] })
@@ -251,8 +251,6 @@ function world:get_tiles_in_distance(arg)
 
                 -- If tile is in bound, not already in output, and is not impassable, and the distance to the tile is not larger than the max distance
                 -- add it to output and frontier.
-                local output_tile
-
                 if  (tile.x >= 0 and tile.y >= 0 and tile.x < self.map.width and tile.y < self.map.height) and
                     output[key(tile.x, tile.y)] == nil and cost ~= "impassable" and i - 1 + cost <= arg.distance then
 

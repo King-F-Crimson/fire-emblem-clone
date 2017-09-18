@@ -18,6 +18,8 @@ function ai:do_step()
     for k, unit in pairs(units) do
         if unit.data.team == self.team and not unit.data.moved then
             self:move_unit(unit)
+            self:attack_enemy_in_range(unit)
+
             move_unit_flag = true
             break
         end
@@ -79,5 +81,31 @@ function ai:determine_move_spot(unit)
         return furthest_traversable_spot.x, furthest_traversable_spot.y
     else
         return unit.tile_x, unit.tile_y
+    end
+end
+
+-- Attack a random enemy within range.
+function ai:attack_enemy_in_range(unit)
+    local attack_area = unit:get_attack_area(self.world, unit.tile_x, unit.tile_y)
+
+    local enemies_in_range = {}
+
+    for key, tile in pairs(attack_area) do
+        if tile.tile_content.unit then
+            local unit_on_tile = tile.tile_content.unit
+
+            if unit_on_tile.data.team ~= unit.data.team then
+                table.insert(enemies_in_range, unit_on_tile)
+            end
+        end
+    end
+
+    if #enemies_in_range ~= 0 then
+        local random_enemy = enemies_in_range[ math.random(#enemies_in_range) ]
+
+        local attack_command = { action = "attack" }
+        attack_command.data = { unit = unit, tile_x = random_enemy.tile_x, tile_y = random_enemy.tile_y }
+
+        self.world:receive_command(attack_command)
     end
 end
