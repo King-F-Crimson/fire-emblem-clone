@@ -51,3 +51,13 @@ function is_empty(table)
     end
     return true
 end
+
+-- Reverse table.
+function reverse_table(t)
+    local reversedTable = {}
+    local itemCount = #t
+    for k, v in ipairs(t) do
+        reversedTable[itemCount + 1 - k] = v
+    end
+    return reversedTable
+end
