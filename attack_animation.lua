@@ -11,6 +11,8 @@ function attack_animation.create(args)
     self.attacker = args.attacker
     self.target = args.target
 
+    self.attacker.hidden, self.target.hidden = true, true
+
     -- Attacker's temporary position in animation.
     self.tile_x, self.tile_y = self.attacker.tile_x, self.attacker.tile_y
 

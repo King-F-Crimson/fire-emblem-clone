@@ -27,14 +27,16 @@ function animation:receive_animation(animation)
     self:hide_actors(animation)
 end
 
+-- Currently not hiding attack and wait animation since it is queued long after move animation
+-- when moving, hiding the target while the attacker moves.
 function animation:hide_actors(animation)
-    if animation.type == "attack" then
-        animation.data.attacker.hidden = true
-        animation.data.target.hidden = true
-    elseif animation.type == "wait" then
-        animation.data.attacker.hidden = true
-        animation.data.target.hidden = true
-    elseif animation.type == "move" then
+    -- if animation.type == "attack" then
+    --     animation.data.attacker.hidden = true
+    --     animation.data.target.hidden = true
+    -- elseif animation.type == "wait" then
+    --     animation.data.attacker.hidden = true
+    --     animation.data.target.hidden = true
+    if animation.type == "move" then
         animation.data.unit.hidden = true
     end
 end

@@ -6,6 +6,8 @@ function wait_animation.create(args)
 
     self.attacker, self.target = args.attacker, args.target
 
+    self.attacker.hidden, self.target.hidden = true, true
+
     self.length = args.length
     self.current_frame = 1
 
