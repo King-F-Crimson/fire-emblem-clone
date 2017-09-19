@@ -32,9 +32,20 @@ function game.create(application, observer)
     self.ai = ai.create(self.observer, self, self.world)
     self.camera = camera.create(self.observer, self.ui)
 
-    self.observer:add_listener("game_end", function(args) self:game_end(args) end)
+    self.listeners = {
+        self.observer:add_listener("game_end", function(args) self:game_end(args) end)
+    }
 
     return self
+end
+
+function game:destroy()
+    self.world:destroy()
+    self.ui:destroy()
+    self.camera:destroy()
+
+    -- Remove listeners from observer.
+    observer.remove_listeners_from_object(self)
 end
 
 function game:game_end(args)

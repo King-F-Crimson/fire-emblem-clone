@@ -28,7 +28,7 @@ function application.create()
     self.zoom = 2
 
     self.observer = observer.create()
-    self:change_state(title_screen)
+    self.state = title_screen.create(self, self.observer)
 
     self.event_queue = queue.create()
 
@@ -57,8 +57,10 @@ function application:draw()
     love.graphics.pop()
 end
 
-function application:change_state(new_state)
-    self.state = new_state.create(self, self.observer)
+function application:change_state(new_state, state_args)
+    self.state:destroy()
+
+    self.state = new_state.create(self, self.observer, state_args)
 end
 
 function application:receive_event(event)

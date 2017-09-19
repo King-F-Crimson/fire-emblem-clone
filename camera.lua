@@ -20,9 +20,15 @@ function camera.create(observer, ui)
     self.screen_center_x = self.application:get_scaled_window_width() / 2
     self.screen_center_y = self.application:get_scaled_window_height() / 2
 
-    self.observer:add_listener("cursor_moved_using_keyboard", function() self:set_translate_center_to_cursor() end)
+    self.listeners = {
+        self.observer:add_listener("cursor_moved_using_keyboard", function() self:set_translate_center_to_cursor() end)
+    }
 
     return self
+end
+
+function camera:destroy()
+    observer.remove_listeners_from_object(self)
 end
 
 function camera:update()

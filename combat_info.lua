@@ -6,11 +6,17 @@ function combat_info.create(observer, ui, x, y)
     local self = { observer = observer, ui = ui, x = x, y = y, info = "" }
     setmetatable(self, {__index = combat_info})
 
-    self.observer:add_listener("menu_moved", function(action) self:set_combat_info(action) end)
-    self.observer:add_listener("menu_created", function(action) self:set_combat_info(action) end)
-    self.observer:add_listener("menu_destroyed", function() self:clear_combat_info() end)
+    self.listeners = {
+        self.observer:add_listener("menu_moved", function(action) self:set_combat_info(action) end),
+        self.observer:add_listener("menu_created", function(action) self:set_combat_info(action) end),
+        self.observer:add_listener("menu_destroyed", function() self:clear_combat_info() end),
+    }
 
     return self
+end
+
+function combat_info:destroy()
+    observer.remove_listeners_from_object(self)
 end
 
 function combat_info:set_combat_info(action)

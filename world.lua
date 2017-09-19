@@ -37,11 +37,17 @@ function world.create(observer, teams, animation)
     -- unit_layer:create_unit(unit_class.lance_fighter, 3, 20, { active_weapon = 1, weapons = {weapon_class.iron_lance}, team = self.teams[2] })
     -- unit_layer:create_unit(unit_class.bow_fighter, 2, 26, { active_weapon = 1, weapons = {weapon_class.iron_bow}, team = self.teams[2] })
 
-    self.observer:add_listener("new_turn", function() self:new_turn() end)
-    self.observer:add_listener("animation_ended", function() self:clean_dead_units() end)
-    self.observer:add_listener("world_changed", function() self:check_game_end() end)
+    self.listeners = {
+        self.observer:add_listener("new_turn", function() self:new_turn() end),
+        self.observer:add_listener("animation_ended", function() self:clean_dead_units() end),
+        self.observer:add_listener("world_changed", function() self:check_game_end() end),
+    }
 
     return self
+end
+
+function world:destroy()
+    observer.remove_listeners_from_object(self)
 end
 
 function world:receive_command(command)

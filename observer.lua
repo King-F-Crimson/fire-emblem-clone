@@ -16,6 +16,19 @@ function observer:add_listener(event, callback)
     end
 
     table.insert(self.listeners[event], callback)
+
+    -- Return listener index for removal purpose later.
+    return { event = event, index = #self.listeners[event] }
+end
+
+function observer:remove_listener(event, index)
+    self.listeners[event][index] = nil
+end
+
+function observer.remove_listeners_from_object(object)
+    for i, listener in ipairs(object.listeners) do
+        object.observer:remove_listener(listener.event, listener.index)
+    end
 end
 
 function observer:notify(event, data)

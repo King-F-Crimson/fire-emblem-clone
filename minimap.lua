@@ -9,9 +9,15 @@ function minimap.create(observer, ui, x, y)
 
     self:generate()
 
-    self.observer:add_listener("world_changed", function() self:generate() end)
+    self.listeners = {
+        self.observer:add_listener("world_changed", function() self:generate() end)
+    }
 
     return self
+end
+
+function minimap:destroy()
+    observer.remove_listeners_from_object(self)
 end
 
 function minimap:generate()

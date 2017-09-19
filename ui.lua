@@ -45,12 +45,20 @@ function ui.create(observer, game, world)
 
     -- Create a listener for world_changed event.
     -- Make it regenerate danger area.
-    self.observer:add_listener("world_changed", function() self:generate_danger_area() end)
-    self.observer:add_listener("unit_deleted", function(unit) self:remove_unit_references(unit) end)
     -- Clear marked_units and danger_area at begining of new turn.
-    self.observer:add_listener("new_turn", function() self.marked_units = {}; self.areas.danger = {}; end)
+    self.listeners = {
+        self.observer:add_listener("world_changed", function() self:generate_danger_area() end),
+        self.observer:add_listener("unit_deleted", function(unit) self:remove_unit_references(unit) end),
+        self.observer:add_listener("new_turn", function() self.marked_units = {}; self.areas.danger = {}; end),
+    }
 
     return self
+end
+
+function ui:destroy()
+    self.hud:destroy()
+
+    observer.remove_listeners_from_object(self)
 end
 
 function ui:process_event(event)

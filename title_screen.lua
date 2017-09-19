@@ -12,6 +12,10 @@ function title_screen.create(application)
     return self
 end
 
+function title_screen:destroy()
+    
+end
+
 function title_screen:process_event(event)
     if event.type == "key_pressed" or event.type == "mouse_pressed" then
         self.application:change_state(game)

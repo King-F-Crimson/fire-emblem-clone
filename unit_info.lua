@@ -4,10 +4,16 @@ function unit_info.create(observer, ui, x, y)
     local self = { observer = observer, ui = ui, x = x, y = y }
     setmetatable(self, {__index = unit_info})
 
-    self.observer:add_listener("cursor_moved", function() self:set_displayed_unit_from_cursor() end)
-    self.observer:add_listener("unit_deleted", function(unit) self:handle_unit_deletion(unit) end)
+    self.listeners = {
+        self.observer:add_listener("cursor_moved", function() self:set_displayed_unit_from_cursor() end),
+        self.observer:add_listener("unit_deleted", function(unit) self:handle_unit_deletion(unit) end),
+    }
 
     return self
+end
+
+function unit_info:destroy()
+    observer.remove_listeners_from_object(self)
 end
 
 function unit_info:set_displayed_unit(unit)

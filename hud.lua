@@ -15,6 +15,12 @@ function hud.create(ui)
     return self
 end
 
+function hud:destroy()
+    self.unit_info:destroy()
+    self.minimap:destroy()
+    self.combat_info:destroy()
+end
+
 function hud:draw()
     self.unit_info:draw()
     self.minimap:draw()
