@@ -14,10 +14,6 @@ function attack_animation.create(args)
     -- Attacker's temporary position in animation.
     self.tile_x, self.tile_y = self.attacker.tile_x, self.attacker.tile_y
 
-    -- Hide attacker and target so it's not drawn in world:draw("units").
-    self.attacker.hidden = true
-    self.target.hidden = true
-
     self.distance_tile_x, self.distance_tile_y = self.target.tile_x - self.attacker.tile_x, self.target.tile_y - self.attacker.tile_y
 
     self.miss = args.miss

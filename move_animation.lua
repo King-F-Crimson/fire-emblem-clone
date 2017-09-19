@@ -6,8 +6,6 @@ function move_animation.create(args)
 
     self.unit = args.unit
 
-    self.unit.hidden = true
-
     self.path = args.path
 
     self.length_per_tile = 5
