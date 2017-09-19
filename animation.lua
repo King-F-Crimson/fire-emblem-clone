@@ -19,9 +19,24 @@ function animation.create(observer)
     return self
 end
 
+-- Side effect: hides actors in the animation
 function animation:receive_animation(animation)
     self.animation_queue:push(animation)
     self.active = true
+
+    self:hide_actors(animation)
+end
+
+function animation:hide_actors(animation)
+    if animation.type == "attack" then
+        animation.data.attacker.hidden = true
+        animation.data.target.hidden = true
+    elseif animation.type == "wait" then
+        animation.data.attacker.hidden = true
+        animation.data.target.hidden = true
+    elseif animation.type == "move" then
+        animation.data.unit.hidden = true
+    end
 end
 
 function animation:process_animation_queue()
