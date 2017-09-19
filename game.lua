@@ -7,7 +7,7 @@ require("team")
 require("color")
 require("camera")
 require("pause_menu")
-require("win_screen")
+require("result_screen")
 
 game = {}
 
@@ -32,13 +32,13 @@ function game.create(application, observer)
     self.ai = ai.create(self.observer, self, self.world)
     self.camera = camera.create(self.observer, self.ui)
 
-    self.observer:add_listener("player_won", function() self:win() end)
+    self.observer:add_listener("game_end", function(args) self:game_end(args) end)
 
     return self
 end
 
-function game:win()
-    self.application:change_state(win_screen)
+function game:game_end(args)
+    self.application:change_state(result_screen, args)
 end
 
 function game:new_turn()

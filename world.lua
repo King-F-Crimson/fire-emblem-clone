@@ -25,21 +25,21 @@ function world.create(observer, teams, animation)
     local unit_layer = unit_layer.create(self.map, self.observer)
 
     -- Create player units.
-    unit_layer:create_unit(unit_class.sword_fighter, 1, 2, { active_weapon = 1, weapons = {weapon_class.iron_sword}, team = self.teams[1] })
-    unit_layer:create_unit(unit_class.axe_fighter, 3, 5, { active_weapon = 1, weapons = {weapon_class.iron_axe}, team = self.teams[1] })
-    unit_layer:create_unit(unit_class.lance_fighter, 2, 10, { active_weapon = 1, weapons = {weapon_class.iron_lance}, team = self.teams[1] })
+    -- unit_layer:create_unit(unit_class.sword_fighter, 1, 2, { active_weapon = 1, weapons = {weapon_class.iron_sword}, team = self.teams[1] })
+    -- unit_layer:create_unit(unit_class.axe_fighter, 3, 5, { active_weapon = 1, weapons = {weapon_class.iron_axe}, team = self.teams[1] })
+    -- unit_layer:create_unit(unit_class.lance_fighter, 2, 10, { active_weapon = 1, weapons = {weapon_class.iron_lance}, team = self.teams[1] })
     unit_layer:create_unit(unit_class.bow_fighter, 2, 8, { active_weapon = 1, weapons = {weapon_class.iron_bow, weapon_class.iron_sword}, team = self.teams[1] })
 
     -- Create enemy units.
     unit_layer:create_unit(unit_class.sword_fighter, 2, 15, { active_weapon = 1, weapons = {weapon_class.iron_sword}, team = self.teams[2] })
-    unit_layer:create_unit(unit_class.sword_fighter, 1, 16, { active_weapon = 1, weapons = {weapon_class.iron_sword}, team = self.teams[2] })
-    unit_layer:create_unit(unit_class.axe_fighter, 1, 24, { active_weapon = 1, weapons = {weapon_class.iron_axe}, team = self.teams[2] })
-    unit_layer:create_unit(unit_class.lance_fighter, 3, 20, { active_weapon = 1, weapons = {weapon_class.iron_lance}, team = self.teams[2] })
-    unit_layer:create_unit(unit_class.bow_fighter, 2, 26, { active_weapon = 1, weapons = {weapon_class.iron_bow}, team = self.teams[2] })
+    -- unit_layer:create_unit(unit_class.sword_fighter, 1, 16, { active_weapon = 1, weapons = {weapon_class.iron_sword}, team = self.teams[2] })
+    -- unit_layer:create_unit(unit_class.axe_fighter, 1, 24, { active_weapon = 1, weapons = {weapon_class.iron_axe}, team = self.teams[2] })
+    -- unit_layer:create_unit(unit_class.lance_fighter, 3, 20, { active_weapon = 1, weapons = {weapon_class.iron_lance}, team = self.teams[2] })
+    -- unit_layer:create_unit(unit_class.bow_fighter, 2, 26, { active_weapon = 1, weapons = {weapon_class.iron_bow}, team = self.teams[2] })
 
     self.observer:add_listener("new_turn", function() self:new_turn() end)
     self.observer:add_listener("animation_ended", function() self:clean_dead_units() end)
-    self.observer:add_listener("world_changed", function() self:check_win() end)
+    self.observer:add_listener("world_changed", function() self:check_game_end() end)
 
     return self
 end
@@ -62,18 +62,27 @@ function world:process_command_queue()
     self.command_queue = {}
 end
 
-function world:check_win()
-    local no_more_enemy = true
+function world:check_game_end()
+    local function check_annihilated(team)
+        local no_more_unit = true
 
-    for k, unit in pairs(self:get_all_units()) do
-        if unit.data.team == self.teams[2] then
-            no_more_enemy = false
+        for k, unit in pairs(self:get_all_units()) do
+            if unit.data.team == team then
+                no_more_unit = false
+            end
         end
+
+        return no_more_unit
     end
 
-    if no_more_enemy then
-        -- Do what to do when the player wins.
-        self.observer:notify("player_won")
+
+    -- Check if team 2 (default enemy team) is destroyed completely.
+    if check_annihilated(self.teams[1]) then
+        self.observer:notify("game_end", { winner = "enemy" })
+    end
+
+    if check_annihilated(self.teams[2]) then
+        self.observer:notify("game_end", { winner = "player" })
     end
 end
 
