@@ -13,8 +13,8 @@ world = {
     
 }
 
-function world.create(observer, teams, animation)
-    local self = {observer = observer, teams = teams, animation = animation}
+function world.create(observer, mods, teams, animation)
+    local self = {observer = observer, mods = mods, teams = teams, animation = animation}
     setmetatable(self, {__index = world})
 
     self.map = sti("maps/test_map.lua")
@@ -29,6 +29,10 @@ function world.create(observer, teams, animation)
     -- unit_layer:create_unit(unit_class.axe_fighter, 3, 5, { active_weapon = 1, weapons = {weapon_class.iron_axe}, team = self.teams[1] })
     -- unit_layer:create_unit(unit_class.lance_fighter, 2, 10, { active_weapon = 1, weapons = {weapon_class.iron_lance}, team = self.teams[1] })
     unit_layer:create_unit(unit_class.bow_fighter, 2, 8, { active_weapon = 1, weapons = {weapon_class.iron_bow, weapon_class.iron_sword}, team = self.teams[1] })
+
+    -- Unit with unit_class from mod.
+    unit_layer:create_unit(mods.konosuba.unit_class.crimson_demon, 2, 10, { active_weapon = 1, weapons = {weapon_class.iron_bow, weapon_class.iron_sword}, team = self.teams[1] })
+
 
     -- Create enemy units.
     unit_layer:create_unit(unit_class.sword_fighter, 2, 15, { active_weapon = 1, weapons = {weapon_class.iron_sword}, team = self.teams[2] })

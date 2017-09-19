@@ -8,6 +8,7 @@ require("color")
 require("camera")
 require("pause_menu")
 require("result_screen")
+require("mods")
 
 game = {}
 
@@ -25,9 +26,12 @@ function game.create(application, observer)
 
     self.is_paused = false
 
+    self.mods = mods.create(self)
+    self.mods:load("konosuba")
+
     self.pause_menu = pause_menu.create(self.application)
     self.animation = animation.create(self.observer)
-    self.world = world.create(self.observer, self.teams, self.animation)
+    self.world = world.create(self.observer, self.mods, self.teams, self.animation)
     self.ui = ui.create(self.observer, self, self.world)
     self.ai = ai.create(self.observer, self, self.world)
     self.camera = camera.create(self.observer, self.ui)
