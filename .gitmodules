@@ -6,3 +6,6 @@
 	path = libs/Simple-Tiled-Implementation
 	url = https://github.com/karai17/Simple-Tiled-Implementation
 	ignore = dirty
+[submodule "libs/json.lua"]
+	path = libs/json.lua
+	url = https://github.com/rxi/json.lua.git

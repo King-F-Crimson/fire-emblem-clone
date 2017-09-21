@@ -11,6 +11,4 @@ function mods:load(name)
     local mod = require(string.format("mods.%s.init", name))
 
     self[name] = mod
-
-    table_print(self[name])
 end
