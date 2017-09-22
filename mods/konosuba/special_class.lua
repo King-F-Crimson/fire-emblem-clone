@@ -21,7 +21,7 @@ local special_class = {
         class = "magical",
 
         sprite = love.graphics.newImage("mods/konosuba/assets/explosion.png"),
-        sprite_scale = 1/4,
+        sprite_scale = 1/2,
     }
 }
 

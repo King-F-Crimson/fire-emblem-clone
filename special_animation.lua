@@ -31,10 +31,10 @@ end
 function special_animation:draw()
     local animation = self.animation
     local scale = self.special.sprite_scale
-    local x, y = self.x, self.y
+    local x, y = self.x + 0.5, self.y + 0.5
 
     love.graphics.push()
         love.graphics.scale(scale)
-        animation:draw(x * tile_size / scale, y * tile_size / scale)
+        animation:draw(x * tile_size / scale - animation.frame_size.w / 2, y * tile_size / scale - animation.frame_size.h / 2)
     love.graphics.pop()
 end
