@@ -61,3 +61,10 @@ function reverse_table(t)
     end
     return reversedTable
 end
+
+-- File to string
+function load_file_as_string(filename)
+    local f = io.input(filename)
+
+    return io.read("*all")
+end

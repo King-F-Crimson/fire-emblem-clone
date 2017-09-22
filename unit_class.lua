@@ -1,6 +1,10 @@
+local json = require("json")
+
 unit_class = {
     generic_unit = {
-        base_sprite = love.graphics.newImage("assets/template_unit.png"),
+        sprites = {
+            base_sprite = love.graphics.newImage("assets/template_unit.png"),
+        },
 
         name = "Generic Unit",
         
@@ -13,8 +17,16 @@ unit_class = {
     },
 
     sword_fighter = {
-        idle_base = love.graphics.newImage("assets/sword_fighter_idle.png"),
-        run_base = love.graphics.newImage("assets/sword_fighter_run.png"),
+        sprites = {
+            idle = {
+                base = love.graphics.newImage("assets/sword_fighter_idle.png"),
+                color = love.graphics.newImage("assets/template_unit_idle_color.png"),
+            },
+            run = {
+                base = love.graphics.newImage("assets/sword_fighter_run.png"),
+                color = love.graphics.newImage("assets/template_unit_run_color.png"),
+            },
+        },
 
         name = "Sword Fighter",
         
@@ -29,8 +41,16 @@ unit_class = {
     },
 
     lance_fighter = {
-        idle_base = love.graphics.newImage("assets/lance_fighter_idle.png"),
-        run_base = love.graphics.newImage("assets/lance_fighter_run.png"),
+        sprites = {
+            idle = {
+                base = love.graphics.newImage("assets/lance_fighter_idle.png"),
+                color = love.graphics.newImage("assets/template_unit_idle_color.png"),
+            },
+            run = {
+                base = love.graphics.newImage("assets/lance_fighter_run.png"),
+                color = love.graphics.newImage("assets/template_unit_run_color.png"),
+            },
+        },
 
         name = "Lance Fighter",
         
@@ -45,8 +65,16 @@ unit_class = {
     },
 
     axe_fighter = {
-        idle_base = love.graphics.newImage("assets/axe_fighter_idle.png"),
-        run_base = love.graphics.newImage("assets/axe_fighter_run.png"),
+        sprites = {
+            idle = {
+                base = love.graphics.newImage("assets/axe_fighter_idle.png"),
+                color = love.graphics.newImage("assets/template_unit_idle_color.png"),
+            },
+            run = {
+                base = love.graphics.newImage("assets/axe_fighter_run.png"),
+                color = love.graphics.newImage("assets/template_unit_run_color.png"),
+            },
+        },
 
         name = "Axe Fighter",
         
@@ -61,8 +89,16 @@ unit_class = {
     },
 
     bow_fighter = {
-        idle_base = love.graphics.newImage("assets/bow_fighter_idle.png"),
-        run_base = love.graphics.newImage("assets/bow_fighter_run.png"),
+        sprites = {
+            idle = {
+                base = love.graphics.newImage("assets/bow_fighter_idle.png"),
+                color = love.graphics.newImage("assets/template_unit_idle_color.png"),
+            },
+            run = {
+                base = love.graphics.newImage("assets/bow_fighter_run.png"),
+                color = love.graphics.newImage("assets/template_unit_run_color.png"),
+            },
+        },
 
         name = "Bow Fighter",
         

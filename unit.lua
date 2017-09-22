@@ -4,9 +4,6 @@ require("colored_sprite")
 require("animated_sprite")
 
 unit = {
-    idle_color = love.graphics.newImage("assets/template_unit_idle_color.png"),
-    run_color = love.graphics.newImage("assets/template_unit_run_color.png"),
-
     health_bar_base = love.graphics.newImage("assets/health_bar_32.png"),
 
     colorize_shader = love.graphics.newShader("shaders/colorize_shader.fs"),
@@ -55,13 +52,12 @@ function unit:get_active_weapon()
 end
 
 function unit:generate_animations()
-    self.sprites = {
-        idle = colored_sprite.create(self.idle_base, self.idle_color, self.data.team.color),
-        run = colored_sprite.create(self.run_base, self.run_color, self.data.team.color),
-    }
+    self.sprites.idle.final = colored_sprite.create(self.sprites.idle.base, self.sprites.idle.color, self.data.team.color)
+    self.sprites.run.final = colored_sprite.create(self.sprites.run.base, self.sprites.run.color, self.data.team.color)
+    
     self.animations = {
-        idle = animated_sprite.create{ image = self.sprites.idle, frame_width = unit_size, durations = 10 },
-        run = animated_sprite.create{ image = self.sprites.run, frame_width = unit_size, durations = 5 },
+        idle = animated_sprite.create{ image = self.sprites.idle.final, frame_width = unit_size, durations = 10 },
+        run = animated_sprite.create{ image = self.sprites.run.final, frame_width = unit_size, durations = 5 },
     }
 end
 
