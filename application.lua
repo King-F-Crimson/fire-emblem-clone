@@ -21,7 +21,7 @@ function application.create()
 
     love.window.setFullscreen(true, "desktop")
     love.keyboard.setKeyRepeat(true)
-    love.graphics.setBackgroundColor(32, 32, 32)
+    love.graphics.setBackgroundColor(0, 0, 0)
 
     math.randomseed(os.time())
 
