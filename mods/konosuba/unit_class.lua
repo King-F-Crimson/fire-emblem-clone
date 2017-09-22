@@ -6,11 +6,12 @@ local unit_class = {
             idle = {
                 base = love.graphics.newImage("mods/konosuba/assets/megumin_idle.png"),
                 color = love.graphics.newImage("assets/blank_sprite.png"),
-                animation = json.decode(load_file_as_string("mods/konosuba/assets/megumin_idle.json"))
+                animation = json.decode(load_file_as_string("mods/konosuba/assets/megumin_idle.json")),
             },
             run = {
                 base = love.graphics.newImage("mods/konosuba/assets/megumin_run.png"),
                 color = love.graphics.newImage("assets/blank_sprite.png"),
+                animation = json.decode(load_file_as_string("mods/konosuba/assets/megumin_run.json")),
             }
         },
 

@@ -21,10 +21,12 @@ unit_class = {
             idle = {
                 base = love.graphics.newImage("assets/sword_fighter_idle.png"),
                 color = love.graphics.newImage("assets/template_unit_idle_color.png"),
+                animation = json.decode(load_file_as_string("assets/sword_fighter_idle.json"))
             },
             run = {
                 base = love.graphics.newImage("assets/sword_fighter_run.png"),
                 color = love.graphics.newImage("assets/template_unit_run_color.png"),
+                animation = json.decode(load_file_as_string("assets/sword_fighter_run.json"))
             },
         },
 
@@ -93,10 +95,12 @@ unit_class = {
             idle = {
                 base = love.graphics.newImage("assets/bow_fighter_idle.png"),
                 color = love.graphics.newImage("assets/template_unit_idle_color.png"),
+                animation = json.decode(load_file_as_string("assets/bow_fighter_idle.json"))
             },
             run = {
                 base = love.graphics.newImage("assets/bow_fighter_run.png"),
                 color = love.graphics.newImage("assets/template_unit_run_color.png"),
+                animation = json.decode(load_file_as_string("assets/bow_fighter_run.json"))
             },
         },
 

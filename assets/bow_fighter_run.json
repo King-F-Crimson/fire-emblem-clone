@@ -1,0 +1,66 @@
+{ "frames": [
+   {
+    "filename": "bow_fighter_run (Flattened) 0.ase",
+    "frame": { "x": 0, "y": 0, "w": 32, "h": 32 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 32 },
+    "sourceSize": { "w": 32, "h": 32 },
+    "duration": 125
+   },
+   {
+    "filename": "bow_fighter_run (Flattened) 1.ase",
+    "frame": { "x": 32, "y": 0, "w": 32, "h": 32 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 32 },
+    "sourceSize": { "w": 32, "h": 32 },
+    "duration": 125
+   },
+   {
+    "filename": "bow_fighter_run (Flattened) 2.ase",
+    "frame": { "x": 64, "y": 0, "w": 32, "h": 32 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 32 },
+    "sourceSize": { "w": 32, "h": 32 },
+    "duration": 125
+   },
+   {
+    "filename": "bow_fighter_run (Flattened) 3.ase",
+    "frame": { "x": 96, "y": 0, "w": 32, "h": 32 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 32 },
+    "sourceSize": { "w": 32, "h": 32 },
+    "duration": 125
+   },
+   {
+    "filename": "bow_fighter_run (Flattened) 4.ase",
+    "frame": { "x": 128, "y": 0, "w": 32, "h": 32 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 32 },
+    "sourceSize": { "w": 32, "h": 32 },
+    "duration": 125
+   },
+   {
+    "filename": "bow_fighter_run (Flattened) 5.ase",
+    "frame": { "x": 160, "y": 0, "w": 32, "h": 32 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 32 },
+    "sourceSize": { "w": 32, "h": 32 },
+    "duration": 125
+   }
+ ],
+ "meta": {
+  "app": "http://www.aseprite.org/",
+  "version": "1.2-beta9",
+  "format": "RGBA8888",
+  "size": { "w": 192, "h": 32 },
+  "scale": "1",
+  "frameTags": [
+  ]
+ }
+}

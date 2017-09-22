@@ -2,28 +2,36 @@ local anim8 = require("libs/anim8/anim8")
 
 animated_sprite = {}
 
-function animated_sprite.create(arg)
+function animated_sprite.create(image, animation_data)
     local self = {}
     setmetatable(self, {__index = animated_sprite})
 
-    self.image = arg.image
-    local image_width, image_height = self.image:getWidth(), self.image:getHeight()
+    self.image = image
 
-    self:construct_grid(arg.frame_width, arg.frame_height, image_width, image_height, arg.left, arg.top, arg.border)
+    self:process_animation_data(animation_data)
 
-    self.animation = anim8.newAnimation(self.grid('1-' .. tostring(self.row_count), 1), arg.durations)
+    self.animation = anim8.newAnimation(self.grid('1-' .. tostring(#self.durations), 1), self.durations)
 
     return self
 end
 
-function animated_sprite:construct_grid(frame_width, frame_height, image_width, image_height, left, top, border)
-    local frame_height = frame_height or image_height
+function animated_sprite:process_animation_data(animation_data)
+    self.frame_size = {
+        w = animation_data.frames[1].frame.w,
+        h = animation_data.frames[1].frame.h,
+    }
 
-    -- Last three arguments can be nil and default to zero.
-    self.grid = anim8.newGrid(frame_width, frame_height, image_width, image_height, left, top, border)
+    self.image_size = {
+        w = animation_data.meta.size.w,
+        h = animation_data.meta.size.h,
+    }
 
-    self.row_count = image_width / frame_width
-    self.column_count = image_height / frame_height
+    self.durations = {}
+    for i, frame in ipairs(animation_data.frames) do
+        table.insert(self.durations, frame.duration / 1000)
+    end
+
+    self.grid = anim8.newGrid(self.frame_size.w, self.frame_size.h, self.image_size.w, self.image_size.h)
 end
 
 function animated_sprite:draw(x, y)
@@ -32,5 +40,5 @@ end
 
 function animated_sprite:update()
     -- Updates the animation by one frame.
-    self.animation:update(1)
+    self.animation:update(1/60)
 end

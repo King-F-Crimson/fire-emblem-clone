@@ -1,5 +1,6 @@
-{ "frames": {
-   "Megumin_Sprite_Idle 0.ase": {
+{ "frames": [
+   {
+    "filename": "Megumin_Sprite_Idle 0.ase",
     "frame": { "x": 0, "y": 0, "w": 32, "h": 32 },
     "rotated": false,
     "trimmed": false,
@@ -7,7 +8,8 @@
     "sourceSize": { "w": 32, "h": 32 },
     "duration": 500
    },
-   "Megumin_Sprite_Idle 1.ase": {
+   {
+    "filename": "Megumin_Sprite_Idle 1.ase",
     "frame": { "x": 32, "y": 0, "w": 32, "h": 32 },
     "rotated": false,
     "trimmed": false,
@@ -15,12 +17,14 @@
     "sourceSize": { "w": 32, "h": 32 },
     "duration": 500
    }
- },
+ ],
  "meta": {
   "app": "http://www.aseprite.org/",
   "version": "1.2-beta9",
   "format": "RGBA8888",
   "size": { "w": 64, "h": 32 },
-  "scale": "1"
+  "scale": "1",
+  "frameTags": [
+  ]
  }
 }

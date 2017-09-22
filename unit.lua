@@ -56,8 +56,8 @@ function unit:generate_animations()
     self.sprites.run.final = colored_sprite.create(self.sprites.run.base, self.sprites.run.color, self.data.team.color)
     
     self.animations = {
-        idle = animated_sprite.create{ image = self.sprites.idle.final, frame_width = unit_size, durations = 10 },
-        run = animated_sprite.create{ image = self.sprites.run.final, frame_width = unit_size, durations = 5 },
+        idle = animated_sprite.create(self.sprites.idle.final, self.sprites.idle.animation),
+        run = animated_sprite.create(self.sprites.run.final, self.sprites.run.animation),
     }
 end
 
