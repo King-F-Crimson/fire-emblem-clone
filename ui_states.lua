@@ -141,7 +141,9 @@ function menu_control.process_feedback(ui, feedback)
         elseif menu_type == "turn" then
             browsing.enter(ui)
         elseif menu_type == "weapon_select" then
-            attacking.enter(ui)
+            attacking.enter(ui, "standard_attack")
+        elseif menu_type == "special_select" then
+            attacking.enter(ui, "special")
         end
     end
 
