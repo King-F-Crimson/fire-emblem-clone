@@ -114,7 +114,14 @@ function menu_control.process_feedback(ui, feedback)
     if feedback.action == "prompt_attack" then
         -- Make attack unselectable when selected unit has no weapon.
         if not is_empty(ui.selected_unit.data.weapons) then
-            attacking.enter(ui)
+            attacking.enter(ui, "standard_attack")
+        end
+    end
+
+    if feedback.action == "prompt_special" then
+        -- Make attack unselectable when selected unit has no weapon.
+        if not is_empty(ui.selected_unit.data.specials) then
+            attacking.enter(ui, "special")
         end
     end
 
@@ -164,6 +171,23 @@ function menu_control.process_feedback(ui, feedback)
         browsing.enter(ui)
     end
 
+    if feedback.action == "special" then
+        -- Push command to world to move then attack.
+        local move_command = { action = "move_unit" }
+        move_command.data = { unit = ui.selected_unit, tile_x = ui.plan_tile_x, tile_y = ui.plan_tile_y }
+        ui.world:receive_command(move_command)
+
+        local special_command = { action = "special" }
+        special_command.data = { unit = ui.selected_unit, special = feedback.data.weapon, tile_x = feedback.data.tile_x, tile_y = feedback.data.tile_y }
+        ui.world:receive_command(special_command)
+
+        -- Put cursor in the attacking unit position.
+        ui.cursor:move_to(ui.plan_tile_x, ui.plan_tile_y)
+
+        -- Revert to browsing state.
+        browsing.enter(ui)
+    end
+
     if feedback.action == "equip" then
         ui.selected_unit.data.active_weapon = feedback.data.weapon_index
 
@@ -189,11 +213,15 @@ function attacking.process_feedback(ui, feedback)
     if feedback.action == "select" then
         local target_tile_x, target_tile_y = feedback.data.tile_x, feedback.data.tile_y
         -- Weapons that can attack the tile.
-        local valid_weapons = ui.selected_unit:get_valid_weapons(ui.world, ui.plan_tile_x, ui.plan_tile_y, target_tile_x, target_tile_y)
+        local valid_weapons = ui.selected_unit:get_valid_weapons(ui.world, ui.plan_tile_x, ui.plan_tile_y, target_tile_x, target_tile_y, ui.attack_type)
         local content_data = { weapons = valid_weapons, tile_x = target_tile_x, tile_y = target_tile_y }
 
         if not is_empty(valid_weapons) then
-            menu_control.enter(ui, "weapon_select", content_data)
+            if ui.attack_type == "standard_attack" then
+                menu_control.enter(ui, "weapon_select", content_data)
+            elseif ui.attack_type == "special" then
+                menu_control.enter(ui, "special_select", content_data)
+            end
         end
     end
 
@@ -206,11 +234,17 @@ function attacking.process_feedback(ui, feedback)
     end
 end
 
-function attacking.enter(ui)
+function attacking.enter(ui, attack_type)
     ui:destroy_menu()
     ui.active_input = "cursor"
 
-    ui:create_area("attack")
+    if attack_type == "standard_attack" then
+        ui:create_area("attack")
+        ui.attack_type = "standard_attack"
+    elseif attack_type == "special" then
+        ui:create_area("special")
+        ui.attack_type = "special"
+    end
 
     ui.state = attacking
 end

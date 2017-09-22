@@ -20,21 +20,24 @@ function menu:generate_content(content_data)
     self.pointer = 1
 
     if self.menu_type == "action" then
-        self.items  = { "Wait", "Attack", "Items" }
-        self.actions = { {action = "wait"}, {action = "prompt_attack"}, {action = "items"} }
+        self.items  = { "Wait", "Attack", "Special", "Items" }
+        self.actions = { {action = "wait"}, {action = "prompt_attack"}, {action = "prompt_special"}, {action = "items"} }
     elseif self.menu_type == "turn" then
         self.items = { "End turn" }
         self.actions = { {action = "end_turn"} }
     elseif self.menu_type == "weapon_select" then
-        self:create_weapon_select_content(content_data, "attack")
+        self:create_action_select_content(content_data, "attack")
     elseif self.menu_type == "weapon_equip" then
-        self:create_weapon_select_content(content_data, "equip")
+        self:create_action_select_content(content_data, "equip")
+    elseif self.menu_type == "special_select" then
+        self:create_action_select_content(content_data, "special")
     end
 
     self.item_count = #self.items
 end
 
-function menu:create_weapon_select_content(content_data, action)
+-- Action here can refer to using a weapon, equiping a weapon, or using a special.
+function menu:create_action_select_content(content_data, action)
     self.items = {}
     self.actions = {}
 

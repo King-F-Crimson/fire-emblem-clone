@@ -27,8 +27,10 @@ function animated_sprite:process_animation_data(animation_data)
     }
 
     self.durations = {}
+    self.total_duration = 0
     for i, frame in ipairs(animation_data.frames) do
         table.insert(self.durations, frame.duration / 1000)
+        self.total_duration = self.total_duration + frame.duration / 1000
     end
 
     self.grid = anim8.newGrid(self.frame_size.w, self.frame_size.h, self.image_size.w, self.image_size.h)

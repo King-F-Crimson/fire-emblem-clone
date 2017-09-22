@@ -117,7 +117,7 @@ function unit:get_movement_area(world)
 end
 
 -- Find area the unit can attack from a location.
-function unit:get_attack_area(world, tile_x, tile_y)
+function unit:get_attack_area(world, tile_x, tile_y, attack_type)
     -- Create default filter for attack, which does not include wall tiles.
     local function unlandable_filter(terrain, unit)
         if terrain == "wall" then
@@ -127,7 +127,15 @@ function unit:get_attack_area(world, tile_x, tile_y)
 
     local attack_area = {}
 
-    for k, weapon in pairs(self.data.weapons) do
+    -- Determine weapon type by attack_type
+    local weapons
+    if attack_type == "standard_attack" then
+        weapons = self.data.weapons
+    elseif attack_type == "special" then
+        weapons = self.data.specials
+    end
+
+    for k, weapon in pairs(weapons) do
         -- Default min_range to 1.
         local min_range = weapon.min_range or 1
 
@@ -142,7 +150,7 @@ function unit:get_attack_area(world, tile_x, tile_y)
 end
 
 -- Weapons that can attack a tile.
-function unit:get_valid_weapons(world, tile_x, tile_y, target_tile_x, target_tile_y)
+function unit:get_valid_weapons(world, tile_x, tile_y, target_tile_x, target_tile_y, attack_type)
     local function key(x, y) return string.format("(%i, %i)", x, y) end
 
     local valid_weapons = {}
@@ -153,7 +161,15 @@ function unit:get_valid_weapons(world, tile_x, tile_y, target_tile_x, target_til
         end
     end
 
-    for k, weapon in pairs(self.data.weapons) do
+    -- Determine weapon type by attack_type
+    local weapons
+    if attack_type == "standard_attack" then
+        weapons = self.data.weapons
+    elseif attack_type == "special" then
+        weapons = self.data.specials
+    end
+
+    for k, weapon in pairs(weapons) do
         -- Default min_range to 1.
         local min_range = weapon.min_range or 1
 

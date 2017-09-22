@@ -5,7 +5,7 @@ require("unit_layer")
 require("weapon_class")
 require("queue")
 require("combat")
-require("debug")
+require("special_ability")
 
 local sti = require "libs/Simple-Tiled-Implementation/sti"
 
@@ -31,7 +31,7 @@ function world.create(observer, mods, teams, animation)
     unit_layer:create_unit(unit_class.bow_fighter, 2, 8, { active_weapon = 1, weapons = {weapon_class.iron_bow, weapon_class.iron_sword}, team = self.teams[1] })
 
     -- Unit with unit_class from mod.
-    unit_layer:create_unit(mods.konosuba.unit_class.crimson_demon, 4, 8, { active_weapon = 1, weapons = {weapon_class.mini_explosion}, team = self.teams[1] })
+    unit_layer:create_unit(mods.konosuba.unit_class.crimson_demon, 4, 8, { active_weapon = 1, weapons = {weapon_class.mini_explosion}, specials = {mods.konosuba.special_class.explosion}, team = self.teams[1] })
 
 
     -- Create enemy units.
@@ -63,9 +63,10 @@ function world:process_command_queue()
         local data = command.data
         if command.action == "move_unit" then
             self:move_unit(data.unit, data.tile_x, data.tile_y, data.path)
-        end
-        if command.action == "attack" then
+        elseif command.action == "attack" then
             self:combat(data.unit, data.tile_x, data.tile_y)
+        elseif command.action == "special" then
+            self:activate_special_ability(data.unit, data.special, data.tile_x, data.tile_y)
         end
     end
 
@@ -98,6 +99,12 @@ end
 
 function world:combat(attacker, tile_x, tile_y)
     combat.initiate(self, attacker, tile_x, tile_y)
+
+    self.observer:notify("world_changed")
+end
+
+function world:activate_special_ability(caster, special, tile_x, tile_y)
+    special_ability.activate(self, caster, special, tile_x, tile_y)
 
     self.observer:notify("world_changed")
 end
