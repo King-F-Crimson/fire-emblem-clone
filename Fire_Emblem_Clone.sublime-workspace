@@ -1,0 +1,1171 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"current_tile",
+				"current_tile_index"
+			],
+			[
+				"furthest",
+				"furthest_traversable_spot"
+			],
+			[
+				"furthes",
+				"furthest_traversable_spot"
+			],
+			[
+				"debug",
+				"Debug.Log(message)"
+			],
+			[
+				"backg",
+				"background-color"
+			],
+			[
+				"max",
+				"maximum_height"
+			],
+			[
+				"trial",
+				"trial_result"
+			],
+			[
+				"tria",
+				"trial_result"
+			],
+			[
+				"attem",
+				"attempts_to_open_front_door"
+			],
+			[
+				"securi",
+				"security_door_key_number"
+			],
+			[
+				"count",
+				"count_attempts_to_open_door"
+			],
+			[
+				"gener",
+				"generate_random_keyring"
+			],
+			[
+				"minimum",
+				"minimum_orthographic_size"
+			],
+			[
+				"GetCompo",
+				"GameObject.GetComponent<T>()"
+			],
+			[
+				"moveTow",
+				"Vector3.MoveTowards(current, target, maxDistanceDelta)"
+			],
+			[
+				"initi",
+				"initial_velocity"
+			],
+			[
+				"time",
+				"time_to_reach_max_height"
+			],
+			[
+				"random",
+				"generate_random_set"
+			],
+			[
+				"initial",
+				"initialPosition"
+			],
+			[
+				"vector",
+				"Vector3"
+			],
+			[
+				"verti",
+				"verticalVelocity"
+			],
+			[
+				"vert",
+				"verticalVelocity"
+			],
+			[
+				"onValueChan",
+				"Scrollbar.onValueChanged"
+			],
+			[
+				"vertic",
+				"verticalVelocitySlider"
+			],
+			[
+				"verticalVeloc",
+				"verticalVelocitySliders"
+			],
+			[
+				"selece",
+				"selected_unit"
+			],
+			[
+				"set_trna",
+				"set_translate_center_to_cursor"
+			],
+			[
+				"set_tra",
+				"set_translate_center_to_cursor"
+			],
+			[
+				"function",
+				"function\tfunction"
+			],
+			[
+				"background_entities",
+				"background_entities_layer"
+			],
+			[
+				"jump",
+				"jump_length"
+			],
+			[
+				"key",
+				"love.keyboard.isDown"
+			],
+			[
+				"height",
+				"max-height"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "unit.lua",
+			"settings":
+			{
+				"buffer_size": 7626,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "animated_sprite.lua",
+			"settings":
+			{
+				"buffer_size": 1143,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/tom/Library/Application Support/Sublime Text 3/Packages/User/LoveRun.sublime-build",
+			"settings":
+			{
+				"buffer_size": 197,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "{\n    \"file_regex\": \"^(?:(?:\\t)|(?:.+: ))(.+):([0-9]+): (.*)$\",\n    \"selector\": \"source.lua\",\n    \"cmd\": [\"lua\", \"$file\"],\n\n    \"variants\": [\n        {   \"name\": \"Run\",\n            \"cmd\": [\"luajit\", \"$file\"]\n        },\n        {   \"name\": \"Love2D\",\n            \"shell\": true,\n            \"cmd\": [\"love\", \"$project_path\"],\n            \"osx\":\n            {\n                \"cmd\": [\"love $project_path\"]\n            }\n        },\n        {   \"name\": \"ldoc: File\",\n            \"shell\": true,\n            \"cmd\": [\"ldoc -d $project_path/doc/$file_base_name -f markdown -t $file_base_name $file\"]\n        },\n        {   \"name\": \"ldoc: Project\",\n            \"shell\": true,\n            \"cmd\": [\"ldoc -d $project_path/doc -f markdown -t $project_base_name $project_path/src/\"]\n        }\n    ]\n}\n",
+			"file": "/Users/tom/Library/Application Support/Sublime Text 3/Packages/Lua Love/LuaLove.sublime-build",
+			"file_size": -1,
+			"file_write_time": -1,
+			"settings":
+			{
+				"buffer_size": 784,
+				"line_ending": "Unix",
+				"scratch": true
+			}
+		},
+		{
+			"file": "mods/konosuba/assets/megumin_idle.json",
+			"settings":
+			{
+				"buffer_size": 736,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "unit_class.lua",
+			"settings":
+			{
+				"buffer_size": 3368,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "utility.lua",
+			"settings":
+			{
+				"buffer_size": 1929,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "mods/konosuba/unit_class.lua",
+			"settings":
+			{
+				"buffer_size": 927,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "colored_sprite.lua",
+			"settings":
+			{
+				"buffer_size": 816,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"Packages/Lua Love/LuaLove.sublime-build",
+					""
+				],
+				[
+					"Packages/Lua Love/LuaLove.sublime-build",
+					"Run"
+				],
+				[
+					"Packages/Lua Love/LuaLove.sublime-build",
+					"Love2D"
+				],
+				[
+					"Packages/Lua Love/LuaLove.sublime-build",
+					"ldoc: File"
+				],
+				[
+					"Packages/Lua Love/LuaLove.sublime-build",
+					"ldoc: Project"
+				]
+			],
+			[
+				"Packages/Lua Love/LuaLove.sublime-build",
+				"Run"
+			]
+		],
+		[
+			[
+				[
+					"Packages/Lua/Lua.sublime-build",
+					""
+				],
+				[
+					"Packages/Lua Love/LuaLove.sublime-build",
+					""
+				],
+				[
+					"Packages/Lua Love/LuaLove.sublime-build",
+					"Run"
+				],
+				[
+					"Packages/Lua Love/LuaLove.sublime-build",
+					"Love2D"
+				],
+				[
+					"Packages/Lua Love/LuaLove.sublime-build",
+					"ldoc: File"
+				],
+				[
+					"Packages/Lua Love/LuaLove.sublime-build",
+					"ldoc: Project"
+				]
+			],
+			[
+				"Packages/Lua Love/LuaLove.sublime-build",
+				"Love2D"
+			]
+		]
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 119.0,
+		"last_filter": "project",
+		"selected_items":
+		[
+			[
+				"project",
+				"Project: Add Folder"
+			],
+			[
+				"package resou",
+				"PackageResourceViewer: Open Resource"
+			],
+			[
+				"quick",
+				"Git: Quick Commit (repo)"
+			],
+			[
+				"diff",
+				"Git: Diff All Files"
+			],
+			[
+				"log",
+				"Git: Log All"
+			],
+			[
+				"qui",
+				"Git: Quick Commit (repo)"
+			],
+			[
+				"add",
+				"Git: Add..."
+			],
+			[
+				"pack",
+				"Package Control: Install Package"
+			],
+			[
+				"commit",
+				"Git: Commit"
+			],
+			[
+				"git add",
+				"Git: Add..."
+			],
+			[
+				"command",
+				"Git: Custom Command"
+			],
+			[
+				"commi",
+				"Git: Commit"
+			],
+			[
+				"mer",
+				"Git: Merge Branch"
+			],
+			[
+				"branc",
+				"Git: Change Branch"
+			],
+			[
+				"branch",
+				"Git: Change Branch"
+			],
+			[
+				"merge",
+				"Git: Merge Branch"
+			],
+			[
+				"git merge",
+				"Git: Merge Branch"
+			],
+			[
+				"snippet htm",
+				"Snippet: html"
+			],
+			[
+				"comb",
+				"Run CSScomb"
+			],
+			[
+				"snippet",
+				"Snippet: html"
+			],
+			[
+				"git diff",
+				"Git: Diff Staged Files"
+			],
+			[
+				"git command",
+				"Git: Custom Command"
+			],
+			[
+				"git add ",
+				"Git: Add All"
+			],
+			[
+				"git init",
+				"Git: Init"
+			],
+			[
+				"html",
+				"Snippet: html"
+			],
+			[
+				"package",
+				"Package Control: Install Package"
+			],
+			[
+				"git commit",
+				"Git: Commit"
+			],
+			[
+				"",
+				"Convert Case: Title Case"
+			],
+			[
+				"q",
+				"Git: Quick Commit (repo)"
+			],
+			[
+				"git bran",
+				"Git: Change Branch"
+			],
+			[
+				"git branch",
+				"Git: Change Branch"
+			],
+			[
+				"git reset",
+				"Git: Reset (hard) HEAD"
+			],
+			[
+				"git checkout ",
+				"Git: Checkout Tag"
+			],
+			[
+				"git checkout",
+				"Git: Checkout Tag"
+			],
+			[
+				"Quic",
+				"Git: Quick Commit (repo)"
+			],
+			[
+				"git add all",
+				"Git: Add All"
+			],
+			[
+				"push",
+				"Git: Push Current Branch"
+			],
+			[
+				"quic",
+				"Git: Quick Commit (repo)"
+			],
+			[
+				"dif",
+				"Git: Diff All Files"
+			],
+			[
+				"quikc",
+				"Git: Quick Commit (repo)"
+			],
+			[
+				"git re",
+				"Git: Reset (hard) HEAD"
+			],
+			[
+				"revert",
+				"File: Revert"
+			],
+			[
+				"checkout tag ",
+				"Git: Checkout Tag"
+			],
+			[
+				"checkout",
+				"Git: Checkout Tag"
+			],
+			[
+				"git che",
+				"Git: Checkout Tag"
+			],
+			[
+				"add ",
+				"Git: Add All"
+			],
+			[
+				"qu",
+				"Git: Quick Commit (repo)"
+			],
+			[
+				"gitl og",
+				"Git: Log All"
+			],
+			[
+				"diff cu",
+				"Git: Diff Current File"
+			],
+			[
+				"git unsta",
+				"Git: Reset (unstage) All"
+			],
+			[
+				"diff sta",
+				"Git: Diff Staged Files"
+			],
+			[
+				"keyb",
+				"Preferences: Key Bindings"
+			],
+			[
+				"packag",
+				"Package Control: Install Package"
+			],
+			[
+				"git log",
+				"Git: Log All"
+			],
+			[
+				"preferen",
+				"Preferences: Settings"
+			],
+			[
+				"preference",
+				"Preferences: Settings"
+			],
+			[
+				"git qu",
+				"Git: Quick Commit (repo)"
+			],
+			[
+				"git comm",
+				"Git: Commit"
+			],
+			[
+				"bra",
+				"Git: New Branch"
+			],
+			[
+				"guick",
+				"Git: Quick Commit (repo)"
+			],
+			[
+				"git stash",
+				"Git: Stash Changes"
+			],
+			[
+				"git lop",
+				"Package Control: Install Local Dependency"
+			],
+			[
+				"brach",
+				"Git: New Branch"
+			],
+			[
+				"open re",
+				"PackageResourceViewer: Open Resource"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"git qui",
+				"Git: Quick Commit (repo)"
+			],
+			[
+				"git branc",
+				"Git: New Branch"
+			],
+			[
+				"git quick",
+				"Git: Quick Commit (repo)"
+			],
+			[
+				"git",
+				"Package Control: Install Package"
+			],
+			[
+				"install ",
+				"Package Control: Install Package"
+			],
+			[
+				"build",
+				"Build: New Build System"
+			],
+			[
+				"about",
+				"About"
+			],
+			[
+				"syntax markdown",
+				"Set Syntax: Markdown"
+			],
+			[
+				"snip",
+				"Snippet: html"
+			],
+			[
+				"syntax htm",
+				"Set Syntax: HTML"
+			]
+		],
+		"width": 412.0
+	},
+	"console":
+	{
+		"height": 126.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Users/tom/Documents/Fire Emblem Clone",
+		"/Users/tom/Documents/Fire Emblem Clone/mods",
+		"/Users/tom/Documents/Fire Emblem Clone/mods/konosuba",
+		"/Users/tom/Documents/Fire Emblem Clone/mods/konosuba/assets"
+	],
+	"file_history":
+	[
+		"/Users/tom/Documents/Fire Emblem Clone/mods/konosuba/assets/megumin_idle.ase",
+		"/Users/tom/Pictures/Drawing/Megumin_Sprite_Idle.json",
+		"/Users/tom/Pictures/Drawing/Megumin_Sprite_Run.json",
+		"/Users/tom/Documents/Fire Emblem Clone/mods.lua",
+		"/Users/tom/Documents/Fire Emblem Clone/animated_sprite.lua",
+		"/Users/tom/Documents/Fire Emblem Clone/utility.lua",
+		"/Users/tom/Documents/Fire Emblem Clone/mods/konosuba/unit_class.lua",
+		"/Users/tom/Documents/Fire Emblem Clone/animation.lua",
+		"/Users/tom/Documents/Fire Emblem Clone/world.lua",
+		"/Users/tom/Documents/Fire Emblem Clone/unit.lua",
+		"/Users/tom/Documents/Fire Emblem Clone/unit_class.lua",
+		"/Users/tom/Documents/Fire Emblem Clone/colored_sprite.lua",
+		"/Users/tom/Documents/Fire Emblem Clone/json.lua",
+		"/Users/tom/Documents/Fire Emblem Clone/mods/konosuba/init.lua",
+		"/Users/tom/Documents/Fire Emblem Clone/libs/json.lua/json.lua",
+		"/Users/tom/Documents/Fire Emblem Clone/assets/ability_activate.ogg",
+		"/Users/tom/Documents/Fire Emblem Clone/libs/Simple-Tiled-Implementation/sti/init.lua",
+		"/Users/tom/Documents/Fire Emblem Clone/libs/Simple-Tiled-Implementation/sti/utils.lua",
+		"/Users/tom/Documents/Fire Emblem Clone/libs/Simple-Tiled-Implementation/sti/plugins/bump.lua",
+		"/Users/tom/Documents/Fire Emblem Clone/libs/anim8/anim8.lua",
+		"/Users/tom/Documents/Fire Emblem Clone/libs/anim8/spec/anim8/animation_spec.lua",
+		"/Users/tom/Documents/Fire Emblem Clone/assets/bow_fighter_run.png",
+		"/Users/tom/Documents/Fire Emblem Clone/assets/bow_fighter_run.ase",
+		"/Users/tom/Documents/Fire Emblem Clone/ui.lua",
+		"/Users/tom/Documents/Fire Emblem Clone/observer.lua",
+		"/Users/tom/Documents/Fire Emblem Clone/combat_info.lua",
+		"/Users/tom/Documents/Fire Emblem Clone/minimap.lua",
+		"/Users/tom/Documents/Fire Emblem Clone/game.lua",
+		"/Users/tom/Documents/Fire Emblem Clone/camera.lua",
+		"/Users/tom/Documents/Fire Emblem Clone/unit_info.lua",
+		"/Users/tom/Documents/Fire Emblem Clone/hud.lua",
+		"/Users/tom/Documents/Fire Emblem Clone/unit_layer.lua",
+		"/Users/tom/Documents/Fire Emblem Clone/ai.lua",
+		"/Users/tom/Documents/Fire Emblem Clone/pause_menu.lua",
+		"/Users/tom/Documents/Fire Emblem Clone/generate_path.lua",
+		"/Users/tom/Documents/Fire Emblem Clone/result_screen.lua",
+		"/Users/tom/Documents/Fire Emblem Clone/title_screen.lua",
+		"/Users/tom/Documents/Fire Emblem Clone/application.lua",
+		"/Users/tom/Documents/Fire Emblem Clone/ui_states.lua",
+		"/Users/tom/Documents/Fire Emblem Clone/combat.lua",
+		"/Users/tom/Documents/Fire Emblem Clone/attack_animation.lua",
+		"/Users/tom/Documents/Fire Emblem Clone/wait_animation.lua",
+		"/Users/tom/Documents/Fire Emblem Clone/move_animation.lua",
+		"/Users/tom/Library/Application Support/com.bohemiancoding.sketch3/.license",
+		"/Users/tom/Documents/Fire Emblem Clone/team.lua",
+		"/Users/tom/Documents/Fire Emblem Clone/run.lua",
+		"/Users/tom/Documents/Fire Emblem Clone/main.lua",
+		"/Users/tom/Documents/Warren_Insight.txt",
+		"/Users/tom/Documents/Unity Projects/Tank Simulator/Assets/Pause_Controller.cs",
+		"/Users/tom/Documents/David Choi.txt",
+		"/Users/tom/Documents/web-quiz/public/index.html",
+		"/Users/tom/Documents/web-quiz/src/quiz-data.json",
+		"/Users/tom/Documents/web-quiz/public/favicon.ico",
+		"/Users/tom/Documents/web-quiz/.gitignore",
+		"/Users/tom/Documents/Quiz Web Application/problem.json",
+		"/Users/tom/Documents/web-quiz/public/manifest.json",
+		"/Users/tom/Documents/web-quiz/src/index.js",
+		"/Users/tom/Documents/web-quiz/src/App.js",
+		"/Users/tom/Documents/web-quiz/src/App.css",
+		"/Users/tom/Documents/web-quiz/src/index.css",
+		"/Users/tom/Documents/web-quiz/src/App.test.js",
+		"/Users/tom/Documents/web-quiz/src/logo.svg",
+		"/Users/tom/Documents/Design/problem.json",
+		"/Users/tom/Documents/Design/quiz.css",
+		"/Users/tom/Documents/Design/quiz.html",
+		"/Users/tom/Documents/Design/quiz.js",
+		"/Users/tom/Documents/Unity Projects/Tank Simulator/Assets/quiz.html",
+		"/Users/tom/Documents/Unity Projects/Tank Simulator/Assets/Create_Vector_Arrow.cs",
+		"/Users/tom/Documents/Unity Projects/Tank Simulator/Assets/Control_Vector_Arrow.cs",
+		"/Users/tom/Documents/Unity Projects/Tank Simulator/Assets/Despawn.cs",
+		"/Users/tom/Documents/Unity Projects/Tank Simulator/Assets/Shoot.cs",
+		"/Users/tom/Documents/Design/blocks_animation.html",
+		"/Users/tom/Documents/Design/blocks_animation.css",
+		"/Users/tom/Documents/Unity Projects/Tank Simulator/Assets/Update_Label.cs",
+		"/Users/tom/Documents/temp.py",
+		"/Users/tom/Documents/GPIO.py",
+		"/Users/tom/Documents/acdc.py",
+		"/Users/tom/Documents/stepstep.py",
+		"/Users/tom/Documents/CELSYS_EN/CLIPStudioCommon/Document/62/41/5a4045072b-6648-14a0-90ed-3933e27e73/catalog.xml",
+		"/Users/tom/Documents/CELSYS_EN/CLIPStudioCommon/Document/62/41/5a4045072b-6648-14a0-90ed-3933e27e73/info.xml",
+		"/Users/tom/Documents/CELSYS_EN/CLIPStudioCommon/Document/62/41/5a4045072b-6648-14a0-90ed-3933e27e73/icedata/layerData.xml",
+		"/Users/tom/Documents/CELSYS_EN/CLIPStudioCommon/Document/75/91/6b5ff6e1bf-8744-87b0-ad7a-69cc37cc24/icedata/layerData.xml",
+		"/Users/tom/Documents/Unity Projects/Tank Simulator/Assets/Camera_Controller.cs",
+		"/Users/tom/Documents/HPSS/ice_block_automator.py",
+		"/Users/tom/Documents/HPSS/test.csv",
+		"/Users/tom/Documents/Unity Projects/Tank Simulator/Assets/Write_Equation.cs",
+		"/Users/tom/Documents/Design/knight_academy.html",
+		"/Users/tom/Documents/Design/theme.css",
+		"/Users/tom/Documents/HPSS/Proof_Probability_Lotto.py",
+		"/Users/tom/Documents/Design/normalize.css",
+		"/Users/tom/Documents/Unity Projects/Tank Simulator/Assets/Calculate_Trajectory.cs",
+		"/Users/tom/Documents/Unity Projects/Tank Simulator/Assets/knight_academy.html",
+		"/Users/tom/Documents/Unity Projects/Tank Simulator/Assets/normalize.css",
+		"/Users/tom/Documents/Design/aesthetic.html",
+		"/Users/tom/Documents/Unity Projects/Tank Simulator/Assets/Cannonball.prefab",
+		"/Users/tom/Documents/Unity Projects/Tank Simulator/Assets/Dots.mat",
+		"/Users/tom/Documents/Unity Projects/Tank Simulator/Assets/Dots.mat.meta",
+		"/Users/tom/Documents/Portfolio Site/portfolio/urls.py",
+		"/Users/tom/Documents/Portfolio Site/portfolio/templates/portfolio/index.html",
+		"/Users/tom/Documents/Portfolio Site/portfolio/templates/portfolio/projects.html",
+		"/Users/tom/Documents/Portfolio Site/portfolio_site/settings.py",
+		"/Users/tom/Documents/Portfolio Site/portfolio/templates/portfolio/skills.html",
+		"/Users/tom/Documents/Portfolio Site/portfolio/views.py",
+		"/Users/tom/Documents/Portfolio Site/portfolio_site/secret_key.py",
+		"/Users/tom/Documents/Portfolio Site/portfolio_site/urls.py",
+		"/Users/tom/Documents/Portfolio Site/.gitignore",
+		"/Users/tom/Documents/Portfolio Site/portfolio_site/.secret_key.py",
+		"/Users/Shared/Unity/Tank Simulator/Assets/Shoot.cs.meta",
+		"/Users/tom/Documents/Portfolio Site/portfolio/templates/portfolio/main.html",
+		"/Users/tom/Documents/Portfolio Site/templates/flatpages/default.html",
+		"/Users/tom/Documents/Portfolio Site/portfolio/apps.py",
+		"/Users/tom/Documents/Portfolio Site/portfolio/admin.py",
+		"/Users/tom/Documents/Portfolio Site/portfolio/models.py",
+		"/Users/tom/Documents/Portfolio Site/portfolio/tests.py",
+		"/Users/tom/Documents/Portfolio Site/db.sqlite3",
+		"/Users/tom/Documents/Fire Emblem Clone/win_screen.lua",
+		"/Users/tom/Documents/Fire Emblem Clone/menu.lua",
+		"/Users/tom/Documents/Hat_Challenge_Thingy.txt",
+		"/Users/tom/Documents/notes_on_lyn's_story.txt",
+		"/Users/tom/Documents/Fire Emblem Clone/5.08.txt",
+		"/Users/tom/Documents/Fire Emblem Clone/cursor.lua",
+		"/Users/tom/Documents/Questions_on_VR.txt",
+		"/Users/tom/Documents/Math Generators/Term 2/7.01.txt",
+		"/Users/Shared/Unity/Aquaponics_Flow_Visualization/Assets/GoogleVR/Demos/README.md",
+		"/Users/tom/Library/Android/sdk/tools/package.xml",
+		"/Users/tom/Documents/5.07.txt",
+		"/Users/tom/Documents/Math Generators/Term 2/5.04.txt",
+		"/Users/tom/Documents/Math Generators/Term 2/5.02.txt"
+	],
+	"find":
+	{
+		"height": 39.0
+	},
+	"find_in_files":
+	{
+		"height": 101.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"json.decode",
+			"image",
+			"frame",
+			"sprite",
+			"file",
+			"run_color",
+			"run_base",
+			"idle_color",
+			"idle_base",
+			"sprite",
+			"tiled",
+			"require(\"libs",
+			"animated_sprite.create",
+			"table_print",
+			"print"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": true,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 4,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "unit.lua",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7626,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1831,
+								1831
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Lua/Lua.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 3065.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "animated_sprite.lua",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1143,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1143,
+								1143
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Lua/Lua.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 217.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/Users/tom/Library/Application Support/Sublime Text 3/Packages/User/LoveRun.sublime-build",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 197,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								197,
+								197
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/Users/tom/Library/Application Support/Sublime Text 3/Packages/Lua Love/LuaLove.sublime-build",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 784,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								784,
+								784
+							]
+						],
+						"settings":
+						{
+							"buffer_empty": false,
+							"create_dir": true,
+							"syntax": "Packages/JavaScript/JSON.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "mods/konosuba/assets/megumin_idle.json",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 736,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								736,
+								736
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "unit_class.lua",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3368,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								985,
+								985
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Lua/Lua.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 345.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "utility.lua",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1929,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1929,
+								1929
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Lua/Lua.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "mods/konosuba/unit_class.lua",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 927,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								869,
+								869
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Lua/Lua.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "colored_sprite.lua",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 816,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Lua/Lua.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 35.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 155.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.git":
+	{
+		"height": 135.0
+	},
+	"pinned_build_system": "Packages/User/LoveRun.sublime-build",
+	"project": "Fire_Emblem_Clone.sublime-project",
+	"replace":
+	{
+		"height": 42.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"~/Documents/love2d_generic_platformer.sublime-workspace"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 392.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 1789.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 264.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

@@ -7,6 +7,7 @@ weapon_class = {
         range = 1,
 
         type = "sword",
+        class = "physical",
     },
 
     iron_lance = {
@@ -17,6 +18,7 @@ weapon_class = {
         range = 1,
 
         type = "lance",
+        class = "physical",
     },
 
     iron_axe = {
@@ -27,6 +29,7 @@ weapon_class = {
         range = 1,
 
         type = "axe",
+        class = "physical",
     },
 
     iron_bow = {
@@ -38,5 +41,17 @@ weapon_class = {
         min_range = 2,
 
         type = "bow",
+        class = "physical",
+    },
+
+    mini_explosion = {
+        name = "Mini Explosion",
+
+        power = 7,
+        accuracy = 100,
+        range = 2,
+
+        type = "spell",
+        class = "magical",
     },
 }

@@ -1,10 +1,11 @@
 combat = {}
 
 combat.weapon_advantage = {
-    sword = { sword = "neutral", lance = "lose",    axe = "win",     bow = "neutral" },
-    lance = { sword = "win",     lance = "neutral", axe = "lose",    bow = "neutral" },
-    axe   = { sword = "lose",    lance = "win",     axe = "neutral", bow = "neutral" },
-    bow   = { sword = "neutral", lance = "neutral", axe = "neutral", bow = "neutral" },
+    sword = { sword = "neutral", lance = "lose",    axe = "win",     bow = "neutral", spell = "neutral" },
+    lance = { sword = "win",     lance = "neutral", axe = "lose",    bow = "neutral", spell = "neutral" },
+    axe   = { sword = "lose",    lance = "win",     axe = "neutral", bow = "neutral", spell = "neutral" },
+    bow   = { sword = "neutral", lance = "neutral", axe = "neutral", bow = "neutral", spell = "neutral" },
+    spell = { sword = "neutral", lance = "neutral", axe = "neutral", bow = "neutral", magic = "neutral" },
 }
 
 function combat.initiate(world, attacker, tile_x, tile_y)
@@ -48,7 +49,13 @@ function combat.attack(world, attacker, target)
 end
 
 function combat.get_attack_power(world, attacker, weapon, target)
-    local attack_power = weapon.power + attacker.strength - target.defense
+    local attack_power
+    if weapon.class == "physical" then
+        attack_power = weapon.power + attacker.strength - target.defense
+    elseif weapon.class == "magical" then
+        attack_power = weapon.power + attacker.magic - target.resistance
+    end
+
     if attack_power < 0 then attack_power = 0 end
 
     return attack_power

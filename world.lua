@@ -31,7 +31,7 @@ function world.create(observer, mods, teams, animation)
     unit_layer:create_unit(unit_class.bow_fighter, 2, 8, { active_weapon = 1, weapons = {weapon_class.iron_bow, weapon_class.iron_sword}, team = self.teams[1] })
 
     -- Unit with unit_class from mod.
-    unit_layer:create_unit(mods.konosuba.unit_class.crimson_demon, 2, 10, { active_weapon = 1, weapons = {weapon_class.iron_bow, weapon_class.iron_sword}, team = self.teams[1] })
+    unit_layer:create_unit(mods.konosuba.unit_class.crimson_demon, 2, 10, { active_weapon = 1, weapons = {weapon_class.mini_explosion}, team = self.teams[1] })
 
 
     -- Create enemy units.

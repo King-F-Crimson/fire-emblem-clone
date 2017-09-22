@@ -18,10 +18,12 @@ local unit_class = {
         name = "Megumin",
         
         max_health = 15,
-        strength = 8,
-        defense = 5,
-        skill = 9,
-        speed = 5,
+        strength = 2,
+        defense = 4,
+        magic = 13,
+        resistance = 10,
+        skill = 10,
+        speed = 6,
         movement = 5,
 
         weapon_type = "magic"
