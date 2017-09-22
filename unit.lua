@@ -159,7 +159,9 @@ function unit:get_valid_weapons(world, tile_x, tile_y, target_tile_x, target_til
 
         local valid_tiles = world:get_tiles_in_distance{tile_x = tile_x, tile_y = tile_y, distance = weapon.range, min_distance = min_range, unlandable_filter = unlandable_filter}
         if valid_tiles[key(target_tile_x, target_tile_y)] then
-            valid_weapons[k] = weapon
+            if not valid_tiles[key(target_tile_x, target_tile_y)].unlandable then
+                valid_weapons[k] = weapon
+            end
         end
     end
 
