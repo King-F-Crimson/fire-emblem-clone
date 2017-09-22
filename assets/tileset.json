@@ -1,0 +1,19 @@
+{ "frames": [
+   {
+    "filename": "tileset.ase",
+    "frame": { "x": 0, "y": 0, "w": 512, "h": 128 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 512, "h": 128 },
+    "sourceSize": { "w": 512, "h": 128 },
+    "duration": 100
+   }
+ ],
+ "meta": {
+  "app": "http://www.aseprite.org/",
+  "version": "1.2-beta9",
+  "format": "RGBA8888",
+  "size": { "w": 512, "h": 128 },
+  "scale": "1"
+ }
+}

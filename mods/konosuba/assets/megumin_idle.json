@@ -1,21 +1,21 @@
 { "frames": [
    {
-    "filename": "Megumin_Sprite_Idle 0.ase",
+    "filename": "megumin_idle 0.ase",
     "frame": { "x": 0, "y": 0, "w": 32, "h": 32 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 32 },
     "sourceSize": { "w": 32, "h": 32 },
-    "duration": 500
+    "duration": 400
    },
    {
-    "filename": "Megumin_Sprite_Idle 1.ase",
+    "filename": "megumin_idle 1.ase",
     "frame": { "x": 32, "y": 0, "w": 32, "h": 32 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 32 },
     "sourceSize": { "w": 32, "h": 32 },
-    "duration": 500
+    "duration": 400
    }
  ],
  "meta": {

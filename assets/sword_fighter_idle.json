@@ -41,8 +41,6 @@
   "version": "1.2-beta9",
   "format": "RGBA8888",
   "size": { "w": 128, "h": 32 },
-  "scale": "1",
-  "frameTags": [
-  ]
+  "scale": "1"
  }
 }
