@@ -52,7 +52,7 @@ function ai:determine_move_spot(unit)
     -- Early exit if the unit can attack from the position.
     local function early_exit(tile)
         if not tile.unlandable then
-            local attack_area = unit:get_attack_area(self.world, tile.x, tile.y)
+            local attack_area = unit:get_attack_area(self.world, tile.x, tile.y, "standard_attack")
 
             for key, tile in pairs(attack_area) do
                 if tile.tile_content.unit then
@@ -96,7 +96,7 @@ end
 
 -- Attack a random enemy within range.
 function ai:attack_enemy_in_range(unit, x, y)
-    local attack_area = unit:get_attack_area(self.world, x, y)
+    local attack_area = unit:get_attack_area(self.world, x, y, "standard_attack")
 
     local enemies_in_range = {}
 
