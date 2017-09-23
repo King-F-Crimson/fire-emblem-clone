@@ -1,5 +1,6 @@
 require("game")
 require("title_screen")
+require("level_selection")
 require("observer")
 require("queue")
 

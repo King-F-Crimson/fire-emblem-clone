@@ -12,7 +12,7 @@ require("mods")
 
 game = {}
 
-function game.create(application, observer)
+function game.create(application, observer, args)
     local self = { application = application, observer = observer }
     setmetatable(self, {__index = game})
 
@@ -31,7 +31,7 @@ function game.create(application, observer)
 
     self.pause_menu = pause_menu.create(self.application)
     self.animation = animation.create(self.observer)
-    self.world = world.create(self.observer, self.mods, self.teams, self.animation)
+    self.world = world.create(self.observer, self.mods, self.teams, self.animation, args.stage)
     self.ui = ui.create(self.observer, self, self.world)
     self.ai = ai.create(self.observer, self, self.world)
     self.camera = camera.create(self.observer, self.ui)

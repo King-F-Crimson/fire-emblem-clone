@@ -18,7 +18,7 @@ end
 
 function title_screen:process_event(event)
     if event.type == "key_pressed" or event.type == "mouse_pressed" then
-        self.application:change_state(game)
+        self.application:change_state(level_selection)
     end
 end
 

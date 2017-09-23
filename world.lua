@@ -13,11 +13,11 @@ world = {
     
 }
 
-function world.create(observer, mods, teams, animation)
+function world.create(observer, mods, teams, animation, map)
     local self = {observer = observer, mods = mods, teams = teams, animation = animation}
     setmetatable(self, {__index = world})
 
-    self.map = sti("maps/test_map.lua")
+    self.map = sti("maps/" .. map)
 
     self.command_queue = {}
 
