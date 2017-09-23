@@ -50,12 +50,16 @@ function level_selection:move(direction)
     self.stage_name = love.graphics.newText(self.application.font, self.maps[self.pointer])
 end
 
-function level_selection:control(key)
+function level_selection:control(event)
+    local key = event.data.key
+    local button = event.data.button
+
     if key == "a" then
         self:move("up")
     elseif key == "s" then
         self:move("down")
-    elseif key == "space" then
+    -- Make it confirmable with left-click too.
+    elseif key == "space" or button == 1 then
         local stage = self.maps[self.pointer]
 
         self.application:change_state(game, {stage = stage})
@@ -64,7 +68,7 @@ end
 
 function level_selection:process_event(event)
     if event.type == "key_pressed" or event.type == "mouse_pressed" then
-        self:control(event.data.key)
+        self:control(event)
     end
 end
 
