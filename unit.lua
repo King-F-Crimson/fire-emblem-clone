@@ -188,7 +188,7 @@ function unit:get_danger_area(world)
 
     -- For every visitable tile, get the attack area.
     for k, tile in pairs(movement_area) do
-        local attack_area = self:get_attack_area(world, tile.x, tile.y)
+        local attack_area = self:get_attack_area(world, tile.x, tile.y, self.data.weapons)
 
         for k, tile in pairs(attack_area) do
             -- Add it to danger area if it's not included yet.
