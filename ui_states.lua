@@ -237,33 +237,50 @@ function attacking.enter(ui)
 end
 
 function special.process_feedback(ui, feedback)
-    -- Attack position.
-    if feedback.action == "select" and ui:is_in_area("special", feedback.data.tile_x, feedback.data.tile_y) then
-        -- Push command to world to move then attack.
-        local move_command = { action = "move_unit" }
-        move_command.data = { unit = ui.selected_unit, tile_x = ui.plan_tile_x, tile_y = ui.plan_tile_y }
-        ui.world:receive_command(move_command)
+    local tile_x, tile_y = feedback.data.tile_x, feedback.data.tile_y
 
-        local special_command = { action = "special" }
-        special_command.data = { unit = ui.selected_unit, special = ui.selected_special, tile_x = feedback.data.tile_x, tile_y = feedback.data.tile_y }
-        ui.world:receive_command(special_command)
+    -- Confirm position, then apply special.
+    if feedback.action == "select" and ui:is_in_area("special", tile_x, tile_y) then
+        -- Prompt the position confirmation first.
+        if ui.plan_special_position == nil or
+            ui.plan_special_position.x ~= tile_x or
+            ui.plan_special_position.y ~= tile_y then
+            ui.plan_special_position = { x = tile_x, y = tile_y }
+        else
+            -- Remove confirmation
+            ui.plan_special_position = nil
 
-        -- Put cursor in the attacking unit position.
-        ui.cursor:move_to(ui.plan_tile_x, ui.plan_tile_y)
+            -- Push command to world to move then attack.
+            local move_command = { action = "move_unit" }
+            move_command.data = { unit = ui.selected_unit, tile_x = ui.plan_tile_x, tile_y = ui.plan_tile_y }
+            ui.world:receive_command(move_command)
 
-        -- Revert to browsing state.
-        browsing.enter(ui)
+            local special_command = { action = "special" }
+            special_command.data = { unit = ui.selected_unit, special = ui.selected_special, tile_x = tile_x, tile_y = tile_y }
+            ui.world:receive_command(special_command)
+
+            -- Put cursor in the attacking unit position.
+            ui.cursor:move_to(ui.plan_tile_x, ui.plan_tile_y)
+
+            -- Revert to browsing state.
+            browsing.enter(ui)
+        end
     end
 
     if feedback.action == "cancel" then
-        -- Move cursor position to planned movement position.
-        ui.cursor:move_to(ui.plan_tile_x, ui.plan_tile_y)
+        -- Remove plan_special_position / unconfirm it.
+        if ui.plan_special_position ~= nil then
+            ui.plan_special_position = nil
+        else
+            -- Move cursor position to planned movement position.
+            ui.cursor:move_to(ui.plan_tile_x, ui.plan_tile_y)
 
-        -- Set state to action menu control.
-        local specials = ui.selected_unit.data.specials
-        local content_data = { weapons = specials, tile_x = ui.plan_tile_x, tile_y = ui.plan_tile_y }
+            -- Set state to action menu control.
+            local specials = ui.selected_unit.data.specials
+            local content_data = { weapons = specials, tile_x = ui.plan_tile_x, tile_y = ui.plan_tile_y }
 
-        menu_control.enter(ui, "special_select", content_data)
+            menu_control.enter(ui, "special_select", content_data)
+        end
     end
 end
 

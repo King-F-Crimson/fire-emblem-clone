@@ -8,6 +8,7 @@ ui = {
         move_area = love.graphics.newImage("assets/move_area.png"),
         attack_area = love.graphics.newImage("assets/attack_area.png"),
         special_area = love.graphics.newImage("assets/attack_area.png"),
+        special_aoe_area = love.graphics.newImage("assets/special_aoe_area.png"),
         danger_area = love.graphics.newImage("assets/attack_area.png"),
     }
 }
@@ -51,6 +52,7 @@ function ui.create(observer, game, world)
         self.observer:add_listener("world_changed", function() self:generate_danger_area() end),
         self.observer:add_listener("unit_deleted", function(unit) self:remove_unit_references(unit) end),
         self.observer:add_listener("new_turn", function() self.marked_units = {}; self.areas.danger = {}; end),
+        self.observer:add_listener("cursor_moved", function() if self.state == special then self:create_area("special_aoe") end end),
     }
 
     return self
@@ -107,7 +109,7 @@ function ui:create_area(area)
     elseif area == "special" then
         self.areas.special = unit:get_attack_area(self.world, self.plan_tile_x, self.plan_tile_y, {self.selected_special})
     elseif area == "special_aoe" then
-        self.areas.special_aoe = self:generate_special_aoe_area()
+        self:generate_special_aoe_area()
     elseif area == "danger" then
         self:generate_danger_area()
     end
@@ -130,7 +132,7 @@ function ui:remove_unit_references(unit)
 end
 
 function ui:generate_special_aoe_area()
-    self.areas.special_aoe = {}
+    self.areas.special_aoe = special_ability.get_affected_tiles(self.world, self.cursor.tile_x, self.cursor.tile_y, self.selected_special)
 end
 
 function ui:generate_danger_area()
@@ -184,6 +186,7 @@ function ui:draw_areas()
     -- Draw attack area if exist (during attack state).
     if self.state == special then
         self:draw_area("special")
+        self:draw_area("special_aoe")
     end
 
     -- Draw danger area if exist.
