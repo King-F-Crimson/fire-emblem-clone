@@ -45,12 +45,16 @@ function unit_layer.create(map, observer)
     end
 
     function self:create_unit(class, tile_x, tile_y, data)
+        if tile_x >= self.width or tile_y >= self.height then error("Unit placement out of bounds") end
+
         local unit = unit.create(class, tile_x, tile_y, data)
 
         self:set_unit(unit, tile_x, tile_y)
     end
 
     function self:set_unit(unit, tile_x, tile_y)
+        if tile_x >= self.width or tile_y >= self.height then error("Unit placement out of bounds") end
+
         -- Translation since lua index starts from 1.
         self.tiles[tile_y + 1][tile_x + 1] = unit
     end
@@ -89,6 +93,8 @@ function unit_layer.create(map, observer)
     end
 
     function self:move_unit(unit, end_x, end_y)
+        if end_x >= self.width or end_y >= self.height then error("Unit placement out of bounds") end
+
         local start_x, start_y = unit.tile_x, unit.tile_y
         -- Move the actual unit in the unit's state.
         local unit = self:get_unit(start_x, start_y)

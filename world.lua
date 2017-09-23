@@ -37,9 +37,9 @@ function world.create(observer, mods, teams, animation, map)
     -- Create enemy units.
     unit_layer:create_unit(unit_class.sword_fighter, 3, 18, { active_weapon = 1, weapons = {weapon_class.iron_sword}, team = self.teams[2] })
     unit_layer:create_unit(unit_class.sword_fighter, 1, 19, { active_weapon = 1, weapons = {weapon_class.iron_sword}, team = self.teams[2] })
-    unit_layer:create_unit(unit_class.axe_fighter, 1, 24, { active_weapon = 1, weapons = {weapon_class.iron_axe}, team = self.teams[2] })
+    unit_layer:create_unit(unit_class.axe_fighter, 1, 20, { active_weapon = 1, weapons = {weapon_class.iron_axe}, team = self.teams[2] })
     unit_layer:create_unit(unit_class.lance_fighter, 3, 20, { active_weapon = 1, weapons = {weapon_class.iron_lance}, team = self.teams[2] })
-    unit_layer:create_unit(unit_class.bow_fighter, 2, 26, { active_weapon = 1, weapons = {weapon_class.iron_bow}, team = self.teams[2] })
+    unit_layer:create_unit(unit_class.bow_fighter, 2, 21, { active_weapon = 1, weapons = {weapon_class.iron_bow}, team = self.teams[2] })
 
     self.listeners = {
         self.observer:add_listener("new_turn", function() self:new_turn() end),
