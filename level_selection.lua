@@ -25,7 +25,10 @@ function level_selection:load_maps()
     local files = love.filesystem.getDirectoryItems("maps")
 
     for k, file in ipairs(files) do
-        table.insert(self.maps, file)
+        -- Only add the file if it ends with the ".lua" extension.
+        if file:sub(-4) == ".lua" then
+            table.insert(self.maps, file)
+        end
     end
 end
 
@@ -73,6 +76,6 @@ function level_selection:draw()
     love.graphics.push()
         love.graphics.scale(self.zoom)
         love.graphics.draw(self.title, (self.application:get_scaled_window_width() / self.zoom - self.title:getWidth()) / 2, self.title:getHeight())
-        love.graphics.draw(self.stage_name, (self.application:get_scaled_window_width() / self.zoom - self.stage_name:getWidth()) / 2, self.application:get_scaled_window_height() / self.zoom - self.stage_name:getHeight() * 2)
+        love.graphics.draw(self.stage_name, (self.application:get_scaled_window_width() / self.zoom - self.stage_name:getWidth()) / 2, self.application:get_scaled_window_height() / self.zoom / 2)
     love.graphics.pop()
 end
