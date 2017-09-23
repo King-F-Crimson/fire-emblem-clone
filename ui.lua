@@ -103,9 +103,9 @@ function ui:create_area(area)
     if area == "move" then
         self.areas.move = unit:get_movement_area(self.world)
     elseif area == "attack" then
-        self.areas.attack = unit:get_attack_area(self.world, self.plan_tile_x, self.plan_tile_y, "standard_attack")
+        self.areas.attack = unit:get_attack_area(self.world, self.plan_tile_x, self.plan_tile_y, unit.data.weapons)
     elseif area == "special" then
-        self.areas.special = unit:get_attack_area(self.world, self.plan_tile_x, self.plan_tile_y, "special")
+        self.areas.special = unit:get_attack_area(self.world, self.plan_tile_x, self.plan_tile_y, {self.selected_special})
     elseif area == "special_aoe" then
         self.areas.special_aoe = self:generate_special_aoe_area()
     elseif area == "danger" then

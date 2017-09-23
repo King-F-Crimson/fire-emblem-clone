@@ -210,7 +210,7 @@ function attacking.process_feedback(ui, feedback)
     if feedback.action == "select" then
         local target_tile_x, target_tile_y = feedback.data.tile_x, feedback.data.tile_y
         -- Weapons that can attack the tile.
-        local valid_weapons = ui.selected_unit:get_valid_weapons(ui.world, ui.plan_tile_x, ui.plan_tile_y, target_tile_x, target_tile_y, ui.attack_type)
+        local valid_weapons = ui.selected_unit:get_valid_weapons(ui.world, ui.plan_tile_x, ui.plan_tile_y, target_tile_x, target_tile_y, ui.selected_unit.data.weapons)
         local content_data = { weapons = valid_weapons, tile_x = target_tile_x, tile_y = target_tile_y }
 
         if not is_empty(valid_weapons) then
@@ -227,19 +227,18 @@ function attacking.process_feedback(ui, feedback)
     end
 end
 
-function attacking.enter(ui, attack_type)
+function attacking.enter(ui)
     ui:destroy_menu()
     ui.active_input = "cursor"
 
     ui:create_area("attack")
-    ui.attack_type = "standard_attack"
 
     ui.state = attacking
 end
 
 function special.process_feedback(ui, feedback)
     -- Attack position.
-    if feedback.action == "select" then
+    if feedback.action == "select" and ui:is_in_area("special", feedback.data.tile_x, feedback.data.tile_y) then
         -- Push command to world to move then attack.
         local move_command = { action = "move_unit" }
         move_command.data = { unit = ui.selected_unit, tile_x = ui.plan_tile_x, tile_y = ui.plan_tile_y }
@@ -268,13 +267,12 @@ function special.process_feedback(ui, feedback)
     end
 end
 
-function special.enter(ui, attack_type)
+function special.enter(ui)
     ui:destroy_menu()
     ui.active_input = "cursor"
 
     ui:create_area("special")
     ui:create_area("special_aoe")
-    ui.attack_type = "special"
 
     ui.state = special
 end
