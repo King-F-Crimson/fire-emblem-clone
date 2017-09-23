@@ -8,7 +8,7 @@ return {
   height = 24,
   tilewidth = 16,
   tileheight = 16,
-  nextobjectid = 1,
+  nextobjectid = 22,
   properties = {},
   tilesets = {
     {
@@ -468,6 +468,194 @@ return {
         4, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
         4, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
         4, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2
+      }
+    },
+    {
+      type = "objectgroup",
+      name = "units",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      draworder = "topdown",
+      properties = {},
+      objects = {
+        {
+          id = 5,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 208,
+          y = 80,
+          width = 16,
+          height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["unit_class"] = "unit_class.lance_fighter",
+            ["unit_data"] = "{ active_weapon = 1, weapons = {weapon_class.iron_lance}, team = teams[1] }"
+          }
+        },
+        {
+          id = 6,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 176,
+          y = 80,
+          width = 16,
+          height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["unit_class"] = "unit_class.sword_fighter",
+            ["unit_data"] = "{ active_weapon = 1, weapons = {weapon_class.iron_sword}, team = teams[1] }"
+          }
+        },
+        {
+          id = 7,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 288,
+          y = 80,
+          width = 16,
+          height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["unit_class"] = "unit_class.axe_fighter",
+            ["unit_data"] = "{ active_weapon = 1, weapons = {weapon_class.iron_axe}, team = teams[1] }"
+          }
+        },
+        {
+          id = 8,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 256,
+          y = 80,
+          width = 16,
+          height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["unit_class"] = "unit_class.bow_fighter",
+            ["unit_data"] = "{ active_weapon = 1, weapons = {weapon_class.iron_bow}, team = teams[1] }"
+          }
+        },
+        {
+          id = 9,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 16,
+          y = 240,
+          width = 16,
+          height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["unit_class"] = "unit_class.sword_fighter",
+            ["unit_data"] = "{ active_weapon = 1, weapons = {weapon_class.iron_sword}, team = teams[2] }"
+          }
+        },
+        {
+          id = 15,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 240,
+          y = 48,
+          width = 16,
+          height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["unit_class"] = "mods.konosuba.unit_class.crimson_demon",
+            ["unit_data"] = "{ active_weapon = 1, weapons = {weapon_class.mini_explosion}, specials = {mods.konosuba.special_class.explosion}, team = teams[1] }"
+          }
+        },
+        {
+          id = 17,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 16,
+          y = 256,
+          width = 16,
+          height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["unit_class"] = "unit_class.sword_fighter",
+            ["unit_data"] = "{ active_weapon = 1, weapons = {weapon_class.iron_sword}, team = teams[2] }"
+          }
+        },
+        {
+          id = 18,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 16,
+          y = 272,
+          width = 16,
+          height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["unit_class"] = "unit_class.sword_fighter",
+            ["unit_data"] = "{ active_weapon = 1, weapons = {weapon_class.iron_sword}, team = teams[2] }"
+          }
+        },
+        {
+          id = 19,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 448,
+          y = 240,
+          width = 16,
+          height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["unit_class"] = "unit_class.sword_fighter",
+            ["unit_data"] = "{ active_weapon = 1, weapons = {weapon_class.iron_sword}, team = teams[2] }"
+          }
+        },
+        {
+          id = 20,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 448,
+          y = 256,
+          width = 16,
+          height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["unit_class"] = "unit_class.sword_fighter",
+            ["unit_data"] = "{ active_weapon = 1, weapons = {weapon_class.iron_sword}, team = teams[2] }"
+          }
+        },
+        {
+          id = 21,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 448,
+          y = 272,
+          width = 16,
+          height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["unit_class"] = "unit_class.sword_fighter",
+            ["unit_data"] = "{ active_weapon = 1, weapons = {weapon_class.iron_sword}, team = teams[2] }"
+          }
+        }
       }
     }
   }

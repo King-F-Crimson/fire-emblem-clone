@@ -68,3 +68,10 @@ function load_file_as_string(filename)
 
     return io.read("*all")
 end
+
+-- Convert string to value
+function string_to_value(input_string, upvalues)
+    local f = load("return " .. input_string, nil, "t", upvalues)
+
+    return f()
+end

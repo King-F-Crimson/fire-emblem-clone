@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0.0" orientation="orthogonal" renderorder="right-down" width="30" height="24" tilewidth="16" tileheight="16" nextobjectid="1">
+<map version="1.0.0" orientation="orthogonal" renderorder="right-down" width="30" height="24" tilewidth="16" tileheight="16" nextobjectid="22">
  <tileset firstgid="1" name="terrain" tilewidth="16" tileheight="16" tilecount="16" columns="4">
   <image source="../assets/terrain.png" width="64" height="64"/>
   <tile id="0">
@@ -267,4 +267,72 @@
 4,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,1,1,2,2,2,2,2,2,2,2,2,2,2,2
 </data>
  </layer>
+ <objectgroup name="units">
+  <object id="5" x="208" y="80" width="16" height="16">
+   <properties>
+    <property name="unit_class" value="unit_class.lance_fighter"/>
+    <property name="unit_data" value="{ active_weapon = 1, weapons = {weapon_class.iron_lance}, team = teams[1] }"/>
+   </properties>
+  </object>
+  <object id="6" x="176" y="80" width="16" height="16">
+   <properties>
+    <property name="unit_class" value="unit_class.sword_fighter"/>
+    <property name="unit_data" value="{ active_weapon = 1, weapons = {weapon_class.iron_sword}, team = teams[1] }"/>
+   </properties>
+  </object>
+  <object id="7" x="288" y="80" width="16" height="16">
+   <properties>
+    <property name="unit_class" value="unit_class.axe_fighter"/>
+    <property name="unit_data" value="{ active_weapon = 1, weapons = {weapon_class.iron_axe}, team = teams[1] }"/>
+   </properties>
+  </object>
+  <object id="8" x="256" y="80" width="16" height="16">
+   <properties>
+    <property name="unit_class" value="unit_class.bow_fighter"/>
+    <property name="unit_data" value="{ active_weapon = 1, weapons = {weapon_class.iron_bow}, team = teams[1] }"/>
+   </properties>
+  </object>
+  <object id="9" x="16" y="240" width="16" height="16">
+   <properties>
+    <property name="unit_class" value="unit_class.sword_fighter"/>
+    <property name="unit_data" value="{ active_weapon = 1, weapons = {weapon_class.iron_sword}, team = teams[2] }"/>
+   </properties>
+  </object>
+  <object id="15" x="240" y="48" width="16" height="16">
+   <properties>
+    <property name="unit_class" value="mods.konosuba.unit_class.crimson_demon"/>
+    <property name="unit_data" value="{ active_weapon = 1, weapons = {weapon_class.mini_explosion}, specials = {mods.konosuba.special_class.explosion}, team = teams[1] }"/>
+   </properties>
+  </object>
+  <object id="17" x="16" y="256" width="16" height="16">
+   <properties>
+    <property name="unit_class" value="unit_class.sword_fighter"/>
+    <property name="unit_data" value="{ active_weapon = 1, weapons = {weapon_class.iron_sword}, team = teams[2] }"/>
+   </properties>
+  </object>
+  <object id="18" x="16" y="272" width="16" height="16">
+   <properties>
+    <property name="unit_class" value="unit_class.sword_fighter"/>
+    <property name="unit_data" value="{ active_weapon = 1, weapons = {weapon_class.iron_sword}, team = teams[2] }"/>
+   </properties>
+  </object>
+  <object id="19" x="448" y="240" width="16" height="16">
+   <properties>
+    <property name="unit_class" value="unit_class.sword_fighter"/>
+    <property name="unit_data" value="{ active_weapon = 1, weapons = {weapon_class.iron_sword}, team = teams[2] }"/>
+   </properties>
+  </object>
+  <object id="20" x="448" y="256" width="16" height="16">
+   <properties>
+    <property name="unit_class" value="unit_class.sword_fighter"/>
+    <property name="unit_data" value="{ active_weapon = 1, weapons = {weapon_class.iron_sword}, team = teams[2] }"/>
+   </properties>
+  </object>
+  <object id="21" x="448" y="272" width="16" height="16">
+   <properties>
+    <property name="unit_class" value="unit_class.sword_fighter"/>
+    <property name="unit_data" value="{ active_weapon = 1, weapons = {weapon_class.iron_sword}, team = teams[2] }"/>
+   </properties>
+  </object>
+ </objectgroup>
 </map>

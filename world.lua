@@ -22,24 +22,9 @@ function world.create(observer, mods, teams, animation, map)
     self.command_queue = {}
 
     self.unit_size = 32
-    local unit_layer = unit_layer.create(self.map, self.observer)
+    self.unit_layer = unit_layer.create(self.map, self.observer)
 
-    -- Create player units.
-    unit_layer:create_unit(unit_class.sword_fighter, 1, 2, { active_weapon = 1, weapons = {weapon_class.iron_sword}, team = self.teams[1] })
-    unit_layer:create_unit(unit_class.axe_fighter, 3, 5, { active_weapon = 1, weapons = {weapon_class.iron_axe}, team = self.teams[1] })
-    unit_layer:create_unit(unit_class.lance_fighter, 2, 10, { active_weapon = 1, weapons = {weapon_class.iron_lance}, team = self.teams[1] })
-    unit_layer:create_unit(unit_class.bow_fighter, 2, 8, { active_weapon = 1, weapons = {weapon_class.iron_bow, weapon_class.iron_sword}, team = self.teams[1] })
-
-    -- Unit with unit_class from mod.
-    unit_layer:create_unit(mods.konosuba.unit_class.crimson_demon, 4, 8, { active_weapon = 1, weapons = {weapon_class.mini_explosion}, specials = {mods.konosuba.special_class.explosion}, team = self.teams[1] })
-
-
-    -- Create enemy units.
-    unit_layer:create_unit(unit_class.sword_fighter, 3, 18, { active_weapon = 1, weapons = {weapon_class.iron_sword}, team = self.teams[2] })
-    unit_layer:create_unit(unit_class.sword_fighter, 1, 19, { active_weapon = 1, weapons = {weapon_class.iron_sword}, team = self.teams[2] })
-    unit_layer:create_unit(unit_class.axe_fighter, 1, 20, { active_weapon = 1, weapons = {weapon_class.iron_axe}, team = self.teams[2] })
-    unit_layer:create_unit(unit_class.lance_fighter, 3, 20, { active_weapon = 1, weapons = {weapon_class.iron_lance}, team = self.teams[2] })
-    unit_layer:create_unit(unit_class.bow_fighter, 2, 21, { active_weapon = 1, weapons = {weapon_class.iron_bow}, team = self.teams[2] })
+    self:populate_units()
 
     self.listeners = {
         self.observer:add_listener("new_turn", function() self:new_turn() end),
@@ -48,6 +33,40 @@ function world.create(observer, mods, teams, animation, map)
     }
 
     return self
+end
+
+function world:populate_units()
+    local unit_layer = self.unit_layer
+    local teams = self.teams
+    local mods = self.mods
+
+    for i, unit_base in ipairs(self.map.layers.units.objects) do
+        local x, y = unit_base.x / 16, unit_base.y / 16
+
+        local upvalues = { teams = teams, mods = mods, unit_class = unit_class, weapon_class = weapon_class }
+
+        local unit_class = string_to_value(unit_base.properties.unit_class, upvalues)
+        local unit_data = string_to_value(unit_base.properties.unit_data, upvalues)
+
+        unit_layer:create_unit(unit_class, x, y, unit_data)
+    end
+
+    -- -- Create player units.
+    -- unit_layer:create_unit(unit_class.sword_fighter, 1, 2, { active_weapon = 1, weapons = {weapon_class.iron_sword}, team = teams[1] })
+    -- unit_layer:create_unit(unit_class.axe_fighter, 3, 5, { active_weapon = 1, weapons = {weapon_class.iron_axe}, team = teams[1] })
+    -- unit_layer:create_unit(unit_class.lance_fighter, 2, 10, { active_weapon = 1, weapons = {weapon_class.iron_lance}, team = teams[1] })
+    -- unit_layer:create_unit(unit_class.bow_fighter, 2, 8, { active_weapon = 1, weapons = {weapon_class.iron_bow, weapon_class.iron_sword}, team = teams[1] })
+
+    -- -- Unit with unit_class from mod.
+    -- unit_layer:create_unit(mods.konosuba.unit_class.crimson_demon, 4, 8, { active_weapon = 1, weapons = {weapon_class.mini_explosion}, specials = {mods.konosuba.special_class.explosion}, team = teams[1] })
+
+
+    -- -- Create enemy units.
+    -- unit_layer:create_unit(unit_class.sword_fighter, 3, 18, { active_weapon = 1, weapons = {weapon_class.iron_sword}, team = teams[2] })
+    -- unit_layer:create_unit(unit_class.sword_fighter, 1, 19, { active_weapon = 1, weapons = {weapon_class.iron_sword}, team = teams[2] })
+    -- unit_layer:create_unit(unit_class.axe_fighter, 1, 20, { active_weapon = 1, weapons = {weapon_class.iron_axe}, team = teams[2] })
+    -- unit_layer:create_unit(unit_class.lance_fighter, 3, 20, { active_weapon = 1, weapons = {weapon_class.iron_lance}, team = teams[2] })
+    -- unit_layer:create_unit(unit_class.bow_fighter, 2, 21, { active_weapon = 1, weapons = {weapon_class.iron_bow}, team = teams[2] })
 end
 
 function world:destroy()
