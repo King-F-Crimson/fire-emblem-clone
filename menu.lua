@@ -30,7 +30,7 @@ function menu:generate_content(content_data)
     elseif self.menu_type == "weapon_equip" then
         self:create_action_select_content(content_data, "equip")
     elseif self.menu_type == "special_select" then
-        self:create_action_select_content(content_data, "special")
+        self:create_action_select_content(content_data, "select_special")
     end
 
     self.item_count = #self.items

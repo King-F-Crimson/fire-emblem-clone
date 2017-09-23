@@ -4,6 +4,7 @@ browsing = {}
 moving = {}
 menu_control = {}
 attacking = {}
+special = {}
 
 -- Maybe a stack should be implemented, so cancelling could be handled better.
 -- Example:
@@ -121,8 +122,17 @@ function menu_control.process_feedback(ui, feedback)
     if feedback.action == "prompt_special" then
         -- Make attack unselectable when selected unit has no weapon.
         if not is_empty(ui.selected_unit.data.specials) then
-            attacking.enter(ui, "special")
+            local specials = ui.selected_unit.data.specials
+            local content_data = { weapons = specials, tile_x = ui.plan_tile_x, tile_y = ui.plan_tile_y }
+
+            menu_control.enter(ui, "special_select", content_data)
         end
+    end
+
+    if feedback.action == "select_special" then
+        ui.selected_special = feedback.data.weapon
+
+        special.enter(ui, "special")
     end
 
     if feedback.action == "items" then
@@ -142,8 +152,10 @@ function menu_control.process_feedback(ui, feedback)
             browsing.enter(ui)
         elseif menu_type == "weapon_select" then
             attacking.enter(ui, "standard_attack")
+        elseif menu_type == "weapon_equip" then
+            menu_control.enter(ui, "action")
         elseif menu_type == "special_select" then
-            attacking.enter(ui, "special")
+            menu_control.enter(ui, "action")
         end
     end
 
@@ -165,23 +177,6 @@ function menu_control.process_feedback(ui, feedback)
         local attack_command = { action = "attack" }
         attack_command.data = { unit = ui.selected_unit, tile_x = feedback.data.tile_x, tile_y = feedback.data.tile_y }
         ui.world:receive_command(attack_command)
-
-        -- Put cursor in the attacking unit position.
-        ui.cursor:move_to(ui.plan_tile_x, ui.plan_tile_y)
-
-        -- Revert to browsing state.
-        browsing.enter(ui)
-    end
-
-    if feedback.action == "special" then
-        -- Push command to world to move then attack.
-        local move_command = { action = "move_unit" }
-        move_command.data = { unit = ui.selected_unit, tile_x = ui.plan_tile_x, tile_y = ui.plan_tile_y }
-        ui.world:receive_command(move_command)
-
-        local special_command = { action = "special" }
-        special_command.data = { unit = ui.selected_unit, special = feedback.data.weapon, tile_x = feedback.data.tile_x, tile_y = feedback.data.tile_y }
-        ui.world:receive_command(special_command)
 
         -- Put cursor in the attacking unit position.
         ui.cursor:move_to(ui.plan_tile_x, ui.plan_tile_y)
@@ -219,11 +214,7 @@ function attacking.process_feedback(ui, feedback)
         local content_data = { weapons = valid_weapons, tile_x = target_tile_x, tile_y = target_tile_y }
 
         if not is_empty(valid_weapons) then
-            if ui.attack_type == "standard_attack" then
-                menu_control.enter(ui, "weapon_select", content_data)
-            elseif ui.attack_type == "special" then
-                menu_control.enter(ui, "special_select", content_data)
-            end
+            menu_control.enter(ui, "weapon_select", content_data)
         end
     end
 
@@ -240,13 +231,50 @@ function attacking.enter(ui, attack_type)
     ui:destroy_menu()
     ui.active_input = "cursor"
 
-    if attack_type == "standard_attack" then
-        ui:create_area("attack")
-        ui.attack_type = "standard_attack"
-    elseif attack_type == "special" then
-        ui:create_area("special")
-        ui.attack_type = "special"
-    end
+    ui:create_area("attack")
+    ui.attack_type = "standard_attack"
 
     ui.state = attacking
+end
+
+function special.process_feedback(ui, feedback)
+    -- Attack position.
+    if feedback.action == "select" then
+        -- Push command to world to move then attack.
+        local move_command = { action = "move_unit" }
+        move_command.data = { unit = ui.selected_unit, tile_x = ui.plan_tile_x, tile_y = ui.plan_tile_y }
+        ui.world:receive_command(move_command)
+
+        local special_command = { action = "special" }
+        special_command.data = { unit = ui.selected_unit, special = ui.selected_special, tile_x = feedback.data.tile_x, tile_y = feedback.data.tile_y }
+        ui.world:receive_command(special_command)
+
+        -- Put cursor in the attacking unit position.
+        ui.cursor:move_to(ui.plan_tile_x, ui.plan_tile_y)
+
+        -- Revert to browsing state.
+        browsing.enter(ui)
+    end
+
+    if feedback.action == "cancel" then
+        -- Move cursor position to planned movement position.
+        ui.cursor:move_to(ui.plan_tile_x, ui.plan_tile_y)
+
+        -- Set state to action menu control.
+        local specials = ui.selected_unit.data.specials
+        local content_data = { weapons = specials, tile_x = ui.plan_tile_x, tile_y = ui.plan_tile_y }
+
+        menu_control.enter(ui, "special_select", content_data)
+    end
+end
+
+function special.enter(ui, attack_type)
+    ui:destroy_menu()
+    ui.active_input = "cursor"
+
+    ui:create_area("special")
+    ui:create_area("special_aoe")
+    ui.attack_type = "special"
+
+    ui.state = special
 end

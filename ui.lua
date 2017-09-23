@@ -4,16 +4,17 @@ require("menu")
 require("ui_states")
 
 ui = {
-    sprite = {
+    sprites = {
         move_area = love.graphics.newImage("assets/move_area.png"),
         attack_area = love.graphics.newImage("assets/attack_area.png"),
+        special_area = love.graphics.newImage("assets/attack_area.png"),
         danger_area = love.graphics.newImage("assets/attack_area.png"),
     }
 }
 
-ui.sprite.move_area:setFilter("nearest")
-ui.sprite.attack_area:setFilter("nearest")
-ui.sprite.danger_area:setFilter("nearest")
+for k, sprite in pairs(ui.sprites) do
+    sprite:setFilter("nearest")
+end
 
 function ui.create(observer, game, world)
     local self = { observer = observer, game = game, world = world }
@@ -104,14 +105,16 @@ function ui:create_area(area)
     elseif area == "attack" then
         self.areas.attack = unit:get_attack_area(self.world, self.plan_tile_x, self.plan_tile_y, "standard_attack")
     elseif area == "special" then
-        self.areas.attack = unit:get_attack_area(self.world, self.plan_tile_x, self.plan_tile_y, "special")
+        self.areas.special = unit:get_attack_area(self.world, self.plan_tile_x, self.plan_tile_y, "special")
+    elseif area == "special_aoe" then
+        self.areas.special_aoe = self:generate_special_aoe_area()
     elseif area == "danger" then
         self:generate_danger_area()
     end
 end
 
 function ui:draw_area(area)
-    local sprite = self.sprite[area .. "_area"]
+    local sprite = self.sprites[area .. "_area"]
 
     for k, tile in pairs(self.areas[area]) do
         love.graphics.draw(sprite, tile.x * tile_size, tile.y * tile_size)
@@ -124,6 +127,10 @@ function ui:remove_unit_references(unit)
     if self.selected_unit == unit then
         self.selected_unit = nil
     end
+end
+
+function ui:generate_special_aoe_area()
+    self.areas.special_aoe = {}
 end
 
 function ui:generate_danger_area()
@@ -174,6 +181,11 @@ function ui:draw_areas()
         self:draw_area("attack")
     end
 
+    -- Draw attack area if exist (during attack state).
+    if self.state == special then
+        self:draw_area("special")
+    end
+
     -- Draw danger area if exist.
     self:draw_area("danger")
 end
@@ -183,7 +195,7 @@ function ui:draw_selected_unit()
         local tile_x, tile_y
         if self.state == moving then
             tile_x, tile_y = self.cursor.tile_x, self.cursor.tile_y
-        elseif self.state == attacking or self.state == menu_control then
+        elseif self.state == attacking or self.state == special or self.state == menu_control then
             tile_x, tile_y = self.plan_tile_x, self.plan_tile_y
         end
 
