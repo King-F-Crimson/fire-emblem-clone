@@ -8,7 +8,7 @@ return {
   height = 24,
   tilewidth = 16,
   tileheight = 16,
-  nextobjectid = 22,
+  nextobjectid = 23,
   properties = {},
   tilesets = {
     {
@@ -565,7 +565,7 @@ return {
           name = "",
           type = "",
           shape = "rectangle",
-          x = 240,
+          x = 256,
           y = 48,
           width = 16,
           height = 16,
@@ -654,6 +654,22 @@ return {
           properties = {
             ["unit_class"] = "unit_class.sword_fighter",
             ["unit_data"] = "{ active_weapon = 1, weapons = {weapon_class.iron_sword}, team = teams[2] }"
+          }
+        },
+        {
+          id = 22,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 208,
+          y = 48,
+          width = 16,
+          height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["unit_class"] = "unit_class.healer",
+            ["unit_data"] = "{ active_weapon = 1, weapons = {}, specials = {special_class.heal}, team = teams[1] }"
           }
         }
       }

@@ -22,6 +22,10 @@ local special_class = {
 
         sprite = love.graphics.newImage("mods/konosuba/assets/explosion.png"),
         sprite_scale = 1/2,
+
+        effect = function(self, world, caster, target)
+            target:damage(world, self.power + caster.magic)
+        end
     }
 }
 

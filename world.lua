@@ -6,6 +6,7 @@ require("weapon_class")
 require("queue")
 require("combat")
 require("special_ability")
+require("special_class")
 
 local sti = require "libs/Simple-Tiled-Implementation/sti"
 
@@ -43,7 +44,7 @@ function world:populate_units()
     for i, unit_base in ipairs(self.map.layers.units.objects) do
         local x, y = unit_base.x / 16, unit_base.y / 16
 
-        local upvalues = { teams = teams, mods = mods, unit_class = unit_class, weapon_class = weapon_class }
+        local upvalues = { teams = teams, mods = mods, unit_class = unit_class, weapon_class = weapon_class, special_class = special_class }
 
         local unit_class = string_to_value(unit_base.properties.unit_class, upvalues)
         local unit_data = string_to_value(unit_base.properties.unit_data, upvalues)

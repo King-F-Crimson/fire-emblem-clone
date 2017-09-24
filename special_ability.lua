@@ -12,13 +12,15 @@ function special_ability.activate(world, caster, special, tile_x, tile_y)
     end
 
     for k, target in pairs(target_units) do
-        target:damage(world, special.power)
+        special:effect(world, caster, target)
     end
 
-    world.animation:receive_animation({ type = "special", data = {
-            x = tile_x, y = tile_y, special = special
-        }
-    })
+    if special.animation then
+        world.animation:receive_animation({ type = "special", data = {
+                x = tile_x, y = tile_y, special = special
+            }
+        })
+    end
 end
 
 function special_ability.get_affected_tiles(world, origin_x, origin_y, special)

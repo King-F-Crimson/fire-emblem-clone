@@ -216,6 +216,16 @@ function unit:damage(world, damage)
     end
 end
 
+function unit:heal(world, recovery)
+    self.data.health = self.data.health + recovery
+
+    if self.data.health > self.max_health then
+        self.data.health = self.max_health
+    end
+
+    self:generate_health_bar()
+end
+
 function unit:die(world)
     local unit_layer = world.map.layers.unit_layer
     unit_layer:delete_unit(self)

@@ -128,5 +128,33 @@ unit_class = {
         movement = 5,
 
         weapon_type = "bow"
+    },
+
+    healer = {
+        sprites = {
+            idle = {
+                base = love.graphics.newImage("assets/healer_idle.png"),
+                color = love.graphics.newImage("assets/template_unit_idle_color.png"),
+                animation = json.decode(load_file_as_string("assets/healer_idle.json"))
+            },
+            run = {
+                base = love.graphics.newImage("assets/healer_run.png"),
+                color = love.graphics.newImage("assets/template_unit_run_color.png"),
+                animation = json.decode(load_file_as_string("assets/healer_run.json"))
+            },
+        },
+
+        name = "Healer",
+        
+        max_health = 15,
+        strength = 4,
+        defense = 4,
+        magic = 10,
+        resistance = 8,
+        skill = 6,
+        speed = 7,
+        movement = 5,
+
+        weapon_type = "staff"
     }
 }
