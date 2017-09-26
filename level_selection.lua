@@ -59,7 +59,7 @@ function level_selection:control(event)
     elseif key == "s" then
         self:move("down")
     -- Make it confirmable with left-click too.
-    elseif key == "space" or button == 1 then
+    elseif key == "space" or key == "z" or button == 1 then
         local stage = self.maps[self.pointer]
 
         self.application:change_state(game, {stage = stage})
