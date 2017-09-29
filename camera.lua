@@ -7,7 +7,7 @@ function camera.create(observer, ui)
     self.zoom = 2
     self.min_zoom = 1
     self.max_zoom = 8
-    self.mouse_scroll_for_zoom = 2
+    self.mouse_scroll_for_zoom = 8
     self.mouse_scroll_accumulator = 0
 
     self:set_bounds_to_map(ui.game.world.map)
