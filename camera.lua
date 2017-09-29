@@ -8,6 +8,7 @@ function camera.create(observer, ui)
     self.min_zoom = 1
     self.max_zoom = 8
     self.mouse_scroll_for_zoom = 2
+    self.mouse_scroll_accumulator = 0
 
     self:set_bounds_to_map(ui.game.world.map)
 
@@ -110,10 +111,20 @@ function camera:set_zoom()
 end
 
 function camera:zoom_using_mouse_wheel(x, y)
-    if y > self.mouse_scroll_for_zoom and self.zoom < self.max_zoom then
+    self.mouse_scroll_accumulator = self.mouse_scroll_accumulator + y
+
+    if self.mouse_scroll_accumulator > self.max_zoom * self.mouse_scroll_for_zoom then
+        self.mouse_scroll_accumulator = self.max_zoom * self.mouse_scroll_for_zoom
+    elseif self.mouse_scroll_accumulator < -self.max_zoom * self.mouse_scroll_for_zoom then
+        self.mouse_scroll_accumulator = -self.max_zoom * self.mouse_scroll_for_zoom
+    end
+
+    if self.mouse_scroll_accumulator > self.mouse_scroll_for_zoom and self.zoom < self.max_zoom then
         self.zoom = self.zoom + 1
-    elseif y < -self.mouse_scroll_for_zoom and self.zoom > self.min_zoom then
+        self.mouse_scroll_accumulator = self.mouse_scroll_accumulator - self.mouse_scroll_for_zoom
+    elseif y < -self.mouse_scroll_accumulator and self.zoom > self.min_zoom then
         self.zoom = self.zoom - 1
+        self.mouse_scroll_accumulator = self.mouse_scroll_accumulator + self.mouse_scroll_for_zoom
     end
 end
 
