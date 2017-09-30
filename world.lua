@@ -8,17 +8,13 @@ require("combat")
 require("special_ability")
 require("special_class")
 
-local sti = require "libs/Simple-Tiled-Implementation/sti"
-
 world = {
     
 }
 
-function world.create(observer, mods, teams, animation, map)
-    local self = {observer = observer, mods = mods, teams = teams, animation = animation}
+function world.create(observer, game, mods, teams, animation, map)
+    local self = {observer = observer, game = game, mods = mods, teams = teams, animation = animation, map = map}
     setmetatable(self, {__index = world})
-
-    self.map = sti("maps/" .. map)
 
     self.command_queue = {}
 
@@ -29,6 +25,7 @@ function world.create(observer, mods, teams, animation, map)
 
     self.listeners = {
         self.observer:add_listener("new_turn", function() self:new_turn() end),
+        self.observer:add_listener("new_turn_cycle", function() self:activate_spawners() end),
         self.observer:add_listener("animation_ended", function() self:clean_dead_units() end),
         self.observer:add_listener("world_changed", function() self:check_game_end() end),
     }
@@ -203,6 +200,30 @@ function world:move_unit(unit, tile_x, tile_y, path)
 
     -- Mark unit as moved.
     unit.data.moved = true
+
+    self.observer:notify("world_changed")
+end
+
+function world:activate_spawners()
+    local spawners = self.map.layers.spawners.objects
+    local unit_layer = self.unit_layer
+    local teams = self.teams
+    local mods = self.mods
+
+    for i, spawner in ipairs(spawners) do
+        local x, y = spawner.x / 16, spawner.y / 16
+
+        local upvalues = { teams = teams, mods = mods, unit_class = unit_class, weapon_class = weapon_class, special_class = special_class }
+
+        local unit_class = string_to_value(spawner.properties.unit_class, upvalues)
+        local unit_data = string_to_value(spawner.properties.unit_data, upvalues)
+
+        local active_turns = string_to_value(spawner.properties.active_turns)
+
+        if table_contains(active_turns, self.game.turn_count) and unit_layer:get_unit(x, y) == nil then
+            unit_layer:create_unit(unit_class, x, y, unit_data)
+        end 
+    end
 
     self.observer:notify("world_changed")
 end

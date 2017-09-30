@@ -10,6 +10,8 @@ require("pause_menu")
 require("result_screen")
 require("mods")
 
+local sti = require("libs/Simple-Tiled-Implementation/sti")
+
 game = {}
 
 function game.create(application, observer, args)
@@ -21,17 +23,22 @@ function game.create(application, observer, args)
         team.create("Player 2 Army", color.create_from_rgb(255, 25, 25), "ai"),
     }
 
-    self.current_turn = self.teams[1]
-    self.current_turn_number = 1
+    self.current_team = self.teams[1]
+    self.current_team_index = 1
+
+    self.turn_count = 1
 
     self.is_paused = false
 
     self.mods = mods.create(self)
     self.mods:load("konosuba")
 
+    self.map = sti("maps/" .. args.stage)
+    self.game_mode = self.map.properties.game_mode
+
     self.pause_menu = pause_menu.create(self.application)
     self.animation = animation.create(self.observer)
-    self.world = world.create(self.observer, self.mods, self.teams, self.animation, args.stage)
+    self.world = world.create(self.observer, self, self.mods, self.teams, self.animation, self.map)
     self.ui = ui.create(self.observer, self, self.world)
     self.ai = ai.create(self.observer, self, self.world)
     self.camera = camera.create(self.observer, self.ui)
@@ -60,12 +67,18 @@ function game:new_turn()
     self.observer:notify("new_turn")
 
     -- Change current turn, cycle if previous turn is the last team.
-    self.current_turn_number = self.current_turn_number + 1
-    if self.current_turn_number > #self.teams then
-        self.current_turn_number = 1
+    self.current_team_index = self.current_team_index + 1
+    if self.current_team_index > #self.teams then
+        self.current_team_index = 1
     end
 
-    self.current_turn = self.teams[self.current_turn_number]
+    self.current_team = self.teams[self.current_team_index]
+
+    -- Update turn count once every team has made a play.
+    if self.current_team_index == 1 then
+        self.turn_count = self.turn_count + 1
+        self.observer:notify("new_turn_cycle")
+    end
 end
 
 function game:update()
@@ -79,8 +92,8 @@ function game:update()
         self.animation:update()
     else
         self.ui:update()
-        if self.current_turn.controller == "ai" then
-            self.ai:set_team(self.current_turn)
+        if self.current_team.controller == "ai" then
+            self.ai:set_team(self.current_team)
             self.ai:do_step()
         end
         self.world:update()
@@ -126,7 +139,7 @@ function game:process_event(event)
     if self.is_paused then
         self.pause_menu:process_event(event)
     else
-        if self.current_turn.controller == "player" then
+        if self.current_team.controller == "player" then
             self.ui:process_event(event)
         end
     end

@@ -27,14 +27,14 @@ function browsing.process_feedback(ui, feedback)
         -- Check if unit is not nil.
         if unit then
             -- If unit is player unit and has not moved, select it.
-            if unit.data.team == ui.game.current_turn and not unit.data.moved then
+            if unit.data.team == ui.game.current_team and not unit.data.moved then
                 ui.selected_unit = unit
                 ui.selected_unit.hidden = true
 
                 moving.enter(ui)
             -- If it's an enemy unit then toggle it in marked_units
             -- to mark it's possible attack position.
-            elseif unit.data.team ~= ui.game.current_turn then
+            elseif unit.data.team ~= ui.game.current_team then
                 if ui.marked_units[unit] then
                     ui.marked_units[unit] = nil
                 else

@@ -75,3 +75,13 @@ function string_to_value(input_string, upvalues)
 
     return f()
 end
+
+-- Check if table contains an element.
+function table_contains(table, element)
+    for _, value in pairs(table) do
+        if value == element then
+            return true
+        end
+    end
+    return false
+end
