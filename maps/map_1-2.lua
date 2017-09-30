@@ -8,9 +8,10 @@ return {
   height = 24,
   tilewidth = 16,
   tileheight = 16,
-  nextobjectid = 43,
+  nextobjectid = 44,
   properties = {
-    ["game_mode"] = "defense"
+    ["game_mode"] = "defense",
+    ["turns_to_defend_for"] = 12
   },
   tilesets = {
     {

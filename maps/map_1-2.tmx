@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="right-down" width="30" height="24" tilewidth="16" tileheight="16" nextobjectid="43">
+<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="right-down" width="30" height="24" tilewidth="16" tileheight="16" nextobjectid="44">
  <properties>
   <property name="game_mode" value="defense"/>
+  <property name="turns_to_defend_for" type="int" value="12"/>
  </properties>
  <tileset firstgid="1" name="terrain" tilewidth="16" tileheight="16" tilecount="16" columns="4">
   <image source="../assets/terrain.png" width="64" height="64"/>

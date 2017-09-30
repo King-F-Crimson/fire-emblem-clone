@@ -103,14 +103,28 @@ function world:check_game_end()
         return no_more_unit
     end
 
+    local game_mode = self.game.game_mode
 
-    -- Check if team 2 (default enemy team) is destroyed completely.
-    if check_annihilated(self.teams[1]) then
-        self.observer:notify("game_end", { winner = "enemy" })
-    end
+    if game_mode == "death_match" then
+        if check_annihilated(self.teams[1]) then
+            self.observer:notify("game_end", { winner = "enemy" })
+        end
 
-    if check_annihilated(self.teams[2]) then
-        self.observer:notify("game_end", { winner = "player" })
+        if check_annihilated(self.teams[2]) then
+            self.observer:notify("game_end", { winner = "player" })
+        end
+    elseif game_mode == "defense" then
+        if check_annihilated(self.teams[1]) then
+            self.observer:notify("game_end", { winner = "enemy" })
+        end
+
+        if self.game.turn_count == self.map.properties.turns_to_defend_for then
+            self.observer:notify("game_end", { winner = "player" })
+        end
+
+        if self.defense_point_captured then
+            self.observer:notify("game_end", { winner = "enemy" })
+        end
     end
 end
 
@@ -228,6 +242,12 @@ function world:activate_spawners()
     self.observer:notify("world_changed")
 end
 
+function world:capture_defense_point()
+    self.defense_point_captured = true
+
+    self.observer:notify("world_changed")
+end
+
 function world:get_terrain_map()
     local terrain_map = {}
 
@@ -276,6 +296,7 @@ function world:get_tiles_in_distance(args)
     local origin_tile = { x = args.tile_x, y = args.tile_y, distance = 0,
                                             tile_content = {
                                                 terrain = self.map:getTileProperties("terrain", args.tile_x + 1, args.tile_y + 1).terrain,
+                                                special_property = self.map:getTileProperties("special_area", args.tile_x + 1, args.tile_y + 1).type,
                                                 unit = self:get_unit(args.tile_x, args.tile_y)
                                             },
                                             come_from = "origin"

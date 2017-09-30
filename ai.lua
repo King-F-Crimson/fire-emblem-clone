@@ -22,6 +22,7 @@ function ai:do_step()
             -- Get where the unit would move and feed it to attack position.
             local x_move, y_move = self:move_unit(unit)
             
+            self:attempt_capture_defense_point(unit, x_move, y_move)
             self:attack_enemy_in_range(unit, x_move, y_move)
 
             move_unit_flag = true
@@ -162,5 +163,18 @@ function ai:attack_enemy_in_range(unit, x, y)
         attack_command.data = { unit = unit, tile_x = random_enemy.tile_x, tile_y = random_enemy.tile_y }
 
         self.world:receive_command(attack_command)
+    end
+end
+
+-- Capture defense point if standing on one.
+function ai:attempt_capture_defense_point(unit, x, y)
+    local end_tile
+
+    for key, tile in pairs(self.world:get_tiles_in_distance({tile_x = x, tile_y = y, distance = 0})) do
+        end_tile = tile
+    end
+
+    if end_tile.tile_content.special_property == "defense" then
+        self.world:capture_defense_point()
     end
 end
