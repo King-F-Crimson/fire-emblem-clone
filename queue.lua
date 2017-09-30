@@ -29,3 +29,7 @@ end
 function queue:empty()
     return self.first > self.last
 end
+
+function queue:reset()
+    self.first, self.last, self.content = 0, -1, {}
+end

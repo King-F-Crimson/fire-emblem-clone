@@ -18,11 +18,15 @@ function special_animation.create(args)
     return self
 end
 
+function special_animation:exit()
+    self.complete = true
+end
+
 function special_animation:update()
     self.special.animation:update()
 
     if self.current_frame > self.length then
-        self.complete = true
+        self:exit()
     else
         self.current_frame = self.current_frame + 1
     end

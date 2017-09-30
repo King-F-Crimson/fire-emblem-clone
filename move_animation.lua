@@ -16,19 +16,20 @@ function move_animation.create(args)
 
     -- If the path length is 1 (not moving), end the animation immediately.
     if #self.path == 1 then
-        self.complete = true
-
-        self.unit.hidden = false
+        self:exit()
     end
 
     return self
 end
 
+function move_animation:exit()
+    self.complete = true
+    self.unit.hidden = false
+end
+
 function move_animation:update()
     if self.current_frame == self.length then
-        self.complete = true
-
-        self.unit.hidden = false
+        self:exit()
     else
         self.current_frame = self.current_frame + 1
     end

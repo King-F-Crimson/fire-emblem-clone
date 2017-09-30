@@ -14,11 +14,15 @@ function wait_animation.create(args)
     return self
 end
 
+function wait_animation:exit()
+    self.complete = true
+
+    self.attacker.hidden, self.target.hidden = false, false
+end
+
 function wait_animation:update()
     if self.current_frame == self.length then
-        self.complete = true
-
-        self.attacker.hidden, self.target.hidden = false, false
+        self:exit()
     else
         self.current_frame = self.current_frame + 1
     end

@@ -13,19 +13,42 @@ function animation.create(observer)
     setmetatable(self, {__index = animation})
 
     self.active = false
+    self.skip_for_this_turn = false
 
     self.animation_queue = queue.create()
     self.current_animation = nil
+
+    self.listeners = {
+        self.observer:add_listener("new_turn", function() self:reenable_animation() end)
+    }
 
     return self
 end
 
 -- Side effect: hides actors in the animation
 function animation:receive_animation(animation)
-    self.animation_queue:push(animation)
-    self.active = true
+    if not self.skip_for_this_turn then
+        self.animation_queue:push(animation)
+        self.active = true
 
-    self:hide_actors(animation)
+        self:hide_actors(animation)
+    end
+end
+
+function animation:skip_current_animation()
+    self.current_animation:exit()
+end
+
+function animation:skip_animations_for_this_turn()
+    self.animation_queue:reset()
+
+    self:skip_current_animation()
+
+    self.skip_for_this_turn = true
+end
+
+function animation:reenable_animation()
+    self.skip_for_this_turn = false
 end
 
 -- Currently not hiding attack and wait animation since it is queued long after move animation

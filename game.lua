@@ -133,6 +133,14 @@ function game:process_event(event)
     if event.type == "key_pressed" and event.data.key == "p" then
         self.is_paused = not self.is_paused
     end
+    -- Skip animations for the turn by pressing space while it is active.
+    if event.type == "key_pressed" and event.data.key == "space" and self.animation.active then
+        if self.current_team.controller == "player" then
+            self.animation:skip_current_animation()
+        elseif self.current_team.controller == "ai" then
+            self.animation:skip_animations_for_this_turn()
+        end
+    end
 
     self.camera:process_event(event)
 
