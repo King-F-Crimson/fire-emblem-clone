@@ -851,7 +851,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["active_turns"] = "{1, 3, 5, 7}",
+            ["active_turns"] = "{3, 5, 7}",
             ["unit_class"] = "unit_class.sword_fighter",
             ["unit_data"] = "{ active_weapon = 1, weapons = {weapon_class.iron_sword}, team = teams[2] }"
           }

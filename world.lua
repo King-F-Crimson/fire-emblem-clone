@@ -308,11 +308,13 @@ function world:get_tiles_in_distance(args)
             for k, tile in pairs(self:get_adjacent_tiles(current.x, current.y)) do
                 -- Get the terrain and unit on tile.
                 local terrain
+                local special_property
                 local unit_on_tile
 
                 -- Check if tile is still in bound, if it's out of bound then terrain and unit_on_tile will be nil.
                 if tile.x >= 0 and tile.y >= 0 and tile.x < self.map.width and tile.y < self.map.height then
                     terrain = self.map:getTileProperties("terrain", tile.x + 1, tile.y + 1).terrain
+                    special_property = self.map:getTileProperties("special_area", tile.x + 1, tile.y + 1).type
                     unit_on_tile = self:get_unit(tile.x, tile.y)
                 end
 
@@ -330,7 +332,7 @@ function world:get_tiles_in_distance(args)
                     output[key(tile.x, tile.y)] == nil and cost ~= "impassable" and i - 1 + cost <= args.distance then
 
                     local output_tile = { x = tile.x, y = tile.y, distance = i - 1 + cost, unlandable = unlandable, come_from = { x = current.x, y = current.y },
-                    tile_content = { terrain = terrain, unit = unit_on_tile }}
+                    tile_content = { terrain = terrain, unit = unit_on_tile, special_property = special_property }}
                     output_tile.trigger_early_exit = early_exit(output_tile)
 
                     output[key(tile.x, tile.y)] = output_tile

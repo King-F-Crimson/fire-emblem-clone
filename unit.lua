@@ -169,15 +169,21 @@ function unit:get_valid_weapons(world, tile_x, tile_y, target_tile_x, target_til
 end
 
 function unit:can_counter_attack(world, target_tile_x, target_tile_y)
-    local function key(x, y) return string.format("(%i, %i)", x, y) end
-
     local weapon = self:get_active_weapon()
-    local attack_area = world:get_tiles_in_distance{tile_x = self.tile_x, tile_y = self.tile_y, distance = weapon.range, min_distance = weapon.min_range or 1}
 
-    if attack_area[key(target_tile_x, target_tile_y)] ~= nil then
-        return not attack_area[key(target_tile_x, target_tile_y)].unlandable
-    else
+    if weapon == nil then
         return false
+    else
+        local function key(x, y) return string.format("(%i, %i)", x, y) end
+
+        local weapon = self:get_active_weapon()
+        local attack_area = world:get_tiles_in_distance{tile_x = self.tile_x, tile_y = self.tile_y, distance = weapon.range, min_distance = weapon.min_range or 1}
+
+        if attack_area[key(target_tile_x, target_tile_y)] ~= nil then
+            return not attack_area[key(target_tile_x, target_tile_y)].unlandable
+        else
+            return false
+        end
     end
 end
 

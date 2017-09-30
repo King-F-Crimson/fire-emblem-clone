@@ -36,8 +36,15 @@ end
 
 function ai:move_unit(unit)
     local move_command = { action = "move_unit" }
+    local game_mode = self.game.game_mode
 
-    local x, y, path = self:determine_move_spot(unit)
+    local x, y, path
+
+    if game_mode == "death_match" then 
+        x, y, path = self:move_to_nearest_enemy(unit)
+    elseif game_mode == "defense" then
+        x, y, path = self:move_to_closest_objective(unit)
+    end
 
     move_command.data = { unit = unit, tile_x = x, tile_y = y, path = path }
 
@@ -46,7 +53,45 @@ function ai:move_unit(unit)
     return x, y
 end
 
-function ai:determine_move_spot(unit)
+function ai:move_to_closest_objective(unit)
+    local function key(x, y) return string.format("(%i, %i)", x, y) end
+
+    -- Early exit defense tile is found.
+    local function early_exit(tile)
+        return not tile.unlandable and tile.tile_content.special_property == "defense"
+    end
+
+    local traversed_tiles = self.world:get_tiles_in_distance({distance = 100, tile_x = unit.tile_x, tile_y = unit.tile_y, early_exit = early_exit, movement_filter = unit.movement_filter, unlandable_filter = unit.unlandable_filter})
+
+    -- Find the nearest spot where the unit can attack an enemy.
+    local nearest_objective
+
+    for key, tile in pairs(traversed_tiles) do
+        if tile.trigger_early_exit then
+            nearest_objective = tile
+        end
+    end
+
+    -- If there's a spot that the unit can attack from, move to get closer to it
+    -- If there's none, stay
+    if nearest_objective then
+        local furthest_traversable_spot = nearest_objective
+
+        while furthest_traversable_spot.distance > unit.movement or furthest_traversable_spot.unlandable do
+            furthest_traversable_spot = traversed_tiles[key(furthest_traversable_spot.come_from.x, furthest_traversable_spot.come_from.y)]
+        end
+
+        local path = generate_path(furthest_traversable_spot, traversed_tiles)
+
+        return furthest_traversable_spot.x, furthest_traversable_spot.y, path
+    else
+        local path = generate_path(traversed_tiles[key(unit.tile_x, unit.tile_y)], traversed_tiles)
+
+        return unit.tile_x, unit.tile_y, path
+    end
+end
+
+function ai:move_to_nearest_enemy(unit)
     local function key(x, y) return string.format("(%i, %i)", x, y) end
 
     -- Early exit if the unit can attack from the position.

@@ -407,7 +407,7 @@
   </object>
   <object id="37" x="256" y="368" width="16" height="16">
    <properties>
-    <property name="active_turns" value="{1, 3, 5, 7}"/>
+    <property name="active_turns" value="{3, 5, 7}"/>
     <property name="unit_class" value="unit_class.sword_fighter"/>
     <property name="unit_data" value="{ active_weapon = 1, weapons = {weapon_class.iron_sword}, team = teams[2] }"/>
    </properties>

@@ -17,6 +17,8 @@ function move_animation.create(args)
     -- If the path length is 1 (not moving), end the animation immediately.
     if #self.path == 1 then
         self.complete = true
+
+        self.unit.hidden = false
     end
 
     return self
