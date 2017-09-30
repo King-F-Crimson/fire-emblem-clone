@@ -83,7 +83,11 @@ function combat.can_double_attack(world, attacker, weapon, target)
 end
 
 function combat.get_weapon_advantage(attacking_weapon, defending_weapon)
-    return combat.weapon_advantage[attacking_weapon.type][defending_weapon.type]
+    if defending_weapon then
+        return combat.weapon_advantage[attacking_weapon.type][defending_weapon.type]
+    else
+        return "neutral"
+    end
 end
 
 function combat.push_animation(world, data, animation_type)
