@@ -73,7 +73,7 @@ function ai:move_to_closest_objective(unit)
     end
 
     -- If there's a spot that the unit can attack from, move to get closer to it
-    -- If there's none, stay
+    -- If there's none, seek nearest enemy.
     if nearest_objective then
         local furthest_traversable_spot = nearest_objective
 
@@ -85,9 +85,9 @@ function ai:move_to_closest_objective(unit)
 
         return furthest_traversable_spot.x, furthest_traversable_spot.y, path
     else
-        local path = generate_path(traversed_tiles[key(unit.tile_x, unit.tile_y)], traversed_tiles)
+        local x, y, path = self:move_to_nearest_enemy(unit)
 
-        return unit.tile_x, unit.tile_y, path
+        return x, y, path
     end
 end
 
