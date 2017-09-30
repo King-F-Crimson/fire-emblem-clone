@@ -6,7 +6,7 @@ function pause_menu.create(application)
 
     self.text = love.graphics.newText(self.application.font, "Paused, press P to unpause")
 
-    self.zoom = 4
+    self.zoom = 2
 
     return self
 end
@@ -18,7 +18,7 @@ end
 function pause_menu:draw()
     love.graphics.push()
         love.graphics.scale(self.zoom)
-        love.graphics.draw(self.text, (love.graphics.getWidth() / self.zoom - self.text:getWidth()) / 2, self.text:getHeight())
+        love.graphics.draw(self.text, (self.application:get_scaled_window_width() / self.zoom - self.text:getWidth()) / 2, self.text:getHeight())
     love.graphics.pop()
 end
 
