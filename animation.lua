@@ -80,6 +80,8 @@ function animation:process_animation_queue()
     else
         self.active = false
 
+        self.current_animation = nil
+
         self.observer:notify("animation_ended")
     end
 end

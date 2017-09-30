@@ -10,6 +10,9 @@ function special_animation.create(args)
     self.special = args.special
     self.animation = args.special.animation
 
+    self.animation:go_to_frame(1)
+    self.animation:resume()
+
     self.length = self.animation.total_duration * 60
     
     self.current_frame = 1

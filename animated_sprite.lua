@@ -1,5 +1,6 @@
 local anim8 = require("libs/anim8/anim8")
 
+-- Wrapper class for anim8 and aseprite json export.
 animated_sprite = {}
 
 function animated_sprite.create(image, animation_data)
@@ -11,6 +12,10 @@ function animated_sprite.create(image, animation_data)
     self:process_animation_data(animation_data)
 
     self.animation = anim8.newAnimation(self.grid('1-' .. tostring(#self.durations), 1), self.durations)
+
+    if self.loop == false then
+        self.animation.onLoop = "pauseAtEnd"
+    end
 
     return self
 end
@@ -25,6 +30,8 @@ function animated_sprite:process_animation_data(animation_data)
         w = animation_data.meta.size.w,
         h = animation_data.meta.size.h,
     }
+
+    self.loop = animation_data.meta.loop
 
     self.durations = {}
     self.total_duration = 0
@@ -43,4 +50,12 @@ end
 function animated_sprite:update()
     -- Updates the animation by one frame.
     self.animation:update(1/60)
+end
+
+function animated_sprite:go_to_frame(frame)
+    self.animation:gotoFrame(frame)
+end
+
+function animated_sprite:resume()
+    self.animation:resume()
 end
