@@ -43,21 +43,24 @@ end
 function unit_info:draw()
     local unit = self.displayed_unit
     if unit then
-        local info = string.format("%s\nHealth: %i\nStrength: %i\nDefense: %i\nMagic: %i\nResistance: %i\nSkill: %i\nSpeed: %i",
+        local info = string.format("%s\nHealth: %i\nStrength: %i\nDefense: %i\nMagic: %i\nResistance: %i\nSkill: %i\nSpeed: %i\n",
             unit.name, unit.data.health, unit.strength, unit.defense, unit.magic, unit.resistance, unit.skill, unit.speed)
-        if unit:get_active_weapon() then
-            info = string.format("%s\nActive Weapon: %s", info, unit:get_active_weapon().name)
-        end
         if not is_empty(unit.data.weapons) then
-            info = string.format("%s\nWeapons:", info)
-            for k, weapon in pairs(unit.data.weapons) do
-                info = string.format("%s\n%s", info, weapon.name)
+            info = info .. "Weapons:\n"
+            for i, weapon in ipairs(unit.data.weapons) do
+                info = info .. "- " .. weapon.name
+
+                if i == unit.data.active_weapon then 
+                    info = info .. " [e]"
+                end
+
+                info = info .. "\n"
             end
         end
         if not is_empty(unit.data.specials) then
-            info = string.format("%s\nSpecials:", info)
-            for k, special in pairs(unit.data.specials) do
-                info = string.format("%s\n%s", info, special.name)
+            info = info .. "Specials:\n"
+            for i, special in ipairs(unit.data.specials) do
+                info = info .. "- " .. special.name .. "\n"
             end
         end
         love.graphics.print(info, self.x, self.y)

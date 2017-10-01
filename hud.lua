@@ -10,8 +10,8 @@ function hud.create(ui)
     setmetatable(self, {__index = hud})
 
     self.map_info = map_info.create(self.observer, self.ui, 20, 20)
-    self.unit_info = unit_info.create(self.observer, self.ui, 20, 50)
-    self.minimap = minimap.create(self.observer, self.ui, 20, 270)
+    self.unit_info = unit_info.create(self.observer, self.ui, 20, 60)
+    self.minimap = minimap.create(self.observer, self.ui, 20, 280)
     self.combat_info = combat_info.create(self.observer, self.ui, 20, 400)
 
     return self
