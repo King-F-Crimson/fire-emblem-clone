@@ -65,8 +65,6 @@ function game:game_end(args)
 end
 
 function game:new_turn()
-    self.observer:notify("new_turn")
-
     -- Change current turn, cycle if previous turn is the last team.
     self.current_team_index = self.current_team_index + 1
     if self.current_team_index > #self.teams then
@@ -80,6 +78,8 @@ function game:new_turn()
         self.turn_count = self.turn_count + 1
         self.observer:notify("new_turn_cycle")
     end
+
+    self.observer:notify("new_turn")
 end
 
 function game:update()

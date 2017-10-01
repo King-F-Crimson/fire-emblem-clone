@@ -54,6 +54,6 @@ function unit_info:draw()
                 info = string.format("%s\n%s", info, weapon.name)
             end
         end
-        love.graphics.print(info, tile_size, tile_size)
+        love.graphics.print(info, self.x, self.y)
     end
 end
