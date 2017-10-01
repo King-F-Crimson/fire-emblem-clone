@@ -25,6 +25,10 @@ function animation.create(observer)
     return self
 end
 
+function animation:destroy()
+    observer.remove_listeners_from_object(self)
+end
+
 -- Side effect: hides actors in the animation
 function animation:receive_animation(animation)
     if not self.skip_for_this_turn then

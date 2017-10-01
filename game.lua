@@ -54,6 +54,7 @@ function game:destroy()
     self.world:destroy()
     self.ui:destroy()
     self.camera:destroy()
+    self.animation:destroy()
 
     -- Remove listeners from observer.
     observer.remove_listeners_from_object(self)
