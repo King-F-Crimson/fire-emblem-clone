@@ -535,7 +535,7 @@ return {
           visible = true,
           properties = {
             ["unit_class"] = "unit_class.lance_fighter",
-            ["unit_data"] = "{ active_weapon = 1, weapons = {weapon_class.iron_lance}, team = teams[1] }"
+            ["unit_data"] = "{ active_weapon = 1, weapons = {weapon_class.iron_lance}, specials = {}, team = teams[1] }"
           }
         },
         {
@@ -551,7 +551,7 @@ return {
           visible = true,
           properties = {
             ["unit_class"] = "unit_class.sword_fighter",
-            ["unit_data"] = "{ active_weapon = 1, weapons = {weapon_class.iron_sword}, team = teams[1] }"
+            ["unit_data"] = "{ active_weapon = 1, weapons = {weapon_class.iron_sword}, specials = {}, team = teams[1] }"
           }
         },
         {
@@ -567,7 +567,7 @@ return {
           visible = true,
           properties = {
             ["unit_class"] = "unit_class.axe_fighter",
-            ["unit_data"] = "{ active_weapon = 1, weapons = {weapon_class.iron_axe}, team = teams[1] }"
+            ["unit_data"] = "{ active_weapon = 1, weapons = {weapon_class.iron_axe}, specials = {}, team = teams[1] }"
           }
         },
         {
@@ -583,7 +583,7 @@ return {
           visible = true,
           properties = {
             ["unit_class"] = "unit_class.bow_fighter",
-            ["unit_data"] = "{ active_weapon = 1, weapons = {weapon_class.iron_bow}, team = teams[1] }"
+            ["unit_data"] = "{ active_weapon = 1, weapons = {weapon_class.iron_bow}, specials = {}, team = teams[1] }"
           }
         },
         {
@@ -599,7 +599,7 @@ return {
           visible = true,
           properties = {
             ["unit_class"] = "unit_class.sword_fighter",
-            ["unit_data"] = "{ active_weapon = 1, weapons = {weapon_class.iron_sword}, team = teams[2] }"
+            ["unit_data"] = "{ active_weapon = 1, weapons = {weapon_class.iron_sword}, specials = {}, team = teams[2] }"
           }
         },
         {
@@ -631,7 +631,7 @@ return {
           visible = true,
           properties = {
             ["unit_class"] = "unit_class.sword_fighter",
-            ["unit_data"] = "{ active_weapon = 1, weapons = {weapon_class.iron_sword}, team = teams[2] }"
+            ["unit_data"] = "{ active_weapon = 1, weapons = {weapon_class.iron_sword}, specials = {}, team = teams[2] }"
           }
         },
         {
@@ -647,7 +647,7 @@ return {
           visible = true,
           properties = {
             ["unit_class"] = "unit_class.sword_fighter",
-            ["unit_data"] = "{ active_weapon = 1, weapons = {weapon_class.iron_sword}, team = teams[2] }"
+            ["unit_data"] = "{ active_weapon = 1, weapons = {weapon_class.iron_sword}, specials = {}, team = teams[2] }"
           }
         },
         {
@@ -663,7 +663,7 @@ return {
           visible = true,
           properties = {
             ["unit_class"] = "unit_class.sword_fighter",
-            ["unit_data"] = "{ active_weapon = 1, weapons = {weapon_class.iron_sword}, team = teams[2] }"
+            ["unit_data"] = "{ active_weapon = 1, weapons = {weapon_class.iron_sword}, specials = {}, team = teams[2] }"
           }
         },
         {
@@ -679,7 +679,7 @@ return {
           visible = true,
           properties = {
             ["unit_class"] = "unit_class.sword_fighter",
-            ["unit_data"] = "{ active_weapon = 1, weapons = {weapon_class.iron_sword}, team = teams[2] }"
+            ["unit_data"] = "{ active_weapon = 1, weapons = {weapon_class.iron_sword}, specials = {}, team = teams[2] }"
           }
         },
         {
@@ -695,7 +695,7 @@ return {
           visible = true,
           properties = {
             ["unit_class"] = "unit_class.sword_fighter",
-            ["unit_data"] = "{ active_weapon = 1, weapons = {weapon_class.iron_sword}, team = teams[2] }"
+            ["unit_data"] = "{ active_weapon = 1, weapons = {weapon_class.iron_sword}, specials = {}, team = teams[2] }"
           }
         },
         {

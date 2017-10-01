@@ -11,7 +11,7 @@ function hud.create(ui)
 
     self.map_info = map_info.create(self.observer, self.ui, 20, 20)
     self.unit_info = unit_info.create(self.observer, self.ui, 20, 50)
-    self.minimap = minimap.create(self.observer, self.ui, 20, 240)
+    self.minimap = minimap.create(self.observer, self.ui, 20, 270)
     self.combat_info = combat_info.create(self.observer, self.ui, 20, 400)
 
     return self

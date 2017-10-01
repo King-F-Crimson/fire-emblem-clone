@@ -48,10 +48,16 @@ function unit_info:draw()
         if unit:get_active_weapon() then
             info = string.format("%s\nActive Weapon: %s", info, unit:get_active_weapon().name)
         end
-        if unit.data.weapons then
+        if not is_empty(unit.data.weapons) then
             info = string.format("%s\nWeapons:", info)
             for k, weapon in pairs(unit.data.weapons) do
                 info = string.format("%s\n%s", info, weapon.name)
+            end
+        end
+        if not is_empty(unit.data.specials) then
+            info = string.format("%s\nSpecials:", info)
+            for k, special in pairs(unit.data.specials) do
+                info = string.format("%s\n%s", info, special.name)
             end
         end
         love.graphics.print(info, self.x, self.y)
